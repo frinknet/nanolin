@@ -1,0 +1,5 @@
+PATH /distroversion/
+DEFAULT boot
+LABEL boot
+KERNEL kernel
+INITRD initrd 

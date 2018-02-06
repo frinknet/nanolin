@@ -1,0 +1,5 @@
+#!/bin/sh
+
+#check if there is a swap
+#if not create zswap
+#mount swap

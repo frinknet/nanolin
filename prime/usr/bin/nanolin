@@ -1,0 +1,52 @@
+#!/bin/sh
+
+export NLDIR="/etc/nanolin.d"
+export NLBIN="$0"
+export NLVER=1.0.2
+export NLACT="$1"
+export NLHDR="
+Nanolin System Control Framework v$NLVER
+Copyright 2018 Frinknet and Friends
+License: GPL v2.0
+"
+
+[ -z "$1" ] && echo "$NLHDR
+	Usage:
+
+	nanolin <action> [options]
+
+	Actions:
+	
+$(find $NLDIR -type f -perm +111 | sed "s%$NLDIR/%\t%g" | grep -v '\.' | sort)
+" && exit
+
+shift
+
+# check that the action exists before we go to any trouble
+[ ! -e "$NLDIR/$NLACT" ] && echo "$NLHDR
+The action $NLDIR/$NLACT does not exist.
+" && exit
+
+# check that the action is executable before we go to any trouble
+[ ! -x "$NLDIR/$NLACT" ] && echo "$NLHDR
+The user $USER does not have permission to execute $NLDIR/$NLACT.
+" && exit
+
+# set aliases to shorten code
+alias runexec=$NLDIR/$NLACT
+alias runeach=$NLDIR/each
+alias runlock=$NLDIR/lock
+alias logcall="$NLDIR/log call nanolin $NLACT"
+alias logwait="runlock wait 0 $NLACT && $NLDIR/log exit nanolin $NLACT"
+
+# run action different for special actions 
+case $NLACT in
+	#  run immediately without runlocks
+	lock|log) runexec $@;;
+
+	# run action and children  waiting for the children to exit 
+	init|login|logout|startup|shutdown) logcall $@ && runeach $NLACT $@ && logwait $@;;
+	
+	# run and set runlock pid then remove it when finished
+	*) logcall $@ && runexec $@ & runlock new $NLACT $! && logwait $@ && runlock set $NLACT;;
+esac

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# usage check 
+[ -z "$1" ] && echo "$NLHDR
+	Run action asynchronously.
+
+	Usage:
+
+	nanolin async <action> [options]
+" && exit 1
+
+# run with locks and logging
+nanolin $@ &

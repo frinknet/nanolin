@@ -1,0 +1,41 @@
+#!/bin/sh
+
+SELF=$0
+USER='root'
+VERSION='0.0.1'
+OPTIONS="-l"
+COMMAND="cd '$PWD'; "
+
+# function to show usage and exit
+usage() {
+	echo "sudo shim $VERSION"
+	echo "execute a comand as another user"
+	echo "\nUsage:"
+	echo "\t$COMMAND [options] command"
+	echo "\nOptions:"
+	echo "\t-h        Show this help"
+	echo "\t-V        Show version information"
+	echo "\t-E        Preserve environment variables"
+	echo "\t-u <user> Specify a delegate username"
+	echo
+	exit 1
+}
+
+# getopts loop to 
+while true; do case "$1" in
+	-h) usage;;
+	-V) echo "sudo shim $VERSION"; exit;;
+	-E) shift; OPTIONS="-p"; COMMAND="";;
+	-u) shift; USER="$1"; [ -z "$1" ] && usage; shift;;
+	*) break;;
+esac; done
+
+# build command with proper quote handling
+for ARG in "$@"; do
+	COMMAND="$COMMAND'$(echo "$ARG" | sed -e "s/'/'\"'\"'/g")' "
+done
+
+# TODO: test against sudoers file
+
+# run everything as expected
+exec su "$USER" $OPTIONS -c "$COMMAND"

@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# populate LABEL, TYPE and UUID variables
+eval $(blkid $DEVICE | cut -d: -f2)
+
+# if type is not defined (= drive) or is swap then we obviously can't mount it
+case "$TYPE" in
+	swap) exit;;
+	drive) 
+		for SUBDEV in $DEVICE[0-9]*; do
+			nanolin hotplug $ACTION drive $SUBDEV
+		done
+
+		exit;;
+esac
+
+# define the directorys and links
+LDIR="/mnt/label/${LABEL:-Unlabeled Disk} (${DEVICE##*/})"
+MDIR="/mnt$DEVICE"
+UDIR="/mnt/uuid/$UUID"
+
+# mount or unmount
+case "$ACTION" in
+	add)
+		# make sure we are not mounted yet
+		grep -qs "$DEVICE" /etc/mtab && break
+
+		# make mounting point
+		mkdir -p "$MDIR"
+		ln -s "$MDIR" "$LDIR"
+		[ -n "$UUID" ] && ln -s "$MDIR" "$UDIR"
+
+		# mount device or fail silently
+		mount -t $TYPE $DEVICE "$MDIR" >/dev/null 2>&1;;
+	remove)
+		# make sureall io is synced before we unmount
+		sync
+		sync
+
+		# unmountor faile silently 
+		[ -d "$MDIR" ] && umount -frl "$DEVICE" >/dev/null 2>&1;;
+esac
+
+# make sure we are unmounted before removing
+grep -qs "$DEVICE" /etc/mtab || rm -fr "$MDIR"
+
+# clean up bad links for any devices where scripts may have failed
+find -L /mnt/ -maxdepth 2 -type l -exec rm {} + 

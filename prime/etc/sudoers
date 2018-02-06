@@ -1,0 +1,3 @@
+
+root    ALL=(ALL) ALL
+nanolin	ALL=NOPASSWD: ALL 

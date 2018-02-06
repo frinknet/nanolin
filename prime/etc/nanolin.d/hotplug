@@ -1,0 +1,21 @@
+#!/bin/sh
+
+export ACTION="$1"
+export TYPE="$2"
+export DEVICE="$3"
+
+DEVICE=$(readlink -f $DEVICE)
+
+shift
+shift
+shift
+
+[ -z "$DEVICE" ] && echo "$NLHDR
+	Manage the hotplug actions for a specific type of device. 
+
+	Usage:
+
+	nanolin hotplug <action> <type> <device>
+" && exit
+
+nanolin each "hotplug.$TYPE"

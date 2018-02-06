@@ -1,0 +1,10 @@
+#!/bin/busybox sh
+
+# add busybox links
+/bin/busybox --install /bin
+
+# run any nanolin addons
+/sbin/nanolin init
+
+# switch busybox init
+exec /sbin/init

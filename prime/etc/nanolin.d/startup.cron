@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#start cron
+crond -l 2 -L /var/log/crontabs

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+[ -z "$1" ] && echo "$NLHDR
+	Usage:
+
+	nanolin logtime <action> [note]
+
+Nanolin run log since boot:
+$(cat /var/log/nanolin)
+" && exit
+
+[ ! -e /proc/uptime ] && exit
+
+ACT=$1
+TIME=$(awk '{print $1}' /proc/uptime)
+
+shift
+
+echo -e "$TIME\t$USER\t[$ACT]\t$@" >> /var/log/nanolin

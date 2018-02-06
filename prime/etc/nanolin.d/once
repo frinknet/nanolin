@@ -1,0 +1,13 @@
+#!/bin/sh
+
+alias runlock="$NLDIR/lock"
+
+# check to see whether it was run previously
+runlock has $1 && echo "$NLHDR
+	nanolin $1
+
+Was run previously at $(runlock time $1)
+" && exit 1
+
+# run since a lock does not exist
+nanolin $@

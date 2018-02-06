@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# This runs synchronously synce it is preparing for a final shutdown.
+
+sync
+sync
+
+umount -arfl >/dev/null 2>&1
+
+sync
+true

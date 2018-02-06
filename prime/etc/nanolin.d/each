@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# check usage
+[ -z "$1" ] && echo "$NLHDR
+
+	Runs a script and its children
+
+	Usage:
+	
+	nanolin each <action> [options]
+" && exit
+
+NLACT="$1"
+NLWAIT=""
+
+shift
+
+# run parent first 
+[ -x "$NLDIR/$NLACT" ] && $NLDIR/$NLACT $@
+
+# loop through actions 
+for NLDO in $NLDIR/$NLACT.*; do
+	# make sure we can execute
+	[ ! -x "$NLDO" ] && continue
+
+	NLWAIT="$NLWAIT ${NLDO##*/}"
+
+	# filter out last
+	[ "${NLDO##*.}" == "last" ] && continue
+
+	# run with locks and logging in new process
+	nanolin ${NLDO##*/} $@ &
+done 
+
+# run last script after all others
+[ -x "$NLDIR/$NLACT.last" ] && $NLDIR/$NLACT.last $@
+
+# wait for children
+[ -n "$NLWAIT" ] && $NLDIR/lock wait 0 $NLWAIT

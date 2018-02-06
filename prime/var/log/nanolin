@@ -1,0 +1,998 @@
+0.70	root	[call]	nanolin async startup
+0.70	root	[exit]	nanolin async startup
+0.70	root	[call]	nanolin startup
+0.72	root	[call]	nanolin startup.swap
+0.72	root	[call]	nanolin startup.mount
+0.72	root	[call]	nanolin startup.hotplug
+0.73	root	[call]	nanolin startup.cron
+0.74	root	[exit]	nanolin startup.swap
+0.74	nanolin	[call]	nanolin async login
+0.74	root	[exit]	nanolin startup.mount
+0.74	root	[exit]	nanolin startup.hotplug
+0.74	root	[exit]	nanolin startup.cron
+0.75	nanolin	[exit]	nanolin async login
+0.75	nanolin	[call]	nanolin login
+0.76	root	[exit]	nanolin startup
+0.80	root	[call]	nanolin hotplug drive add /dev
+0.81	root	[call]	nanolin each hotplug.drive
+0.81	root	[exit]	nanolin each hotplug.drive
+0.81	root	[exit]	nanolin hotplug drive add /dev
+0.81	root	[call]	nanolin hotplug drive add /dev
+0.82	root	[call]	nanolin each hotplug.drive
+0.82	root	[exit]	nanolin each hotplug.drive
+0.82	root	[exit]	nanolin hotplug drive add /dev
+0.83	root	[call]	nanolin hotplug drive add /dev
+0.83	root	[call]	nanolin each hotplug.drive
+0.83	root	[exit]	nanolin each hotplug.drive
+0.83	root	[exit]	nanolin hotplug drive add /dev
+0.84	root	[call]	nanolin hotplug drive add /dev
+0.84	root	[call]	nanolin each hotplug.drive
+0.84	root	[exit]	nanolin each hotplug.drive
+0.85	root	[exit]	nanolin hotplug drive add /dev
+0.86	root	[call]	nanolin hotplug drive add /dev
+0.86	root	[call]	nanolin each hotplug.drive
+0.88	root	[exit]	nanolin each hotplug.drive
+0.89	root	[exit]	nanolin hotplug drive add /dev
+33.10	root	[call]	nanolin async login
+33.11	root	[exit]	nanolin async login
+33.11	root	[call]	nanolin login
+1949.99	root	[call]	nanolin shutdown
+1950.00	root	[call]	nanolin shutdown.hotplug
+1950.01	root	[exit]	nanolin shutdown
+1950.01	root	[exit]	nanolin shutdown.hotplug
+1950.13	root	[call]	nanolin exit
+1950.13	root	[exit]	nanolin exit
+1951.14	root	[call]	nanolin async startup
+1951.14	root	[exit]	nanolin async startup
+1951.14	root	[call]	nanolin startup
+1951.16	root	[call]	nanolin startup.mount
+1951.16	root	[call]	nanolin startup.swap
+1951.16	root	[call]	nanolin startup.hotplug
+1951.16	root	[call]	nanolin startup.cron
+1951.17	root	[exit]	nanolin startup.swap
+1951.17	root	[exit]	nanolin startup.mount
+1951.17	root	[exit]	nanolin startup.hotplug
+1951.17	root	[exit]	nanolin startup.cron
+1951.18	nanolin	[exit]	nanolin async login
+1951.19	root	[exit]	nanolin startup
+1951.19	root	[call]	nanolin hotplug add drive /dev
+1951.20	root	[call]	nanolin each hotplug.drive
+1951.20	root	[exit]	nanolin each hotplug.drive
+1951.21	root	[exit]	nanolin hotplug add drive /dev
+1951.21	root	[call]	nanolin hotplug add drive /dev
+1951.21	root	[call]	nanolin each hotplug.drive
+1951.22	root	[exit]	nanolin each hotplug.drive
+1951.22	root	[exit]	nanolin hotplug add drive /dev
+1951.22	root	[call]	nanolin hotplug add drive /dev
+1951.23	root	[call]	nanolin each hotplug.drive
+1951.23	root	[exit]	nanolin each hotplug.drive
+1951.24	root	[exit]	nanolin hotplug add drive /dev
+1951.24	root	[call]	nanolin hotplug add drive /dev
+1951.24	root	[call]	nanolin each hotplug.drive
+1951.25	root	[exit]	nanolin each hotplug.drive
+1951.25	root	[exit]	nanolin hotplug add drive /dev
+1951.26	root	[call]	nanolin hotplug add drive /dev
+1951.26	root	[call]	nanolin each hotplug.drive
+1951.27	root	[exit]	nanolin each hotplug.drive
+1951.27	root	[exit]	nanolin hotplug add drive /dev
+1967.84	root	[call]	nanolin async login
+1967.84	root	[exit]	nanolin async login
+1967.84	root	[call]	nanolin login
+2207.62	root	[call]	nanolin hotplug add drive sda1
+2207.63	root	[call]	nanolin each hotplug.drive
+2207.66	root	[exit]	nanolin each hotplug.drive
+2207.66	root	[exit]	nanolin hotplug add drive sda1
+2391.07	root	[call]	nanolin hotplug add drive sda1a
+2391.24	root	[exit]	nanolin hotplug add drive sda1a
+2401.86	root	[call]	nanolin hotplug add drive sda1
+2401.87	root	[call]	nanolin each hotplug.drive
+2401.88	root	[exit]	nanolin each hotplug.drive
+2401.89	root	[exit]	nanolin hotplug add drive sda1
+2431.01	root	[call]	nanolin hotplug add drive sda1
+2431.02	root	[call]	nanolin each hotplug.drive
+2431.77	root	[exit]	nanolin each hotplug.drive
+2431.77	root	[exit]	nanolin hotplug add drive sda1
+2452.33	root	[call]	nanolin hotplug add drive sda1
+2452.33	root	[call]	nanolin each hotplug.drive
+2453.03	root	[exit]	nanolin each hotplug.drive
+2453.04	root	[exit]	nanolin hotplug add drive sda1
+2507.26	root	[call]	nanolin hotplug add drive sda1
+2507.27	root	[call]	nanolin each hotplug.drive
+2507.28	root	[exit]	nanolin each hotplug.drive
+2507.37	root	[exit]	nanolin hotplug add drive sda1
+2551.92	root	[call]	nanolin hotplug add drive sda1
+2551.93	root	[call]	nanolin each hotplug.drive
+2552.35	root	[exit]	nanolin each hotplug.drive
+2552.36	root	[exit]	nanolin hotplug add drive sda1
+2610.57	root	[call]	nanolin hotplug add drive sda1
+2610.58	root	[call]	nanolin each hotplug.drive
+2610.70	root	[exit]	nanolin each hotplug.drive
+2610.70	root	[exit]	nanolin hotplug add drive sda1
+2653.00	root	[call]	nanolin hotplug add drive sda1
+2653.00	root	[call]	nanolin each hotplug.drive
+2653.19	root	[exit]	nanolin each hotplug.drive
+2653.19	root	[exit]	nanolin hotplug add drive sda1
+2666.58	root	[call]	nanolin hotplug add drive sda1
+2666.59	root	[call]	nanolin each hotplug.drive
+2666.89	root	[exit]	nanolin each hotplug.drive
+2666.90	root	[exit]	nanolin hotplug add drive sda1
+2822.97	root	[call]	nanolin hotplug remove drive sda1
+2822.98	root	[call]	nanolin each hotplug.drive
+2822.98	root	[exit]	nanolin each hotplug.drive
+2822.99	root	[exit]	nanolin hotplug remove drive sda1
+3109.18	root	[call]	nanolin hotplug remove drive sda1
+3109.18	root	[call]	nanolin each hotplug.drive
+3109.31	root	[exit]	nanolin each hotplug.drive
+3109.32	root	[exit]	nanolin hotplug remove drive sda1
+3121.86	root	[call]	nanolin hotplug add drive sda1
+3121.87	root	[call]	nanolin each hotplug.drive
+3123.06	root	[exit]	nanolin each hotplug.drive
+3123.07	root	[exit]	nanolin hotplug add drive sda1
+3127.28	root	[call]	nanolin hotplug remove drive sda1
+3127.28	root	[call]	nanolin each hotplug.drive
+3127.30	root	[exit]	nanolin each hotplug.drive
+3127.63	root	[exit]	nanolin hotplug remove drive sda1
+3142.52	root	[call]	nanolin hotplug add drive sda1
+3142.53	root	[call]	nanolin each hotplug.drive
+3142.89	root	[exit]	nanolin each hotplug.drive
+3142.90	root	[exit]	nanolin hotplug add drive sda1
+3182.54	root	[call]	nanolin hotplug remove drive sda1
+3182.55	root	[call]	nanolin each hotplug.drive
+3182.56	root	[exit]	nanolin each hotplug.drive
+3183.25	root	[exit]	nanolin hotplug remove drive sda1
+3192.78	root	[call]	nanolin shutdown
+3192.78	root	[call]	nanolin shutdown.hotplug
+3192.79	root	[exit]	nanolin shutdown.hotplug
+3192.79	root	[exit]	nanolin shutdown
+3192.79	root	[call]	nanolin exit
+3192.80	root	[exit]	nanolin exit
+3193.98	root	[call]	nanolin async startup
+3193.99	root	[exit]	nanolin async startup
+3193.99	root	[call]	nanolin startup
+3194.00	root	[call]	nanolin startup.swap
+3194.01	root	[call]	nanolin startup.mount
+3194.01	root	[call]	nanolin startup.hotplug
+3194.01	root	[call]	nanolin startup.cron
+3194.02	root	[exit]	nanolin startup.mount
+3194.02	root	[exit]	nanolin startup.swap
+3194.02	root	[exit]	nanolin startup.hotplug
+3194.02	root	[exit]	nanolin startup.cron
+3194.02	nanolin	[exit]	nanolin async login
+3194.03	root	[exit]	nanolin startup
+3194.04	root	[call]	nanolin hotplug add drive /dev
+3194.04	root	[call]	nanolin each hotplug.drive
+3194.05	root	[exit]	nanolin each hotplug.drive
+3194.05	root	[exit]	nanolin hotplug add drive /dev
+3194.05	root	[call]	nanolin hotplug add drive /dev
+3194.05	root	[call]	nanolin each hotplug.drive
+3194.06	root	[exit]	nanolin each hotplug.drive
+3194.06	root	[exit]	nanolin hotplug add drive /dev
+3194.07	root	[call]	nanolin hotplug add drive /dev
+3194.07	root	[call]	nanolin each hotplug.drive
+3194.08	root	[exit]	nanolin each hotplug.drive
+3194.08	root	[exit]	nanolin hotplug add drive /dev
+3194.08	root	[call]	nanolin hotplug add drive /dev
+3194.08	root	[call]	nanolin each hotplug.drive
+3194.24	root	[exit]	nanolin each hotplug.drive
+3194.24	root	[exit]	nanolin hotplug add drive /dev
+3194.25	root	[call]	nanolin hotplug add drive /dev
+3194.25	root	[call]	nanolin each hotplug.drive
+3194.26	root	[exit]	nanolin each hotplug.drive
+3194.26	root	[exit]	nanolin hotplug add drive /dev
+3308.89	root	[call]	nanolin async login
+3308.90	root	[exit]	nanolin async login
+3308.90	root	[call]	nanolin login
+3716.52	root	[call]	nanolin hotplug remove drive dev
+3716.53	root	[exit]	nanolin hotplug remove drive dev
+3855.57	root	[call]	nanolin hotplug add drive sda1
+3857.68	root	[exit]	nanolin hotplug add drive sda1
+3870.82	root	[call]	nanolin hotplug add drive /dev/sda1
+3870.82	root	[call]	nanolin each hotplug.drive
+3870.84	root	[exit]	nanolin each hotplug.drive
+3870.84	root	[exit]	nanolin hotplug add drive /dev/sda1
+3915.56	root	[call]	nanolin shutdown
+3915.56	root	[call]	nanolin shutdown.hotplug
+3915.56	root	[exit]	nanolin shutdown.hotplug
+3915.57	root	[exit]	nanolin shutdown
+3915.57	root	[call]	nanolin exit
+3915.57	root	[exit]	nanolin exit
+3916.97	root	[call]	nanolin async startup
+3916.97	root	[exit]	nanolin async startup
+3916.97	root	[call]	nanolin startup
+3918.45	root	[call]	nanolin startup.hotplug
+3918.45	root	[call]	nanolin startup.mount
+3918.45	root	[call]	nanolin startup.swap
+3918.46	root	[call]	nanolin startup.cron
+3918.47	root	[exit]	nanolin startup.mount
+3918.47	root	[exit]	nanolin startup.cron
+3918.94	root	[exit]	nanolin startup.swap
+3918.95	root	[call]	nanolin hotplug add drive sda3
+3918.96	root	[call]	nanolin each hotplug.drive
+3919.08	nanolin	[exit]	nanolin async login
+3919.08	root	[exit]	nanolin each hotplug.drive
+3919.08	root	[exit]	nanolin startup.hotplug
+3919.25	root	[exit]	nanolin startup
+3919.26	root	[exit]	nanolin hotplug add drive sda3
+3919.26	root	[call]	nanolin hotplug add drive sda1
+3919.27	root	[call]	nanolin each hotplug.drive
+3919.49	root	[exit]	nanolin each hotplug.drive
+3919.50	root	[exit]	nanolin hotplug add drive sda1
+3919.50	root	[call]	nanolin hotplug add drive sr0
+3919.61	root	[call]	nanolin each hotplug.drive
+3919.80	root	[exit]	nanolin each hotplug.drive
+3919.81	root	[exit]	nanolin hotplug add drive sr0
+3919.82	root	[call]	nanolin hotplug add drive sda2
+3919.82	root	[call]	nanolin each hotplug.drive
+3919.97	root	[exit]	nanolin each hotplug.drive
+3919.98	root	[exit]	nanolin hotplug add drive sda2
+3919.98	root	[call]	nanolin hotplug add drive sda
+3920.50	root	[call]	nanolin each hotplug.drive
+3920.52	root	[exit]	nanolin each hotplug.drive
+3920.53	root	[exit]	nanolin hotplug add drive sda
+3971.80	root	[call]	nanolin async login
+3971.80	root	[exit]	nanolin async login
+3971.80	root	[call]	nanolin login
+4267.91	root	[call]	nanolin hotplug add drive /dev/sda1
+4267.92	root	[call]	nanolin each hotplug.drive
+4268.07	root	[exit]	nanolin each hotplug.drive
+4268.07	root	[exit]	nanolin hotplug add drive /dev/sda1
+4273.59	root	[call]	nanolin hotplug add drive /dev/sda2
+4273.61	root	[call]	nanolin each hotplug.drive
+4275.48	root	[exit]	nanolin each hotplug.drive
+4275.50	root	[exit]	nanolin hotplug add drive /dev/sda2
+4279.77	root	[call]	nanolin hotplug add drive /dev/sda3
+4279.78	root	[call]	nanolin each hotplug.drive
+4279.93	root	[exit]	nanolin each hotplug.drive
+4279.94	root	[exit]	nanolin hotplug add drive /dev/sda3
+4615.47	root	[call]	nanolin hotplug remove drive sd1
+4615.58	root	[exit]	nanolin hotplug remove drive sd1
+4624.93	root	[call]	nanolin hotplug remove drive /dev/sd1
+4625.17	root	[exit]	nanolin hotplug remove drive /dev/sd1
+4628.34	root	[call]	nanolin hotplug remove drive /dev/sda1
+4628.35	root	[call]	nanolin each hotplug.drive
+4628.53	root	[exit]	nanolin each hotplug.drive
+4628.54	root	[exit]	nanolin hotplug remove drive /dev/sda1
+4635.04	root	[call]	nanolin hotplug remove drive /dev/sda2
+4635.04	root	[call]	nanolin each hotplug.drive
+4635.05	root	[exit]	nanolin each hotplug.drive
+4635.21	root	[exit]	nanolin hotplug remove drive /dev/sda2
+4638.32	root	[call]	nanolin hotplug remove drive /dev/sda3
+4638.32	root	[call]	nanolin each hotplug.drive
+4638.33	root	[exit]	nanolin each hotplug.drive
+4638.64	root	[exit]	nanolin hotplug remove drive /dev/sda3
+4641.35	root	[call]	nanolin hotplug remove drive /dev/sda
+4641.54	root	[call]	nanolin each hotplug.drive
+4641.56	root	[exit]	nanolin each hotplug.drive
+4641.56	root	[exit]	nanolin hotplug remove drive /dev/sda
+4670.83	root	[call]	nanolin hotplug remove drive /dev/sr0
+4671.26	root	[call]	nanolin each hotplug.drive
+4671.40	root	[exit]	nanolin each hotplug.drive
+4671.41	root	[exit]	nanolin hotplug remove drive /dev/sr0
+4696.36	root	[call]	nanolin hotplug add drive /dev/sr0
+4696.36	root	[call]	nanolin each hotplug.drive
+4696.63	root	[exit]	nanolin each hotplug.drive
+4696.64	root	[exit]	nanolin hotplug add drive /dev/sr0
+4727.34	root	[call]	nanolin hotplug add drive /dev/sr0
+4727.34	root	[call]	nanolin each hotplug.drive
+4730.94	root	[exit]	nanolin each hotplug.drive
+4730.94	root	[exit]	nanolin hotplug add drive /dev/sr0
+4747.52	root	[call]	nanolin hotplug add drive /dev/sr0
+4747.52	root	[call]	nanolin each hotplug.drive
+4755.33	root	[exit]	nanolin each hotplug.drive
+4755.33	root	[exit]	nanolin hotplug add drive /dev/sr0
+5140.19	root	[call]	nanolin hotplug add drive /dev/sda
+5140.20	root	[call]	nanolin each hotplug.drive
+5140.32	root	[exit]	nanolin each hotplug.drive
+5140.33	root	[exit]	nanolin hotplug add drive /dev/sda
+5301.43	root	[call]	nanolin hotplug add drive /dev/sda
+5301.44	root	[call]	nanolin each hotplug.drive
+5301.84	root	[exit]	nanolin each hotplug.drive
+5301.84	root	[exit]	nanolin hotplug add drive /dev/sda
+5309.01	root	[call]	nanolin hotplug add drive /dev/sda3
+5309.02	root	[call]	nanolin each hotplug.drive
+5309.79	root	[exit]	nanolin each hotplug.drive
+5309.80	root	[exit]	nanolin hotplug add drive /dev/sda3
+5355.58	root	[call]	nanolin hotplug remove drive /dev/sr0
+5355.59	root	[call]	nanolin each hotplug.drive
+5356.37	root	[exit]	nanolin each hotplug.drive
+5356.37	root	[exit]	nanolin hotplug remove drive /dev/sr0
+5732.29	root	[call]	nanolin shutdown
+5732.31	root	[call]	nanolin shutdown.hotplug
+5732.52	root	[exit]	nanolin shutdown
+5732.53	root	[call]	nanolin exit
+5732.53	root	[exit]	nanolin exit
+5733.98	root	[call]	nanolin async startup
+5733.98	root	[call]	nanolin startup
+5733.98	root	[exit]	nanolin async startup
+5734.00	root	[call]	nanolin startup.swap
+5734.00	root	[call]	nanolin startup.mount
+5734.01	root	[call]	nanolin startup.hotplug
+5734.01	root	[call]	nanolin startup.cron
+5734.31	root	[exit]	nanolin startup.mount
+5734.32	root	[exit]	nanolin startup.hotplug
+5734.32	root	[exit]	nanolin startup.cron
+5735.18	root	[exit]	nanolin startup
+5735.20	root	[call]	nanolin hotplug add drive sda3
+5735.20	root	[call]	nanolin each hotplug.drive
+5735.21	root	[exit]	nanolin startup.swap
+5735.23	root	[exit]	nanolin each hotplug.drive
+5735.24	root	[exit]	nanolin hotplug add drive sda3
+5735.24	nanolin	[exit]	nanolin async login
+5735.25	root	[call]	nanolin hotplug add drive sda1
+5735.26	root	[call]	nanolin each hotplug.drive
+5737.28	root	[exit]	nanolin each hotplug.drive
+5737.29	root	[exit]	nanolin hotplug add drive sda1
+5737.29	root	[call]	nanolin hotplug add drive sr0
+5737.30	root	[call]	nanolin each hotplug.drive
+5737.93	root	[exit]	nanolin each hotplug.drive
+5737.95	root	[exit]	nanolin hotplug add drive sr0
+5737.96	root	[call]	nanolin hotplug add drive sda2
+5737.97	root	[call]	nanolin each hotplug.drive
+5738.03	root	[exit]	nanolin each hotplug.drive
+5738.03	root	[exit]	nanolin hotplug add drive sda2
+5738.05	root	[call]	nanolin hotplug add drive sda
+5738.05	root	[call]	nanolin each hotplug.drive
+5738.09	root	[exit]	nanolin each hotplug.drive
+5738.09	root	[exit]	nanolin hotplug add drive sda
+5768.09	root	[call]	nanolin async login
+5768.09	root	[call]	nanolin login
+5768.09	root	[exit]	nanolin async login
+5921.95	root	[call]	nanolin hotplug add drive /dev/sda
+5921.96	root	[call]	nanolin each hotplug.drive
+5921.96	root	[exit]	nanolin each hotplug.drive
+5921.97	root	[exit]	nanolin hotplug add drive /dev/sda
+5958.86	root	[call]	nanolin hotplug add drive /dev/sda
+5958.87	root	[call]	nanolin each hotplug.drive
+5959.54	root	[exit]	nanolin each hotplug.drive
+5959.55	root	[exit]	nanolin hotplug add drive /dev/sda
+6015.24	root	[call]	nanolin hotplug add drive /dev/sda
+6015.36	root	[call]	nanolin each hotplug.drive
+6015.38	root	[exit]	nanolin each hotplug.drive
+6015.38	root	[exit]	nanolin hotplug add drive /dev/sda
+6556.60	root	[call]	nanolin hotplug add drive /dev/sda
+6556.73	root	[call]	nanolin each hotplug.drive
+6556.74	root	[exit]	nanolin each hotplug.drive
+6556.76	root	[exit]	nanolin hotplug add drive /dev/sda
+6593.43	root	[call]	nanolin hotplug add drive /dev/sda
+6593.81	root	[call]	nanolin each hotplug.drive
+6594.78	root	[exit]	nanolin each hotplug.drive
+6594.79	root	[exit]	nanolin hotplug add drive /dev/sda
+6701.09	root	[call]	nanolin hotplug add drive /dev/sda
+6701.10	root	[call]	nanolin each hotplug.drive
+6701.11	root	[exit]	nanolin each hotplug.drive
+6701.84	root	[exit]	nanolin hotplug add drive /dev/sda
+6718.42	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.43	root	[call]	nanolin each hotplug.drive
+6718.55	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.55	root	[call]	nanolin each hotplug.drive
+6718.57	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.59	root	[call]	nanolin each hotplug.drive
+6718.60	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.62	root	[call]	nanolin each hotplug.drive
+6718.63	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.63	root	[call]	nanolin each hotplug.drive
+6718.65	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.65	root	[call]	nanolin each hotplug.drive
+6718.72	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.73	root	[call]	nanolin each hotplug.drive
+6718.75	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.77	root	[call]	nanolin each hotplug.drive
+6718.79	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.82	root	[call]	nanolin each hotplug.drive
+6718.86	root	[call]	nanolin hotplug remove drive /dev/sda
+6718.88	root	[call]	nanolin each hotplug.drive
+6718.93	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.06	root	[call]	nanolin each hotplug.drive
+6719.12	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.15	root	[call]	nanolin each hotplug.drive
+6719.20	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.24	root	[call]	nanolin each hotplug.drive
+6719.32	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.34	root	[call]	nanolin each hotplug.drive
+6719.36	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.38	root	[call]	nanolin each hotplug.drive
+6719.39	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.41	root	[call]	nanolin each hotplug.drive
+6719.46	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.50	root	[call]	nanolin each hotplug.drive
+6719.56	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.61	root	[call]	nanolin each hotplug.drive
+6719.63	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.67	root	[call]	nanolin each hotplug.drive
+6719.75	root	[call]	nanolin hotplug remove drive /dev/sda
+6719.83	root	[call]	nanolin each hotplug.drive
+6720.25	root	[call]	nanolin hotplug remove drive /dev/sda
+6720.32	root	[call]	nanolin each hotplug.drive
+6720.44	root	[call]	nanolin hotplug remove drive /dev/sda
+6720.46	root	[call]	nanolin each hotplug.drive
+6720.50	root	[call]	nanolin hotplug remove drive /dev/sda
+6720.55	root	[call]	nanolin each hotplug.drive
+6720.61	root	[call]	nanolin hotplug remove drive /dev/sda
+6720.70	root	[call]	nanolin each hotplug.drive
+6720.85	root	[call]	nanolin hotplug remove drive /dev/sda
+6721.27	root	[call]	nanolin each hotplug.drive
+6721.50	root	[call]	nanolin hotplug remove drive /dev/sda
+6721.64	root	[call]	nanolin each hotplug.drive
+6722.12	root	[call]	nanolin hotplug remove drive /dev/sda
+6722.29	root	[call]	nanolin each hotplug.drive
+6722.55	root	[call]	nanolin hotplug remove drive /dev/sda
+6722.73	root	[call]	nanolin each hotplug.drive
+6722.94	root	[call]	nanolin hotplug remove drive /dev/sda
+6723.05	root	[call]	nanolin each hotplug.drive
+6723.42	root	[call]	nanolin hotplug remove drive /dev/sda
+6723.58	root	[call]	nanolin each hotplug.drive
+6723.75	root	[call]	nanolin hotplug remove drive /dev/sda
+6723.97	root	[call]	nanolin each hotplug.drive
+6724.24	root	[call]	nanolin hotplug remove drive /dev/sda
+6724.50	root	[call]	nanolin each hotplug.drive
+6729.41	root	[call]	nanolin hotplug remove drive /dev/sda
+6729.73	root	[call]	nanolin each hotplug.drive
+6729.99	root	[call]	nanolin hotplug remove drive /dev/sda
+6730.23	root	[call]	nanolin each hotplug.drive
+6731.03	root	[call]	nanolin hotplug remove drive /dev/sda
+6731.52	root	[call]	nanolin each hotplug.drive
+6732.28	root	[call]	nanolin hotplug remove drive /dev/sda
+6732.45	root	[call]	nanolin each hotplug.drive
+6732.60	root	[call]	nanolin hotplug remove drive /dev/sda
+6732.70	root	[call]	nanolin each hotplug.drive
+6733.25	root	[call]	nanolin hotplug remove drive /dev/sda
+6733.36	root	[call]	nanolin each hotplug.drive
+6733.63	root	[call]	nanolin hotplug remove drive /dev/sda
+6733.80	root	[call]	nanolin each hotplug.drive
+6734.42	root	[call]	nanolin hotplug remove drive /dev/sda
+6734.53	root	[call]	nanolin each hotplug.drive
+6734.78	root	[call]	nanolin hotplug remove drive /dev/sda
+6734.89	root	[call]	nanolin each hotplug.drive
+6740.46	root	[call]	nanolin hotplug remove drive /dev/sda
+6740.77	root	[call]	nanolin each hotplug.drive
+6741.51	root	[call]	nanolin hotplug remove drive /dev/sda
+6741.64	root	[call]	nanolin each hotplug.drive
+6742.04	root	[call]	nanolin hotplug remove drive /dev/sda
+6742.25	root	[call]	nanolin each hotplug.drive
+6742.45	root	[call]	nanolin hotplug remove drive /dev/sda
+6755.98	root	[call]	nanolin each hotplug.drive
+6756.20	root	[call]	nanolin hotplug remove drive /dev/sda
+6756.44	root	[call]	nanolin each hotplug.drive
+6756.99	root	[call]	nanolin hotplug remove drive /dev/sda
+6757.14	root	[call]	nanolin each hotplug.drive
+6758.39	root	[call]	nanolin hotplug remove drive /dev/sda
+6758.54	root	[call]	nanolin each hotplug.drive
+6758.75	root	[call]	nanolin hotplug remove drive /dev/sda
+6759.29	root	[call]	nanolin each hotplug.drive
+6761.31	root	[call]	nanolin hotplug remove drive /dev/sda
+6761.67	root	[call]	nanolin each hotplug.drive
+6762.17	root	[call]	nanolin hotplug remove drive /dev/sda
+6762.34	root	[call]	nanolin each hotplug.drive
+6762.61	root	[call]	nanolin hotplug remove drive /dev/sda
+6764.22	root	[call]	nanolin each hotplug.drive
+6764.62	root	[call]	nanolin hotplug remove drive /dev/sda
+6764.76	root	[call]	nanolin each hotplug.drive
+6764.92	root	[call]	nanolin hotplug remove drive /dev/sda
+6765.35	root	[call]	nanolin each hotplug.drive
+6765.65	root	[call]	nanolin hotplug remove drive /dev/sda
+6771.59	root	[call]	nanolin each hotplug.drive
+6775.49	root	[call]	nanolin hotplug remove drive /dev/sda
+6776.43	root	[call]	nanolin each hotplug.drive
+6777.23	root	[call]	nanolin hotplug remove drive /dev/sda
+6778.58	root	[call]	nanolin each hotplug.drive
+6780.74	root	[call]	nanolin hotplug remove drive /dev/sda
+6782.15	root	[call]	nanolin each hotplug.drive
+6784.17	root	[exit]	nanolin each hotplug.drive
+6785.34	root	[exit]	nanolin each hotplug.drive
+6785.64	root	[exit]	nanolin hotplug remove drive /dev/sda
+6786.51	root	[exit]	nanolin each hotplug.drive
+6786.54	root	[call]	nanolin hotplug remove drive /dev/sda1
+6791.12	root	[exit]	nanolin hotplug remove drive /dev/sda
+6791.15	root	[call]	nanolin each hotplug.drive
+6791.25	root	[call]	nanolin hotplug remove drive /dev/sda1
+6791.40	root	[call]	nanolin each hotplug.drive
+6793.10	root	[exit]	nanolin each hotplug.drive
+6793.10	root	[exit]	nanolin each hotplug.drive
+6797.63	root	[exit]	nanolin hotplug remove drive /dev/sda1
+6798.55	root	[call]	nanolin hotplug remove drive /dev/sda2
+6799.09	root	[call]	nanolin each hotplug.drive
+6801.73	root	[exit]	nanolin each hotplug.drive
+6801.84	root	[exit]	nanolin hotplug remove drive /dev/sda2
+6802.40	root	[call]	nanolin hotplug remove drive /dev/sda3
+6802.57	root	[call]	nanolin each hotplug.drive
+6802.75	root	[exit]	nanolin each hotplug.drive
+6803.06	root	[exit]	nanolin hotplug remove drive /dev/sda3
+6803.16	root	[exit]	nanolin each hotplug.drive
+6803.24	root	[exit]	nanolin hotplug remove drive /dev/sda
+6803.43	root	[call]	nanolin hotplug remove drive /dev/sda1
+6803.57	root	[exit]	nanolin hotplug remove drive /dev/sda
+6803.60	root	[call]	nanolin each hotplug.drive
+6803.74	root	[call]	nanolin hotplug remove drive /dev/sda1
+6804.05	root	[call]	nanolin each hotplug.drive
+6804.85	root	[exit]	nanolin each hotplug.drive
+6808.11	root	[exit]	nanolin hotplug remove drive /dev/sda1
+6809.46	root	[call]	nanolin hotplug remove drive /dev/sda2
+6812.84	root	[exit]	nanolin each hotplug.drive
+6814.52	root	[call]	nanolin each hotplug.drive
+6815.46	root	[exit]	nanolin each hotplug.drive
+6826.54	root	[call]	nanolin shutdown
+6829.54	root	[call]	nanolin shutdown.hotplug
+6829.62	root	[exit]	nanolin shutdown.hotplug
+6829.66	root	[exit]	nanolin shutdown
+6829.87	root	[call]	nanolin exit
+6830.00	root	[exit]	nanolin exit
+6831.73	root	[call]	nanolin async startup
+6831.73	root	[exit]	nanolin async startup
+6831.73	root	[call]	nanolin startup
+6831.76	root	[call]	nanolin startup.mount
+6831.76	root	[call]	nanolin startup.swap
+6831.76	root	[call]	nanolin startup.hotplug
+6831.76	root	[call]	nanolin startup.cron
+6831.77	root	[exit]	nanolin startup.mount
+6832.06	root	[exit]	nanolin startup.swap
+6832.06	root	[exit]	nanolin startup.hotplug
+6832.06	root	[exit]	nanolin startup.cron
+6832.08	root	[exit]	nanolin startup
+6832.09	root	[call]	nanolin hotplug add drive sda3
+6832.09	root	[call]	nanolin each hotplug.drive
+6832.11	root	[exit]	nanolin each hotplug.drive
+6832.11	root	[exit]	nanolin hotplug add drive sda3
+6832.11	nanolin	[exit]	nanolin async login
+6832.11	root	[call]	nanolin hotplug add drive sda1
+6832.12	root	[call]	nanolin each hotplug.drive
+6832.35	root	[exit]	nanolin each hotplug.drive
+6832.35	root	[exit]	nanolin hotplug add drive sda1
+6832.36	root	[call]	nanolin hotplug add drive sr0
+6832.37	root	[call]	nanolin each hotplug.drive
+6832.39	root	[exit]	nanolin each hotplug.drive
+6832.40	root	[exit]	nanolin hotplug add drive sr0
+6832.41	root	[call]	nanolin hotplug add drive sda2
+6832.41	root	[call]	nanolin each hotplug.drive
+6832.48	root	[exit]	nanolin each hotplug.drive
+6832.48	root	[exit]	nanolin hotplug add drive sda2
+6832.49	root	[call]	nanolin hotplug add drive sda
+6832.49	root	[call]	nanolin each hotplug.drive
+6832.51	root	[exit]	nanolin each hotplug.drive
+6832.52	root	[exit]	nanolin hotplug add drive sda
+6846.40	root	[call]	nanolin async login
+6846.40	root	[exit]	nanolin async login
+6846.40	root	[call]	nanolin login
+7180.45	root	[call]	nanolin hotplug remove drive /dev/sda
+7180.46	root	[call]	nanolin each hotplug.drive
+7180.47	root	[exit]	nanolin each hotplug.drive
+7180.60	root	[exit]	nanolin hotplug remove drive /dev/sda
+7323.60	root	[call]	nanolin hotplug remove drive /dev/sda
+7323.60	root	[call]	nanolin each hotplug.drive
+7323.61	root	[call]	nanolin hotplug remove drive /dev/sda1
+7323.62	root	[call]	nanolin each hotplug.drive
+7324.23	root	[exit]	nanolin each hotplug.drive
+7325.86	root	[exit]	nanolin hotplug remove drive /dev/sda1
+7325.87	root	[call]	nanolin hotplug remove drive /dev/sda2
+7325.87	root	[call]	nanolin each hotplug.drive
+7326.45	root	[exit]	nanolin each hotplug.drive
+7326.46	root	[exit]	nanolin hotplug remove drive /dev/sda2
+7326.47	root	[call]	nanolin hotplug remove drive /dev/sda3
+7326.47	root	[call]	nanolin each hotplug.drive
+7327.03	root	[exit]	nanolin each hotplug.drive
+7327.05	root	[exit]	nanolin hotplug remove drive /dev/sda3
+7327.61	root	[exit]	nanolin each hotplug.drive
+7327.62	root	[exit]	nanolin hotplug remove drive /dev/sda
+7403.65	root	[call]	nanolin hotplug add drive /dev/sda
+7403.66	root	[call]	nanolin each hotplug.drive
+7404.45	root	[call]	nanolin hotplug add drive /dev/sda1
+7404.45	root	[call]	nanolin each hotplug.drive
+7406.91	root	[exit]	nanolin each hotplug.drive
+7406.91	root	[exit]	nanolin hotplug add drive /dev/sda1
+7406.92	root	[call]	nanolin hotplug add drive /dev/sda2
+7406.93	root	[call]	nanolin each hotplug.drive
+7407.96	root	[exit]	nanolin each hotplug.drive
+7407.97	root	[exit]	nanolin hotplug add drive /dev/sda2
+7408.04	root	[call]	nanolin hotplug add drive /dev/sda3
+7408.05	root	[call]	nanolin each hotplug.drive
+7408.06	root	[exit]	nanolin each hotplug.drive
+7408.07	root	[exit]	nanolin hotplug add drive /dev/sda3
+7408.07	root	[exit]	nanolin each hotplug.drive
+7408.08	root	[exit]	nanolin hotplug add drive /dev/sda
+7411.65	root	[call]	nanolin hotplug remove drive /dev/sda
+7411.65	root	[call]	nanolin each hotplug.drive
+7411.65	root	[call]	nanolin hotplug remove drive /dev/sda1
+7411.65	root	[call]	nanolin each hotplug.drive
+7411.67	root	[exit]	nanolin each hotplug.drive
+7411.67	root	[exit]	nanolin hotplug remove drive /dev/sda1
+7411.68	root	[call]	nanolin hotplug remove drive /dev/sda2
+7411.69	root	[call]	nanolin each hotplug.drive
+7411.71	root	[exit]	nanolin each hotplug.drive
+7411.71	root	[exit]	nanolin hotplug remove drive /dev/sda2
+7411.72	root	[call]	nanolin hotplug remove drive /dev/sda3
+7411.72	root	[call]	nanolin each hotplug.drive
+7411.73	root	[exit]	nanolin each hotplug.drive
+7411.74	root	[exit]	nanolin hotplug remove drive /dev/sda3
+7411.74	root	[exit]	nanolin each hotplug.drive
+7411.75	root	[exit]	nanolin hotplug remove drive /dev/sda
+8792.82	root	[call]	nanolin hotplug add drive sda
+8793.07	root	[exit]	nanolin hotplug add drive sda
+8826.56	root	[call]	nanolin hotplug add drive /dev/sda
+8826.57	root	[call]	nanolin each hotplug.drive
+8827.43	root	[call]	nanolin hotplug add drive /dev/sda1
+8827.73	root	[call]	nanolin each hotplug.drive
+8827.75	root	[exit]	nanolin each hotplug.drive
+8829.09	root	[exit]	nanolin hotplug add drive /dev/sda1
+8829.10	root	[call]	nanolin hotplug add drive /dev/sda2
+8829.10	root	[call]	nanolin each hotplug.drive
+8829.64	root	[exit]	nanolin each hotplug.drive
+8829.64	root	[exit]	nanolin hotplug add drive /dev/sda2
+8829.65	root	[call]	nanolin hotplug add drive /dev/sda3
+8829.65	root	[call]	nanolin each hotplug.drive
+8830.86	root	[exit]	nanolin each hotplug.drive
+8830.86	root	[exit]	nanolin hotplug add drive /dev/sda3
+8830.87	root	[exit]	nanolin each hotplug.drive
+8830.90	root	[exit]	nanolin hotplug add drive /dev/sda
+8867.13	root	[call]	nanolin hotplug add drive /dev/sda1
+8867.14	root	[call]	nanolin each hotplug.drive
+8867.33	root	[exit]	nanolin each hotplug.drive
+8867.34	root	[exit]	nanolin hotplug add drive /dev/sda1
+8931.01	root	[call]	nanolin hotplug add drive /dev/sda1
+8931.01	root	[call]	nanolin each hotplug.drive
+8931.03	root	[exit]	nanolin each hotplug.drive
+8931.15	root	[exit]	nanolin hotplug add drive /dev/sda1
+8988.41	root	[call]	nanolin hotplug add drive /dev/sda1
+8988.41	root	[call]	nanolin each hotplug.drive
+8988.62	root	[exit]	nanolin each hotplug.drive
+8988.62	root	[exit]	nanolin hotplug add drive /dev/sda1
+9080.02	root	[call]	nanolin hotplug remove drive /dev/sda1
+9080.02	root	[call]	nanolin each hotplug.drive
+9080.73	root	[exit]	nanolin each hotplug.drive
+9080.74	root	[exit]	nanolin hotplug remove drive /dev/sda1
+9285.75	root	[call]	nanolin hotplug add drive /dev/sda1
+9285.75	root	[call]	nanolin each hotplug.drive
+9286.33	root	[exit]	nanolin each hotplug.drive
+9286.34	root	[exit]	nanolin hotplug add drive /dev/sda1
+9371.67	root	[call]	nanolin hotplug add drive /dev/sda1
+9371.67	root	[call]	nanolin each hotplug.drive
+9372.33	root	[exit]	nanolin each hotplug.drive
+9372.34	root	[exit]	nanolin hotplug add drive /dev/sda1
+9392.85	root	[call]	nanolin hotplug remove drive /dev/sda1
+9392.86	root	[call]	nanolin each hotplug.drive
+9393.12	root	[exit]	nanolin each hotplug.drive
+9393.12	root	[exit]	nanolin hotplug remove drive /dev/sda1
+9415.11	root	[call]	nanolin hotplug remove drive /dev/sda
+9415.12	root	[call]	nanolin each hotplug.drive
+9416.36	root	[call]	nanolin hotplug remove drive /dev/sda1
+9416.44	root	[call]	nanolin each hotplug.drive
+9416.54	root	[exit]	nanolin each hotplug.drive
+9416.72	root	[exit]	nanolin hotplug remove drive /dev/sda1
+9416.72	root	[call]	nanolin hotplug remove drive /dev/sda2
+9416.73	root	[call]	nanolin each hotplug.drive
+9416.75	root	[exit]	nanolin each hotplug.drive
+9416.75	root	[exit]	nanolin hotplug remove drive /dev/sda2
+9416.93	root	[call]	nanolin hotplug remove drive /dev/sda3
+9416.93	root	[call]	nanolin each hotplug.drive
+9416.94	root	[exit]	nanolin each hotplug.drive
+9416.95	root	[exit]	nanolin hotplug remove drive /dev/sda3
+9416.95	root	[exit]	nanolin each hotplug.drive
+9417.04	root	[exit]	nanolin hotplug remove drive /dev/sda
+9572.07	root	[call]	nanolin hotplug remove drive /dev/sda
+9572.75	root	[call]	nanolin each hotplug.drive
+9572.77	root	[call]	nanolin hotplug remove drive /dev/sda1
+9572.78	root	[call]	nanolin each hotplug.drive
+9573.71	root	[exit]	nanolin each hotplug.drive
+9573.72	root	[exit]	nanolin hotplug remove drive /dev/sda1
+9574.31	root	[call]	nanolin hotplug remove drive /dev/sda2
+9574.32	root	[call]	nanolin each hotplug.drive
+9575.40	root	[exit]	nanolin each hotplug.drive
+9575.41	root	[exit]	nanolin hotplug remove drive /dev/sda2
+9575.41	root	[call]	nanolin hotplug remove drive /dev/sda3
+9575.97	root	[call]	nanolin each hotplug.drive
+9575.98	root	[exit]	nanolin each hotplug.drive
+9575.99	root	[exit]	nanolin hotplug remove drive /dev/sda3
+9576.62	root	[exit]	nanolin each hotplug.drive
+9576.63	root	[exit]	nanolin hotplug remove drive /dev/sda
+9593.43	root	[call]	nanolin hotplug add drive /dev/sda
+9593.44	root	[call]	nanolin each hotplug.drive
+9593.63	root	[call]	nanolin hotplug add drive /dev/sda1
+9593.63	root	[call]	nanolin each hotplug.drive
+9593.73	root	[exit]	nanolin each hotplug.drive
+9593.74	root	[exit]	nanolin hotplug add drive /dev/sda1
+9593.74	root	[call]	nanolin hotplug add drive /dev/sda2
+9593.75	root	[call]	nanolin each hotplug.drive
+9593.93	root	[exit]	nanolin each hotplug.drive
+9593.93	root	[exit]	nanolin hotplug add drive /dev/sda2
+9593.93	root	[call]	nanolin hotplug add drive /dev/sda3
+9593.94	root	[call]	nanolin each hotplug.drive
+9593.95	root	[exit]	nanolin each hotplug.drive
+9594.06	root	[exit]	nanolin hotplug add drive /dev/sda3
+9594.06	root	[exit]	nanolin each hotplug.drive
+9594.07	root	[exit]	nanolin hotplug add drive /dev/sda
+9627.75	root	[call]	nanolin hotplug remove drive /dev/sda
+9627.75	root	[call]	nanolin each hotplug.drive
+9627.93	root	[call]	nanolin hotplug remove drive /dev/sda1
+9627.94	root	[call]	nanolin each hotplug.drive
+9627.95	root	[exit]	nanolin each hotplug.drive
+9628.01	root	[exit]	nanolin hotplug remove drive /dev/sda1
+9628.01	root	[call]	nanolin hotplug remove drive /dev/sda2
+9628.02	root	[call]	nanolin each hotplug.drive
+9628.04	root	[exit]	nanolin each hotplug.drive
+9628.05	root	[exit]	nanolin hotplug remove drive /dev/sda2
+9628.05	root	[call]	nanolin hotplug remove drive /dev/sda3
+9628.06	root	[call]	nanolin each hotplug.drive
+9628.09	root	[exit]	nanolin each hotplug.drive
+9628.09	root	[exit]	nanolin hotplug remove drive /dev/sda3
+9628.10	root	[exit]	nanolin each hotplug.drive
+9628.10	root	[exit]	nanolin hotplug remove drive /dev/sda
+9633.05	root	[call]	nanolin hotplug add drive /dev/sda
+9633.07	root	[call]	nanolin each hotplug.drive
+9634.29	root	[call]	nanolin hotplug add drive /dev/sda1
+9635.31	root	[call]	nanolin each hotplug.drive
+9636.46	root	[exit]	nanolin each hotplug.drive
+9637.00	root	[exit]	nanolin hotplug add drive /dev/sda1
+9637.00	root	[call]	nanolin hotplug add drive /dev/sda2
+9637.01	root	[call]	nanolin each hotplug.drive
+9638.84	root	[exit]	nanolin each hotplug.drive
+9639.39	root	[exit]	nanolin hotplug add drive /dev/sda2
+9639.41	root	[call]	nanolin hotplug add drive /dev/sda3
+9639.41	root	[call]	nanolin each hotplug.drive
+9640.00	root	[exit]	nanolin each hotplug.drive
+9640.01	root	[exit]	nanolin hotplug add drive /dev/sda3
+9640.01	root	[exit]	nanolin each hotplug.drive
+9640.02	root	[exit]	nanolin hotplug add drive /dev/sda
+11036.64	root	[call]	nanolin shutdown
+11036.65	root	[call]	nanolin shutdown.hotplug
+11036.66	root	[exit]	nanolin shutdown.hotplug
+11037.26	root	[exit]	nanolin shutdown
+11037.26	root	[call]	nanolin exit
+11037.26	root	[exit]	nanolin exit
+11038.29	root	[call]	nanolin async startup
+11038.30	root	[call]	nanolin startup
+11038.30	root	[exit]	nanolin async startup
+11038.32	root	[call]	nanolin startup.hotplug
+11038.32	root	[call]	nanolin startup.mount
+11038.33	root	[call]	nanolin startup.swap
+11038.33	root	[call]	nanolin startup.cron
+11038.34	root	[exit]	nanolin startup.hotplug
+11038.34	root	[exit]	nanolin startup.mount
+11038.34	root	[exit]	nanolin startup.swap
+11038.34	root	[exit]	nanolin startup.cron
+11038.36	root	[exit]	nanolin startup
+11038.36	nanolin	[exit]	nanolin async login
+11038.37	root	[call]	nanolin hotplug add drive sda3
+11038.37	root	[call]	nanolin each hotplug.drive
+11038.39	root	[exit]	nanolin each hotplug.drive
+11038.39	root	[exit]	nanolin hotplug add drive sda3
+11038.56	root	[call]	nanolin hotplug add drive sda1
+11038.56	root	[call]	nanolin each hotplug.drive
+11038.58	root	[exit]	nanolin each hotplug.drive
+11038.59	root	[exit]	nanolin hotplug add drive sda1
+11038.60	root	[call]	nanolin hotplug add drive sr0
+11038.60	root	[call]	nanolin each hotplug.drive
+11038.80	root	[exit]	nanolin each hotplug.drive
+11038.81	root	[exit]	nanolin hotplug add drive sr0
+11038.81	root	[call]	nanolin hotplug add drive sda2
+11038.82	root	[call]	nanolin each hotplug.drive
+11038.94	root	[exit]	nanolin each hotplug.drive
+11038.94	root	[exit]	nanolin hotplug add drive sda2
+11038.95	root	[call]	nanolin hotplug add drive sda
+11038.95	root	[call]	nanolin each hotplug.drive
+11038.96	root	[call]	nanolin hotplug add drive /dev/sda1
+11038.96	root	[call]	nanolin each hotplug.drive
+11039.13	root	[exit]	nanolin each hotplug.drive
+11039.14	root	[exit]	nanolin hotplug add drive /dev/sda1
+11039.36	root	[call]	nanolin hotplug add drive /dev/sda2
+11039.36	root	[call]	nanolin each hotplug.drive
+11039.38	root	[exit]	nanolin each hotplug.drive
+11039.38	root	[exit]	nanolin hotplug add drive /dev/sda2
+11039.55	root	[call]	nanolin hotplug add drive /dev/sda3
+11039.56	root	[call]	nanolin each hotplug.drive
+11039.57	root	[exit]	nanolin each hotplug.drive
+11039.58	root	[exit]	nanolin hotplug add drive /dev/sda3
+11039.62	root	[exit]	nanolin each hotplug.drive
+11039.63	root	[exit]	nanolin hotplug add drive sda
+11051.23	root	[call]	nanolin async login
+11051.24	root	[exit]	nanolin async login
+11051.24	root	[call]	nanolin login
+11111.43	root	[call]	nanolin shutdown
+11111.43	root	[call]	nanolin shutdown.hotplug
+11111.44	root	[exit]	nanolin shutdown.hotplug
+11111.45	root	[exit]	nanolin shutdown
+11111.46	root	[call]	nanolin exit
+11111.47	root	[exit]	nanolin exit
+11113.33	root	[call]	nanolin async startup
+11113.33	root	[exit]	nanolin async startup
+11113.33	root	[call]	nanolin startup
+11113.36	root	[call]	nanolin startup.hotplug
+11113.36	root	[call]	nanolin startup.mount
+11113.36	root	[call]	nanolin startup.swap
+11113.36	root	[call]	nanolin startup.cron
+11113.38	root	[exit]	nanolin startup.mount
+11113.39	root	[exit]	nanolin startup.swap
+11113.55	root	[exit]	nanolin startup.hotplug
+11113.56	root	[exit]	nanolin startup.cron
+11113.57	root	[exit]	nanolin startup
+11113.59	nanolin	[exit]	nanolin async login
+11113.75	root	[call]	nanolin hotplug add drive sda3
+11113.75	root	[call]	nanolin each hotplug.drive
+11113.77	root	[exit]	nanolin each hotplug.drive
+11113.78	root	[exit]	nanolin hotplug add drive sda3
+11113.79	root	[call]	nanolin hotplug add drive sda1
+11113.80	root	[call]	nanolin each hotplug.drive
+11114.28	root	[exit]	nanolin each hotplug.drive
+11114.29	root	[exit]	nanolin hotplug add drive sda1
+11114.30	root	[call]	nanolin hotplug add drive sr0
+11114.31	root	[call]	nanolin each hotplug.drive
+11114.50	root	[exit]	nanolin each hotplug.drive
+11114.51	root	[exit]	nanolin hotplug add drive sr0
+11114.51	root	[call]	nanolin hotplug add drive sda2
+11114.52	root	[call]	nanolin each hotplug.drive
+11206.49	root	[exit]	nanolin each hotplug.drive
+11206.50	root	[exit]	nanolin hotplug add drive sda2
+11206.69	root	[call]	nanolin hotplug add drive sda
+11206.69	root	[call]	nanolin each hotplug.drive
+11206.70	root	[call]	nanolin hotplug add drive /dev/sda1
+11206.71	root	[call]	nanolin each hotplug.drive
+11209.52	root	[exit]	nanolin each hotplug.drive
+11210.32	root	[exit]	nanolin hotplug add drive /dev/sda1
+11210.32	root	[call]	nanolin hotplug add drive /dev/sda2
+11210.33	root	[call]	nanolin each hotplug.drive
+11211.02	root	[exit]	nanolin each hotplug.drive
+11211.03	root	[exit]	nanolin hotplug add drive /dev/sda2
+11211.03	root	[call]	nanolin hotplug add drive /dev/sda3
+11211.18	root	[call]	nanolin each hotplug.drive
+11211.19	root	[exit]	nanolin each hotplug.drive
+11211.20	root	[exit]	nanolin hotplug add drive /dev/sda3
+11211.45	root	[exit]	nanolin each hotplug.drive
+11211.46	root	[exit]	nanolin hotplug add drive sda
+11256.26	root	[call]	nanolin async login
+11256.27	root	[exit]	nanolin async login
+11256.27	root	[call]	nanolin login
+11326.69	root	[call]	nanolin hotplug remove drive /dev/sda
+11326.69	root	[call]	nanolin each hotplug.drive
+11326.70	root	[call]	nanolin hotplug remove drive /dev/sda1
+11327.55	root	[call]	nanolin each hotplug.drive
+11327.57	root	[exit]	nanolin each hotplug.drive
+11328.19	root	[exit]	nanolin hotplug remove drive /dev/sda1
+11328.20	root	[call]	nanolin hotplug remove drive /dev/sda2
+11328.21	root	[call]	nanolin each hotplug.drive
+11329.39	root	[exit]	nanolin each hotplug.drive
+11329.39	root	[exit]	nanolin hotplug remove drive /dev/sda2
+11329.40	root	[call]	nanolin hotplug remove drive /dev/sda3
+11329.40	root	[call]	nanolin each hotplug.drive
+11330.07	root	[exit]	nanolin each hotplug.drive
+11330.08	root	[exit]	nanolin hotplug remove drive /dev/sda3
+11330.57	root	[exit]	nanolin each hotplug.drive
+11330.58	root	[exit]	nanolin hotplug remove drive /dev/sda
+11496.76	root	[call]	nanolin hotplug remove drive /dev/sda
+11497.46	root	[call]	nanolin each hotplug.drive
+11497.47	root	[call]	nanolin hotplug remove drive /dev/sda1
+11497.48	root	[call]	nanolin each hotplug.drive
+11498.60	root	[exit]	nanolin each hotplug.drive
+11498.61	root	[exit]	nanolin hotplug remove drive /dev/sda1
+11498.61	root	[call]	nanolin hotplug remove drive /dev/sda2
+11498.62	root	[call]	nanolin each hotplug.drive
+11498.90	root	[exit]	nanolin each hotplug.drive
+11498.91	root	[exit]	nanolin hotplug remove drive /dev/sda2
+11498.91	root	[call]	nanolin hotplug remove drive /dev/sda3
+11498.92	root	[call]	nanolin each hotplug.drive
+11499.49	root	[exit]	nanolin each hotplug.drive
+11499.49	root	[exit]	nanolin hotplug remove drive /dev/sda3
+11499.50	root	[exit]	nanolin each hotplug.drive
+11499.51	root	[exit]	nanolin hotplug remove drive /dev/sda
+11547.18	root	[call]	nanolin hotplug remove drive /dev/sda
+11547.62	root	[call]	nanolin each hotplug.drive
+11547.63	root	[call]	nanolin hotplug remove drive /dev/sda1
+11547.64	root	[call]	nanolin each hotplug.drive
+11547.83	root	[exit]	nanolin each hotplug.drive
+11547.84	root	[exit]	nanolin hotplug remove drive /dev/sda1
+11547.97	root	[call]	nanolin hotplug remove drive /dev/sda2
+11547.97	root	[call]	nanolin each hotplug.drive
+11548.26	root	[exit]	nanolin each hotplug.drive
+11548.27	root	[exit]	nanolin hotplug remove drive /dev/sda2
+11548.27	root	[call]	nanolin hotplug remove drive /dev/sda3
+11548.28	root	[call]	nanolin each hotplug.drive
+11548.45	root	[exit]	nanolin each hotplug.drive
+11548.45	root	[exit]	nanolin hotplug remove drive /dev/sda3
+11548.46	root	[exit]	nanolin each hotplug.drive
+11548.47	root	[exit]	nanolin hotplug remove drive /dev/sda
+12271.65	root	[call]	nanolin hotplug remove drive /dev/sda
+12271.66	root	[call]	nanolin each hotplug.drive
+12271.99	root	[call]	nanolin hotplug remove drive /dev/sda1
+12272.00	root	[call]	nanolin each hotplug.drive
+12272.11	root	[exit]	nanolin each hotplug.drive
+12272.11	root	[exit]	nanolin hotplug remove drive /dev/sda1
+12272.12	root	[call]	nanolin hotplug remove drive /dev/sda2
+12272.12	root	[call]	nanolin each hotplug.drive
+12272.23	root	[exit]	nanolin each hotplug.drive
+12272.24	root	[exit]	nanolin hotplug remove drive /dev/sda2
+12272.24	root	[call]	nanolin hotplug remove drive /dev/sda3
+12272.25	root	[call]	nanolin each hotplug.drive
+12272.40	root	[exit]	nanolin each hotplug.drive
+12272.41	root	[exit]	nanolin hotplug remove drive /dev/sda3
+12272.41	root	[exit]	nanolin each hotplug.drive
+12272.42	root	[exit]	nanolin hotplug remove drive /dev/sda
+12303.24	root	[call]	nanolin hotplug remove drive /dev/sda
+12303.25	root	[call]	nanolin each hotplug.drive
+12303.26	root	[call]	nanolin hotplug remove drive /dev/sda1
+12303.26	root	[call]	nanolin each hotplug.drive
+12303.44	root	[exit]	nanolin each hotplug.drive
+12303.44	root	[exit]	nanolin hotplug remove drive /dev/sda1
+12303.45	root	[call]	nanolin hotplug remove drive /dev/sda2
+12303.64	root	[call]	nanolin each hotplug.drive
+12303.66	root	[exit]	nanolin each hotplug.drive
+12303.66	root	[exit]	nanolin hotplug remove drive /dev/sda2
+12303.70	root	[call]	nanolin hotplug remove drive /dev/sda3
+12303.71	root	[call]	nanolin each hotplug.drive
+12303.73	root	[exit]	nanolin each hotplug.drive
+12303.76	root	[exit]	nanolin hotplug remove drive /dev/sda3
+12303.76	root	[exit]	nanolin each hotplug.drive
+12303.78	root	[exit]	nanolin hotplug remove drive /dev/sda
+12333.79	root	[call]	nanolin hotplug add drive /dev/sda
+12333.79	root	[call]	nanolin each hotplug.drive
+12333.80	root	[call]	nanolin hotplug add drive /dev/sda1
+12333.81	root	[call]	nanolin each hotplug.drive
+12334.05	root	[exit]	nanolin each hotplug.drive
+12334.06	root	[exit]	nanolin hotplug add drive /dev/sda1
+12334.06	root	[call]	nanolin hotplug add drive /dev/sda2
+12334.07	root	[call]	nanolin each hotplug.drive
+12334.14	root	[exit]	nanolin each hotplug.drive
+12334.15	root	[exit]	nanolin hotplug add drive /dev/sda2
+12334.23	root	[call]	nanolin hotplug add drive /dev/sda3
+12334.23	root	[call]	nanolin each hotplug.drive
+12334.25	root	[exit]	nanolin each hotplug.drive
+12334.26	root	[exit]	nanolin hotplug add drive /dev/sda3
+12334.26	root	[exit]	nanolin each hotplug.drive
+12334.27	root	[exit]	nanolin hotplug add drive /dev/sda
+13487.65	root	[call]	nanolin hotplug remove drive /dev/sda2
+13487.65	root	[call]	nanolin each hotplug.drive
+13487.96	root	[exit]	nanolin each hotplug.drive
+13487.96	root	[exit]	nanolin hotplug remove drive /dev/sda2
+13500.55	root	[call]	nanolin hotplug add drive /dev/sda2
+13500.56	root	[call]	nanolin each hotplug.drive
+13500.91	root	[exit]	nanolin each hotplug.drive
+13500.91	root	[exit]	nanolin hotplug add drive /dev/sda2
+14545.70	root	[call]	nanolin shutdown
+14545.70	root	[call]	nanolin shutdown.hotplug
+14545.71	root	[exit]	nanolin shutdown.hotplug
+14545.71	root	[exit]	nanolin shutdown
+14546.02	root	[call]	nanolin exit
+14546.03	root	[exit]	nanolin exit
+14547.05	root	[call]	nanolin async startup
+14547.05	root	[exit]	nanolin async startup
+14547.05	root	[call]	nanolin startup
+14547.07	root	[call]	nanolin startup.swap
+14547.07	root	[call]	nanolin startup.mount
+14547.07	root	[call]	nanolin startup.hotplug
+14547.07	root	[call]	nanolin startup.cron
+14547.16	root	[exit]	nanolin startup.swap
+14547.16	root	[exit]	nanolin startup.mount
+14547.16	root	[exit]	nanolin startup.hotplug
+14547.16	root	[exit]	nanolin startup.cron
+14547.24	root	[exit]	nanolin startup
+14547.26	nanolin	[exit]	nanolin async login
+14547.26	root	[call]	nanolin hotplug add drive sda3
+14547.27	root	[call]	nanolin each hotplug.drive
+14547.36	root	[exit]	nanolin each hotplug.drive
+14547.37	root	[exit]	nanolin hotplug add drive sda3
+14547.43	root	[call]	nanolin hotplug add drive sda1
+14547.44	root	[call]	nanolin each hotplug.drive
+14547.46	root	[exit]	nanolin each hotplug.drive
+14547.56	root	[exit]	nanolin hotplug add drive sda1
+14547.56	root	[call]	nanolin hotplug add drive sr0
+14547.56	root	[call]	nanolin each hotplug.drive
+14547.72	root	[exit]	nanolin each hotplug.drive
+14547.73	root	[exit]	nanolin hotplug add drive sr0
+14547.74	root	[call]	nanolin hotplug add drive sda2
+14547.74	root	[call]	nanolin each hotplug.drive
+14547.77	root	[exit]	nanolin each hotplug.drive
+14547.77	root	[exit]	nanolin hotplug add drive sda2
+14547.77	root	[call]	nanolin hotplug add drive sda
+14547.78	root	[call]	nanolin each hotplug.drive
+14547.78	root	[call]	nanolin hotplug add drive /dev/sda1
+14547.79	root	[call]	nanolin each hotplug.drive
+14548.02	root	[exit]	nanolin each hotplug.drive
+14548.03	root	[exit]	nanolin hotplug add drive /dev/sda1
+14548.03	root	[call]	nanolin hotplug add drive /dev/sda2
+14548.04	root	[call]	nanolin each hotplug.drive
+14548.05	root	[exit]	nanolin each hotplug.drive
+14548.06	root	[exit]	nanolin hotplug add drive /dev/sda2
+14548.23	root	[call]	nanolin hotplug add drive /dev/sda3
+14548.23	root	[call]	nanolin each hotplug.drive
+14548.24	root	[exit]	nanolin each hotplug.drive
+14548.24	root	[exit]	nanolin hotplug add drive /dev/sda3
+14548.24	root	[exit]	nanolin each hotplug.drive
+14548.25	root	[exit]	nanolin hotplug add drive sda
+14747.52	root	[call]	nanolin async login
+14747.52	root	[call]	nanolin login
+14747.52	root	[exit]	nanolin async login

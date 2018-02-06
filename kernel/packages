@@ -1,0 +1,10 @@
+git
+base-devel
+bash
+make
+bc
+binutils
+xmlto
+kmod
+libelf
+inetutils

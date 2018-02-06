@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# this script is called syncronously by /sbin/init only once at the start or our system
+
+# immidiately blank screen
+clear
+
+# mount all psuedo file systems
+mount -a
+
+# mount root file system read / write
+mount -o remount,rw /

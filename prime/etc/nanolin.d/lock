@@ -1,0 +1,69 @@
+#!/bin/sh
+
+alias runlock="$0"
+
+ACT="$1"
+LOCK="$2"
+TIME="$3"
+
+shift
+shift
+
+[ -z "$LOCK" ] && echo "$NLHDR
+
+	Handle runlock conditions.
+
+	Usage:
+	
+	nanolin lock new <lock> [values]
+	nanolin lock set <lock> [values]
+	nanolin lock add <lock> [values]
+	nanolin lock get <lock> [waittime]
+	nanolin lock del <lock>
+	nanolin lock has <lock>
+	nanolin lock not <lock>
+	nanolin lock wait <lock>
+	nanolin lock time <lock>
+" && exit
+
+RUNLOCK="/run/lock/nanolin-$LOCK.$USER"
+
+pwait() {
+	[ -z "$1" ] && return
+
+	for PROC in $@; do
+		while [ -d /proc/$PROC ]; do
+			usleep 5000
+		done
+	done
+}
+
+# case for various modes
+case "$ACT" in
+	new) echo $@ > "$RUNLOCK";;
+	set) [ -e "$RUNLOCK" ] && echo $@ > "$RUNLOCK";;
+	add) [ -e "$RUNLOCK" ] && echo $@ >> "$RUNLOCK";;
+	get)
+		CNT=$((20 * ${TIME:-0}))
+
+		while [ ! -e "$RUNLOCK" ]; do
+			[ $((CNT--)) -le 0 ] && break
+
+			usleep 50000
+		done
+
+		[ -e "$RUNLOCK" ] && cat "$RUNLOCK";;
+	del) [ -e "$RUNLOCK" ] && rm "$RUNLOCK";;
+	has) [ -e "$RUNLOCK" ]; exit $?;;
+	not) [ ! -e "$RUNLOCK" ]; exit $?;;
+	wait)
+		TIME=$LOCK
+
+		for LOCK in $@; do
+			pwait $(runlock get $LOCK ${TIME:-20})
+		done;;
+	time) [ -e "$RUNLOCK" ] && stat -c %y "$RUNLOCK";;
+	*) echo "$NLHDR
+	Not a valid runlock action.
+	" && exit;;
+esac

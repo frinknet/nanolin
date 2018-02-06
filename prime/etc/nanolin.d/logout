@@ -1,0 +1,3 @@
+#!/bin/sh
+
+# This run synchronous since it is the final program of the user.

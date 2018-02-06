@@ -1,0 +1,4 @@
+work
+*.gz
+*.tgz
+verify.*

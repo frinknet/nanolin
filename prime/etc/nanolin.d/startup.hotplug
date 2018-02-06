@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# setup mdev
+echo > /dev/mdev.seq
+echo /bin/mdev > /proc/sys/kernel/hotplug
+
+# call mdev setup
+mdev -s &
