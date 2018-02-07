@@ -27,11 +27,13 @@ case "$ACTION" in
 
 		# make mounting point
 		mkdir -p "$MDIR"
-		ln -sfn "$MDIR" "$LDIR"
-		[ -n "$UUID" ] && ln -sfn "$MDIR" "$UDIR"
 
 		# mount device or fail silently
-		mount -t $TYPE $DEVICE "$MDIR" >/dev/null 2>&1;;
+		mount -t $TYPE $DEVICE "$MDIR" >/dev/null 2>&1
+
+		# create label and uuid links
+		ln -sfn "$MDIR" "$LDIR"
+		[ -n "$UUID" ] && ln -sfn "$MDIR" "$UDIR";;
 	remove)
 		# make sureall io is synced before we unmount
 		sync
@@ -46,3 +48,5 @@ esac
 
 # clean up bad links for any devices where scripts may have failed
 #find -L /mnt/ -maxdepth 2 -type l -exec rm {} + 
+
+mount --bind /mnt/uuid/$(nanolin kernel boot) /boot >/dev/null 2>&1
