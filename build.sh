@@ -66,6 +66,57 @@ get_url() {
 	done
 }
 
+setup_dir() {
+	rm -rf $1
+	mkdir -p $1
+	cd $1
+
+	mkdir -p boot
+	mkdir -p dev
+	mkdir -p etc/nanolin.d
+	mkdir -p home
+	mkdir -p mnt/user
+	mkdir -p mnt/uuid
+	mkdir -p mnt/label
+	mkdir -p mnt/dev
+	mkdir -p mnt/nobs
+	mkdir -p proc
+	mkdir -p root
+	mkdir -p run/lock
+	mkdir -p run/distro
+	mkdir -p sys
+	mkdir -p tmp/var
+	mkdir -p usr/bin
+	mkdir -p usr/lib
+	mkdir -p usr/local
+	mkdir -p usr/include
+	mkdir -p usr/share
+	mkdir -p usr/src
+	mkdir -p var/log
+	mkdir -p var/cache
+	mkdir -p var/spool/cron
+	mkdir -p var/spool/cron/crontabs
+	mkdir -p var/spool/mail
+	ln -s /usr/bin bin
+	ln -s /usr/bin sbin
+	ln -s /usr/bin usr/sbin
+	ln -s /usr/lib lib
+	ln -s /usr/lib lib64
+	ln -s /usr/lib usr/lib64
+	ln -s /proc/mounts etc/mtab
+	ln -s /etc/hostname run/distro/hostname
+	ln -s /etc/username run/distro/username
+	ln -s /etc/version run/distro/version
+	ln -s /etc/remote run/distro/remote
+	ln -s /run var/run
+	ln -s /run/lock var/lock
+	ln -s /run/distro run/lock/distro
+	ln -s /tmp/var var/tmp
+	chmod -R 777 tmp
+	chmod -R 722 run/distro
+	chmod -R 777 run/lock
+}
+
 patch_src() {
 	local _SRC="$1"
 	local _CNT="0"
@@ -130,7 +181,7 @@ fi
 
 # recreate build directory fresh 
 mkdir -p "$GEN"
-clean_dir "$WRK/build" 
+setup_dir "$WRK/build" 
 clean_file "$WRK/image.gz" "$TAR"
 
 # make sure we have a version but only record once
@@ -196,7 +247,7 @@ echo "PATH /$REL/
 DEFAULT boot
 LABEL boot
 KERNEL $KNL
-APPEND /.bootflags" > "$GEN/boot"
+INCLUDE /.bootflags" > "$GEN/boot"
 
 [ -n "$DSK" ] && echo "INITRD ${DSK/ /,}" >> "$GEN/boot"
 
