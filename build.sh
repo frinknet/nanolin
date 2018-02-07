@@ -46,7 +46,7 @@ clean_dir() {
 add_file() {
 	for x in $@; do
 		echo "Adding $x"
-		workbox cp "$x" "/build/$x"
+		workbox cp "$x" "/build$x"
 	done
 }
 
@@ -97,21 +97,22 @@ setup_dir() {
 	mkdir -p var/spool/cron
 	mkdir -p var/spool/cron/crontabs
 	mkdir -p var/spool/mail
-	ln -s /usr/bin bin
-	ln -s /usr/bin sbin
-	ln -s /usr/bin usr/sbin
-	ln -s /usr/lib lib
-	ln -s /usr/lib lib64
-	ln -s /usr/lib usr/lib64
-	ln -s /proc/mounts etc/mtab
-	ln -s /etc/hostname run/distro/hostname
-	ln -s /etc/username run/distro/username
-	ln -s /etc/version run/distro/version
-	ln -s /etc/remote run/distro/remote
-	ln -s /run var/run
-	ln -s /run/lock var/lock
-	ln -s /run/distro run/lock/distro
-	ln -s /tmp/var var/tmp
+	ln -s usr/bin bin
+	ln -s usr/bin sbin
+	ln -s usr/lib lib
+	ln -s usr/lib lib64
+	ln -s ../bin usr/sbin
+	ln -s ../lib usr/lib64
+	ln -s ../proc/mounts etc/mtab
+	ln -s ../../etc/hostname run/distro/hostname
+	ln -s ../../etc/username run/distro/username
+	ln -s ../../etc/version run/distro/version
+	ln -s ../../etc/remote run/distro/remote
+	ln -s ../run var/run
+	ln -s ../run/lock var/lock
+	ln -s ../distro run/lock/distro
+	ln -s ../tmp/var var/tmp
+	ln -s spool/mail var/mail
 	chmod -R 777 tmp
 	chmod -R 722 run/distro
 	chmod -R 777 run/lock
@@ -179,8 +180,11 @@ if [ ! -e "$DIR/verify.pub" ] || [ ! -e "$DIR/verify.sec" ]; then
 	signify -Gn -p "$DIR/verify.pub" -s "$DIR/verify.sec"
 fi
 
+info "Preparing to build from $SRC" 
+
 # recreate build directory fresh 
 mkdir -p "$GEN"
+echo "setup $WRK/build"
 setup_dir "$WRK/build" 
 clean_file "$WRK/image.gz" "$TAR"
 
@@ -190,13 +194,12 @@ if [ ! -e "$GEN/.version" ]; then
 fi
 
 # create release
+echo "Storing version and verify.pub key"
 REL="$REL-$(cat "$GEN/.version")"
 OUT="$REL.tgz"
 mkdir -p "$WRK/etc"
 echo "$REL" > "$WRK/etc/version"
 cp "$DIR/verify.pub" "$WRK/etc/verify.pub"
-
-info "Preparing to build from $SRC" 
 
 #packstrap busybox + packages
 info "Pacstrap $SRC/packages"
