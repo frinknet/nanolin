@@ -116,6 +116,7 @@ setup_dir() {
 	chmod -R 777 tmp
 	chmod -R 722 run/distro
 	chmod -R 777 run/lock
+	cd -
 }
 
 patch_src() {
