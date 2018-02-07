@@ -11,4 +11,4 @@ tar xzf "$TAR" -C "$DIR" && ln -sfn "$DIR" current
 BLKDEV=$(grep /boot /etc/mtab | cut -d' ' -f1)
 eval $(blkid $BLKDEV | cut -d: -f2)
 
-echo "boot=$UUID" > /boot/.bootflags
+echo "APPEND boot=$UUID" > /boot/.bootflags
