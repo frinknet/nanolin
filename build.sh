@@ -10,11 +10,11 @@ TAR="$DIR/work/$IMG-release.tgz"
 OUT="$DIR/$IMG-release.tgz"
 REL="Nanolin.$IMG"
 
-[ -z "$ALL" ] && ALL="$@"
+[ -z "$KNL" ] && export KNL="$IMG"
 
 shift
 
-[ -z "$RDS" ] && ALL="$RDS"
+[ -z "$DSK" ] && export DSK="$@"
 
 #load config file if it exists
 [ -e "$DIR/config" ] && source "$DIR/config"
@@ -116,6 +116,9 @@ if [ ! -e "/usr/bin/signify" ]; then
 	info "Signify needs to be installed to sign packages."
 
 	yes | sudo pacman -Sy signify
+
+	echo "Run again to continue."
+	exit
 fi
 
 # generate verify keys if needed
@@ -125,7 +128,12 @@ if [ ! -e "$DIR/verify.pub" ] || [ ! -e "$DIR/verify.sec" ]; then
 	signify -Gn -p "$DIR/verify.pub" -s "$DIR/verify.sec"
 fi
 
-# make sure we have a version
+# recreate build directory fresh 
+mkdir -p "$GEN"
+clean_dir "$WRK/build" 
+clean_file "$WRK/image.gz" "$TAR"
+
+# make sure we have a version but only record once
 if [ ! -e "$GEN/.version" ]; then
 	date +%y.%m-G%d%H%M%S > "$GEN/.version"
 fi
@@ -137,13 +145,7 @@ mkdir -p "$WRK/etc"
 echo "$REL" > "$WRK/etc/version"
 cp "$DIR/verify.pub" "$WRK/etc/verify.pub"
 
-
 info "Preparing to build from $SRC" 
-
-# recreate build directory fresh 
-mkdir -p "$GEN"
-clean_dir "$WRK/build" 
-clean_file "$WRK/image.gz" "$TAR"
 
 #packstrap busybox + packages
 info "Pacstrap $SRC/packages"
@@ -187,15 +189,16 @@ signify -S -s "$DIR/verify.sec" -m "$GEN/.manifest" -x "$GEN/.signature"
 [ -z "$@" ] || exec $0 $@
 
 # finalize target
-info "Finalizing release tarball"
+info "Finalizing $REL release tarball"
 
 # generate boot file
 echo "PATH /$REL/
 DEFAULT boot
 LABEL boot
-KERNEL ${ALL##$RDS} 
-" > "$GEN/boot"
-echo "INITRD ${RDS/ /,}" >> "$GEN/boot"
+KERNEL $KNL
+APPEND /.bootflags" > "$GEN/boot"
+
+[ -n "$DSK" ] && echo "INITRD ${DSK/ /,}" >> "$GEN/boot"
 
 # create release
 tar -C "$GEN" -czf "$TAR" .
@@ -205,4 +208,4 @@ echo "Signing release $OUT"
 signify -Sz -s "$DIR/verify.sec" -m "$TAR" -x "$OUT"
 
 # clean generation output file
-rm -rf "$GEN"
+#rm -rf "$GEN"

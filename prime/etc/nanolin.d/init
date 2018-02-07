@@ -10,3 +10,6 @@ mount -a
 
 # mount root file system read / write
 mount -o remount,rw /
+
+# setup boot mount
+ln -sfn /mnt/dev/$(nanolin kernel boot) /boot
