@@ -2,7 +2,6 @@
 
 # check usage
 [ -z "$1" ] && echo "$NLHDR
-
 	Runs a script and its children
 
 	Usage:
@@ -10,7 +9,7 @@
 	nanolin each <action> [options]
 " && exit
 
-NLACT="$1"
+NLACT="${1##*/}"
 NLWAIT=""
 
 shift

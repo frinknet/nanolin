@@ -4,18 +4,29 @@ export ACTION="$1"
 export TYPE="$2"
 export DEVICE="$3"
 
-DEVICE=$(readlink -f $DEVICE)
-
 shift
 shift
 shift
 
-[ -z "$DEVICE" ] && echo "$NLHDR
+[ -z "$TYPE" ] && echo "$NLHDR
 	Manage the hotplug actions for a specific type of device. 
 
 	Usage:
 
 	nanolin hotplug <action> <type> <device>
+
+	Actions:
+
+	add
+	remove
+
+	Types:
+
+$(find $NLDIR -type f -perm +111 -path "$0.*" | sed " s%^$0\.%\t%g" | sort)
 " && exit
+
+DEVICE=$(readlink -f $DEVICE)
+
+[ -z "$DEVICE" ] && echo "Invalid device node." && exit
 
 nanolin each "hotplug.$TYPE"

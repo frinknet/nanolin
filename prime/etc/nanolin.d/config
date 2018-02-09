@@ -1,0 +1,22 @@
+#!/bin/sh
+
+export NLMSG="${NLMSG:-Manage configuration options.}"
+export NLUSE="${NLUSE:-nanolin $0 <actions> [options]}"
+export NLCMD="${NLCMD:-$NLDIR/each $0.$1}"
+
+[ -z "$1" ] && echo "$NLHDR
+	$NLMSG
+
+	Usage:
+
+	$NLUSE
+
+	Actions:
+
+$(find $NLDIR -type f -perm +111 -path "$0.*" | sed " s%^$0\.%\t%g" | sort)
+" && exit
+
+shift
+
+# run command
+$NLCMD $@

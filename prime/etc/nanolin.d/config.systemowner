@@ -1,0 +1,7 @@
+#!/bin/sh
+
+[ -z "$1" ] && readlink /boot/.systemowner 2>/dev/null && exit
+
+readlink -f "/boot/.users/${1##*/}" >/dev/null && echo ${1##*/} > /boot/.systemowner && exit
+
+echo "Not a valid userid for system owner."

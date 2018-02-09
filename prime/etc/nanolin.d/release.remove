@@ -1,0 +1,14 @@
+#!/bin/sh
+
+VAL="$1"
+DIR="/boot/$(basename "$1" tgz)"
+
+if [ -z "$VAL" ]; then
+	echo "No release to remove."
+elif ! readlink -f "$DIR" >/dev/null; then
+	echo  "Not a bootable release."
+elif [ "$VAL" = "$(cat /etc/version)" ]; then
+	echo "Cannot delete currently running release."
+else
+	rm -f "$DIR"
+fi

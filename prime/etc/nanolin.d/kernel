@@ -1,9 +1,12 @@
 #!/bin/sh
 
-[ -z "$1" ] && "$HEADER
+[ -z "$1" ] && echo "$NLHDR
+	Shows the value of kernel boot flags.
+
 	Usage:
+
 	nanolin kernel <flag>
 " && exit
 
-eval $(cat /proc/cmdline)
+eval "$(sed 's/\(^\|\s\)\(\w[-_a-zA-Z0-9]\+\w\)\(\s\|$\)/\1\2=true\3/g' /proc/cmdline)"
 eval "echo \$$1"

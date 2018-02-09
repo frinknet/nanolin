@@ -1,0 +1,15 @@
+#!/bin/sh
+
+VAL="$1"
+DIR="/boot/$(basename "$1" tgz)"
+
+[ -e "$DIR" ] && echo "Relese already exists." && exit
+
+mkdir -p "$DIR" 
+
+if tar xzf "$VAL" -C "$DIR"; then
+	ln -sfn "$DIR" /boot/.current
+else
+	rm -rf "$DIR"
+	echo "Failed to extract release."
+fi

@@ -48,5 +48,3 @@ esac
 
 # clean up bad links for any devices where scripts may have failed
 #find -L /mnt/ -maxdepth 2 -type l -exec rm {} + 
-
-mount --bind /mnt/uuid/$(nanolin kernel boot) /boot >/dev/null 2>&1

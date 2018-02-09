@@ -1,0 +1,11 @@
+#!/bin/sh
+
+[ -z "$1" ] && readlink /boot/.users 2>/dev/null && exit
+
+ln -sfn "$1" /boot/.userstmp
+
+readlink -f "/boot/.userstmp" >/dev/null && mv /boot/.userstmp /boot/.users && exit
+
+rm -f /boot/.userstmp
+
+echo "Not a valid directory to link for users."

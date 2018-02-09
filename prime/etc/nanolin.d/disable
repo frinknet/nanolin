@@ -1,0 +1,15 @@
+#!/bin/sh
+
+[ -z "$1" ] && echo "$NLHDR
+	Disables a Nanolin command.
+
+	Usage:
+
+	nanolin disable <command>
+
+	Available Commands:
+
+$(find $NLDIR -type f -perm +111 | sed "s%$NLDIR/%\t%g" | sort)
+" && exit
+
+chmod -x /etc/nanolin.d/$(basename "$1")

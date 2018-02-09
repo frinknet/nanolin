@@ -10,4 +10,4 @@
 " && exit 1
 
 # run with locks and logging
-nanolin $@ &
+nanolin $@ > /dev/null 2>&1 &

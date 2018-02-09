@@ -1,7 +1,6 @@
 #!/bin/sh
 
-# This runs synchronously synce it is preparing for a final shutdown.
-
+# prepare for complete system shutdown
 sync
 sync
 

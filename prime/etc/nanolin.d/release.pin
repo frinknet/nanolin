@@ -1,0 +1,12 @@
+#!/bin/sh
+
+VAL="$1"
+DIR="/boot/$(basename "$1" tgz)"
+
+[ -z "$VAL" ] && readlink /boot/.pinrelease 2>/dev/null && exit
+
+[ "$VAL" = "off" ] && rm -f /boot/.pinrelease && exit
+
+readlink -f "$DIR" >/dev/null && ln -sfn "$DIR" /boot/.pinrelease
+
+echo "Not a valid release name."

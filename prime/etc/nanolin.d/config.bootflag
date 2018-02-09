@@ -1,0 +1,25 @@
+#!/bin/sh
+
+[ -z "$1" ] && echo "$NLHDR
+	Manipulate boot flags.
+
+	Usage:
+
+	nanolin config boot <flag> [value]
+" && exit
+
+case $1 in
+	on) RPL="$1";;
+	off) RPL="";;
+	*) RPL="$1=$2";;
+esac
+
+[ -n "$RPL" ] && sed -i "s%\s\w$1\(=\S\+\)\+\w%%g" "s%$% $RPL%g" /boot/.bootflags && exit
+
+VAL="$(sed -n "s%^.*\(\b$1\(=\S\+\)\?\b\).*$%\1%p" /boot/.bootflags)"
+
+case "${VAL:-_}" in
+	*=*) echo ${VAL##*=};;
+	_) echo off;;
+	*) echo on;;
+esac

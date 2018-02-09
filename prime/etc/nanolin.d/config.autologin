@@ -1,0 +1,7 @@
+#!/bin/sh
+
+[ -z "$1" ] && cat /boot/.autologin 2>/dev/null && exit
+
+[ "$1" = "off" ] && rm -f /boot/.autologin && exit
+
+echo "$1" > /boot/.autologin
