@@ -5,16 +5,16 @@
 
 	Usage:
 
-	nanolin config boot <flag> [value]
+	${NLBIN##*/} config boot <flag> [value]
 " && exit
 
-case $1 in
+case $2 in
 	on) RPL="$1";;
 	off) RPL="";;
 	*) RPL="$1=$2";;
 esac
 
-[ -n "$RPL" ] && sed -i "s%\s\w$1\(=\S\+\)\+\w%%g" "s%$% $RPL%g" /boot/.bootflags && exit
+[ -n "$RPL" ] && sed -i -e "s%\s\w$1\(=\S\+\)\+\w%%g" -e "s%$% $RPL%g" /boot/.bootflags && exit
 
 VAL="$(sed -n "s%^.*\(\b$1\(=\S\+\)\?\b\).*$%\1%p" /boot/.bootflags)"
 

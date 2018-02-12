@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BOOTFS=$(nanolin kernel bootfs)
+BOOTFS=$("$NLBIN" kernel bootfs)
 DEVICE=$(findfs ${BOOTFS/:/=}) 
 
-readlink -f $DEVICE > /dev/null && mount $DEVICE /boot
+[ -e "$DEVICE" ] && mount $DEVICE /boot

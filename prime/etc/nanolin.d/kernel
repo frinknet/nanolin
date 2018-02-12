@@ -5,7 +5,7 @@
 
 	Usage:
 
-	nanolin kernel <flag>
+	${NLBIN##*/} kernel <flag>
 " && exit
 
 eval "$(sed 's/\(^\|\s\)\(\w[-_a-zA-Z0-9]\+\w\)\(\s\|$\)/\1\2=true\3/g' /proc/cmdline)"

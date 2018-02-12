@@ -1,0 +1,31 @@
+#!/bin/sh
+
+TAR="$1"
+DIR="/boot/$(basename "$1" .tgz)"
+BLKDEV=$(grep /boot /etc/mtab | cut -d' ' -f1)
+
+shift
+
+[ -z "$BLKDEV" ] && echo "Install failed. /boot/ is not mounted." && exit
+
+eval $(blkid $BLKDEV | cut -d: -f2)
+
+[ -e "$DIR" ] && echo "Relese ${DIR##*/} already exists." && exit
+
+mkdir -p "$DIR" 
+
+if ! tar xzf "$TAR" -C "$DIR"; then
+	rm -rf "$DIR"
+	echo "Failed to extract release."
+	exit
+fi
+
+ln -sfn "${DIR##*/}" /boot/.current && echo "Release ${DIR##*/} installed."
+
+if [ -n "$UUID" ]; then
+	$NLDIR/config.bootflag bootfs UUID:$UUID
+elif [ -n "$LABEL" ]; then
+	$NLDIR/config.bootflag bootfs LABEL:$LABEL
+else
+	$NLDIR/config.bootflag bootfs /dev/sda1
+fi

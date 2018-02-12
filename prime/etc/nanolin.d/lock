@@ -15,24 +15,26 @@ shift
 
 	Usage:
 	
-	nanolin lock new <lock> [values]
-	nanolin lock set <lock> [values]
-	nanolin lock add <lock> [values]
-	nanolin lock get <lock> [waittime]
-	nanolin lock del <lock>
-	nanolin lock has <lock>
-	nanolin lock not <lock>
-	nanolin lock wait <lock>
-	nanolin lock time <lock>
+	${NLBIN##*/} lock new <lock> [values]
+	${NLBIN##*/} lock set <lock> [values]
+	${NLBIN##*/} lock add <lock> [values]
+	${NLBIN##*/} lock get <lock> [waittime]
+	${NLBIN##*/} lock del <lock>
+	${NLBIN##*/} lock has <lock>
+	${NLBIN##*/} lock not <lock>
+	${NLBIN##*/} lock wait <lock>
+	${NLBIN##*/} lock time <lock>
 " && exit
 
-RUNLOCK="/run/lock/nanolin-$LOCK.$USER"
+export NLRLK="${NLRLK:-/run/lock}"
 
-pwait() {
+RUNLOCK="$NLRLK/${NLBIN##*/}-$LOCK.$USER"
+
+pidwait() {
 	[ -z "$1" ] && return
 
-	for PROC in $@; do
-		while [ -d /proc/$PROC ]; do
+	for PID in $@; do
+		while kill -0 $PID &>/dev/null; do
 			usleep 5000
 		done
 	done
@@ -60,7 +62,7 @@ case "$ACT" in
 		TIME=$LOCK
 
 		for LOCK in $@; do
-			pwait $(runlock get $LOCK ${TIME:-20})
+			pidwait $(runlock get $LOCK ${TIME:-20})
 		done;;
 	time) [ -e "$RUNLOCK" ] && stat -c %y "$RUNLOCK";;
 	*) echo "$NLHDR

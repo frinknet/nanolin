@@ -6,7 +6,7 @@
 
 	Usage:
 	
-	nanolin each <action> [options]
+	${NLBIN##*/} each <action> [options]
 " && exit
 
 NLACT="${1##*/}"
@@ -14,11 +14,27 @@ NLWAIT=""
 
 shift
 
-# run parent first 
-[ -x "$NLDIR/$NLACT" ] && $NLDIR/$NLACT $@
+# set aliases to shorten code
+alias runexec="'$NLDIR'/$NLACT"
+alias runlock="'$NLDIR'/lock"
+alias logcall="'$NLDIR'/log call ${NLBIN##*/} $NLACT"
+alias logexit="'$NLDIR'/log exit ${NLBIN##*/} $NLACT"
+
+# set parent runlock
+runlock new $NLACT $$
+
+# check that we have something to run
+[ ! -e "$NLDIR/$NLACT" ] && echo "$NLHDR
+	Command does not exist.
+
+	${NLBIN##*/} ${NLACT/./ } $@
+" && exit
+
+# run parent syncronous
+logcall $@ && runexec $@ && logexit $@
 
 # loop through actions 
-for NLDO in $NLDIR/$NLACT.*; do
+for NLDO in "$NLDIR/$NLACT".*; do
 	# make sure we can execute
 	[ ! -x "$NLDO" ] && continue
 
@@ -28,11 +44,14 @@ for NLDO in $NLDIR/$NLACT.*; do
 	[ "${NLDO##*.}" == "last" ] && continue
 
 	# run with locks and logging in new process
-	nanolin ${NLDO##*/} $@ &
+	"$NLBIN" ${NLDO##*/} $@ &
 done 
 
 # run last script after all others
-[ -x "$NLDIR/$NLACT.last" ] && $NLDIR/$NLACT.last $@
+[ -x "$NLDIR/$NLACT.last" ] && "$NLDIR/$NLACT.last" $@
 
-# wait for children
-[ -n "$NLWAIT" ] && $NLDIR/lock wait 0 $NLWAIT
+# wait for children and finally set each runlock as finished
+[ -n "$NLWAIT" ] && runlock wait 0 $NLWAIT
+
+# set lock as done
+runlock set $NLACT

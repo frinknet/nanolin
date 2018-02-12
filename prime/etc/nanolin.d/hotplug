@@ -13,7 +13,7 @@ shift
 
 	Usage:
 
-	nanolin hotplug <action> <type> <device>
+	${NLBIN##*/} hotplug <action> <type> <device>
 
 	Actions:
 
@@ -29,4 +29,4 @@ DEVICE=$(readlink -f $DEVICE)
 
 [ -z "$DEVICE" ] && echo "Invalid device node." && exit
 
-nanolin each "hotplug.$TYPE"
+"$NLBIN" each "hotplug.$TYPE"

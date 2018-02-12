@@ -8,7 +8,7 @@ case "$TYPE" in
 	swap) exit;;
 	drive) 
 		for SUBDEV in $DEVICE[0-9]*; do
-			nanolin hotplug $ACTION drive $SUBDEV
+			"$NLBIN" hotplug $ACTION drive $SUBDEV
 		done
 
 		exit;;

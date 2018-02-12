@@ -1,12 +1,14 @@
 #!/bin/sh
 
+export NLLOG="${NLLOG:-/var/log/${NLBIN##*/}}"
+
 [ -z "$1" ] && echo "$NLHDR
 	Usage:
 
-	nanolin logtime <action> [note]
+	${NLBIN##*/} logtime <action> [note]
 
 Nanolin run log since boot:
-$(cat /var/log/nanolin)
+$(cat "$NLLOG")
 " && exit
 
 [ ! -e /proc/uptime ] && exit
@@ -16,4 +18,4 @@ TIME=$(awk '{print $1}' /proc/uptime)
 
 shift
 
-echo -e "$TIME\t$USER\t[$ACT]\t$@" >> /var/log/nanolin
+echo -e "$TIME\t$USER\t[$ACT]\t$@" >> "$NLLOG"

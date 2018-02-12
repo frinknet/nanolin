@@ -1,0 +1,13 @@
+#!/bin/busybox sh
+
+for x in busybox --list; do
+	alias $x="busybox $x"
+done
+
+export NLDIR="$PWD/prime/etc/nanolin.d"
+export NLLOG="$PWD/work/nanolin.log"
+export NLRLK="$PWD/work/lock"
+
+mkdir -p  "$NLRLK"
+
+source prime/usr/bin/nanolin

@@ -4,4 +4,5 @@
 # without waiting for them to complete. The runlocks allow waiting for individual
 # scripts as needed.
 
+echo "startup"
 

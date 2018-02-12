@@ -6,8 +6,8 @@
 
 	Usage:
 
-	${NLBIN##*/} async <action> [options]
+	${NLBIN##*/} silent <action> [options]
 " && exit 1
 
 # run with locks and logging
-"$NLBIN" $@ &
+"$NLBIN" $@ &>/dev/null

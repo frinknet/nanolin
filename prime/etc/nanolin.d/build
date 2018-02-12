@@ -263,4 +263,4 @@ echo "Signing release $OUT"
 signify -Sz -s "$DIR/verify.sec" -m "$TAR" -x "$OUT"
 
 # clean generation output file
-#rm -rf "$GEN"
+rm -rf "$GEN"

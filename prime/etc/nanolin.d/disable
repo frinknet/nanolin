@@ -5,11 +5,11 @@
 
 	Usage:
 
-	nanolin disable <command>
+	${NLBIN##*/} disable <command>
 
 	Available Commands:
 
 $(find $NLDIR -type f -perm +111 | sed "s%$NLDIR/%\t%g" | sort)
 " && exit
 
-chmod -x /etc/nanolin.d/$(basename "$1")
+chmod -x "$NLDIR/$(basename "$1")"
