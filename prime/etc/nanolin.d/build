@@ -204,9 +204,11 @@ cp "$DIR/verify.pub" "$WRK/etc/verify.pub"
 
 #packstrap busybox + packages
 info "Pacstrap $SRC/packages"
-pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null) || (echo "
+! pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null) && echo "
+pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null)
+
 Error in pacsrap call. Aborting build for $IMG.
-" && exit)
+" && exit
 
 info "Preparing build environment"
 # install busybox in overlay build directory
@@ -232,14 +234,6 @@ info "Adding image to release"
 echo "Copying image to $GEN/$IMG"
 mv "$WRK/image.gz" "$GEN/$IMG"
 
-# generate manifest
-echo "Updating manifest $GEN/.manifest"
-(cd "$GEN"; "$WRK/bin/busybox" sha1sum *) > "$GEN/.manifest"
-
-# generate signature
-echo "Signing manifest $GEN/.signature"
-signify -S -s "$DIR/verify.sec" -m "$GEN/.manifest" -x "$GEN/.signature"
-
 # continue building next target
 [ -z "$@" ] || exec $0 $@
 
@@ -254,6 +248,14 @@ KERNEL $KNL
 INCLUDE /.bootflags" > "$GEN/boot"
 
 [ -n "$DSK" ] && echo "INITRD ${DSK/ /,}" >> "$GEN/boot"
+
+# generate manifest
+echo "Updating manifest $GEN/.manifest"
+(cd "$GEN"; "$WRK/bin/busybox" sha1sum *) > "$GEN/.manifest"
+
+# generate signature
+echo "Signing manifest $GEN/.signature"
+signify -S -s "$DIR/verify.sec" -m "$GEN/.manifest" -x "$GEN/.signature"
 
 # create release
 tar -C "$GEN" -czf "$TAR" .

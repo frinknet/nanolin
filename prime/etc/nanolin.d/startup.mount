@@ -1,6 +1,0 @@
-#!/bin/sh
-
-BOOTFS=$("$NLBIN" kernel bootfs)
-DEVICE=$(findfs ${BOOTFS/:/=}) 
-
-[ -e "$DEVICE" ] && mount $DEVICE /boot

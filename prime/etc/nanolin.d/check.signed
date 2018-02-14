@@ -1,2 +1,10 @@
 #!/bin/sh
 
+# get the release directory
+DIR="/boot/$(cat /etc/version)"
+
+# check that release exists 
+[ ! -d "$DIR" ] && echo "Release does not exist on bootfs." && exit 1
+
+# compare manifest
+

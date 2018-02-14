@@ -37,4 +37,4 @@ fi
 rm -rf "$DIR" && echo "Release ${DIR##*/} removed."
 
 # may need to relink release
-! busybox readlink -f "/boot/.current" > /dev/null && "$NLDIR/release.link" $(ls -td "${DIR%%-*}"*)
+! busybox readlink -f "/boot/.current" > /dev/null && "$NLDIR/release.relink" $(ls -td "${DIR%%-*}"*)

@@ -1,23 +1,28 @@
 #!/bin/sh
 
+# make sure we have a flag mentioned or show help 
 [ -z "$1" ] && echo "$NLHDR
 	Manipulate boot flags.
 
 	Usage:
 
-	${NLBIN##*/} config boot <flag> [value]
+	${NLBIN##*/} ${NLACT/./ } <flag> [value]
 " && exit
 
+# create a replacement string
 case $2 in
 	on) RPL="$1";;
 	off) RPL="";;
 	*) RPL="$1=$2";;
 esac
 
-[ -n "$RPL" ] && sed -i -e "s%\s\w$1\(=\S\+\)\+\w%%g" -e "s%$% $RPL%g" /boot/.bootflags && exit
+# add replacement to end of bootflag string 
+[ -n "$2" ] && sed -i -e "s%\s\+\b$1\(=\S\+\)\?\b%%g" -e "s%\s*$% $RPL%g" /boot/.bootflags && exit
 
+# get value
 VAL="$(sed -n "s%^.*\(\b$1\(=\S\+\)\?\b\).*$%\1%p" /boot/.bootflags)"
 
+# convert value to something readable
 case "${VAL:-_}" in
 	*=*) echo ${VAL##*=};;
 	_) echo off;;

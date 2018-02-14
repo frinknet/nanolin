@@ -1,2 +1,4 @@
 #!/bin/sh
 
+"$NLDIR/release.relink" $(find /boot/ -maxdepth 1 | grep 'G[0-9]\+$' | grep -v "$(busybox readlink -f "/boot/.current")")
+

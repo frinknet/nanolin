@@ -11,3 +11,5 @@
 
 # run with locks and logging
 "$NLBIN" $@ &>/dev/null
+
+exit $?

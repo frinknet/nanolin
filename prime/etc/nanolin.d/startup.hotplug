@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# make sure bootfs gets mounted first
+nanolin lock wait 0 startup.bootfs
+
 # setup mdev
 echo > /dev/mdev.seq
 echo /bin/mdev > /proc/sys/kernel/hotplug

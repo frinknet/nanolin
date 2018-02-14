@@ -4,3 +4,5 @@ export NLMSG="Handle integrity checks."
 export NLUSE="${NLBIN##*/} check <action> [option]"
 
 source $NLDIR/config
+
+exit $?

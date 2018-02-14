@@ -11,6 +11,7 @@
 
 NLACT="${1##*/}"
 NLWAIT=""
+NLEXIT=0
 
 shift
 
@@ -31,7 +32,7 @@ runlock new $NLACT $$
 " && exit
 
 # run parent syncronous
-logcall $@ && runexec $@ && logexit $@
+logcall $@ && runexec $@ && NLEXIT=$((NLEXIT+$?)) && logexit $@
 
 # loop through actions 
 for NLDO in "$NLDIR/$NLACT".*; do
@@ -44,14 +45,17 @@ for NLDO in "$NLDIR/$NLACT".*; do
 	[ "${NLDO##*.}" == "last" ] && continue
 
 	# run with locks and logging in new process
-	"$NLBIN" ${NLDO##*/} $@ &
+	("$NLBIN" ${NLDO##*/} $@ && NLEXIT=$((NLEXIT+$?))) &
 done 
 
 # run last script after all others
-[ -x "$NLDIR/$NLACT.last" ] && "$NLDIR/$NLACT.last" $@
+[ -x "$NLDIR/$NLACT.last" ] && "$NLDIR/$NLACT.last" $@ && NLEXIT=$((NLEXIT+$?))
 
 # wait for children and finally set each runlock as finished
 [ -n "$NLWAIT" ] && runlock wait 0 $NLWAIT
 
 # set lock as done
 runlock set $NLACT
+
+# return exit
+exit $NLEXIT
