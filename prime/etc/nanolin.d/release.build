@@ -21,25 +21,17 @@ shift
 
 #alias chroot for easy work
 alias busybox="$WRK/usr/bin/busybox"
-alias workroot="busybox chroot '$WRK'"
-alias workbox="workroot /usr/bin/busybox"
+alias workrun="'$NLDIR/chroot' '$WRK'"
+alias workbox="workrun /usr/bin/busybox"
 
 info() {
 	echo -e "\e[1m$@\e[21m"
 }
 
-clean_file() {
+rem_file() {
 	for x in $@; do
-		[ -e "$x" ] && echo "Removing $x"
-		rm -fr "$x"
-	done
-}
-
-clean_dir() {
-	for x in $@; do
-		echo "Creating $x"
-		rm -fr "$x"
-		mkdir -p "$x"
+		[ -e "/build$x" ] && echo "Removing $x"
+		rm -fr "/build$x"
 	done
 }
 
@@ -187,7 +179,7 @@ info "Preparing to build from $SRC"
 mkdir -p "$GEN"
 echo "setup $WRK/build"
 setup_dir "$WRK/build" 
-clean_file "$WRK/image.gz" "$TAR"
+rm -rf "$WRK/image.gz" "$TAR"
 
 # make sure we have a version but only record once
 if [ ! -e "$GEN/.version" ]; then

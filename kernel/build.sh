@@ -11,15 +11,21 @@ RTPFILE=$RTPTCH.gz
 
 # add the files
 get_url https://www.kernel.org/pub/linux/kernel/v${LNXVER%%.*}.x/$LNXFILE
-get_url https://www.kernel.org/pub/linux/kernel/projects/rt/${LNXVER%.*}/$RTPFILE
+get_url https://www.kernel.org/pub/linux/kernel/projects/rt/${LNXVER%.*}/older/$RTPFILE
 
 [ ! -e "$LNXDIR" ] && busybox tar xzf $LNXFILE
 [ ! -e "$RTPTCH" ] && busybox zcat $RTPFILE > $RTPTCH
 
+# make sure that .config.old exists so that we can compare
+touch "$LNXDIR/.config.old"
+
 # diff config before update with what we have since update may change it
 CONFDIFF=$(busybox comm -3 "build/config" "$LNXDIR/.config.old")
 
-# add patches and config to build
+# if no differences in config simply remove it
+#[ -z "$CONFDIFF" ] && rm build/config
+
+# add patches to build
 mv build/config $LNXDIR/.config
 mv build/*.patch ./  2>/dev/null
 
@@ -32,16 +38,17 @@ if [ -n "$CONFDIFF$SRCPATCH" ]; then
 	[ -n "$CONFDIFF" ] && echo "Config file changed"
 
 	echo "Updating config"
+	yes "" | workrun make -C $LNXDIR config || return 1
 
-	yes "" | workroot make -C $LNXDIR config >/dev/null || return 1
+	echo "Insuring fresh image is compiled"
 	rm -f $LNXDIR/arch/x86/boot/bzImage
 fi
 
 # only build if we don't have a kernel file ready to go
-if [ ! -e "$LNXDIR/arch/x86/boot/bzImage" ];then
+if [ ! -e "$LNXDIR/arch/x86/boot/bzImage" ]; then
 	info "Building Linux"
 
-	workroot make -C $LNXDIR || return 1
+	yes "" | workrun make -C $LNXDIR || return 1
 fi
 
 # copy image to dropoff point

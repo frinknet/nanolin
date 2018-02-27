@@ -1,7 +1,6 @@
-asp
 pacman
 base-devel
 make
 binutils
 asp
-
+libbsd

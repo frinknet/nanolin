@@ -1,0 +1,46 @@
+#!/bin/sh
+
+WRK=$1
+shift
+
+[ $(id -u) != 0 ] && alias busybox="sudo busybox"
+
+[ -z "$WRK" ] && echo "$NLHDR
+	Change root with essentials mounts.
+
+	Usage:
+
+	${NLBIN##*/} chroot <directory> [command]
+" && exit
+
+[ -z "$1" ] && set -- busybox sh
+
+chroot_bind() {
+	busybox mount --rbind --rslave $1 "$WRK$1"
+}
+
+chroot_unbind() {
+	busybox umount -rfl "$WRK$1"
+}
+
+chroot_start() {
+	chroot_bind /proc
+	chroot_bind /dev
+	chroot_bind /sys
+	chroot_bind /tmp
+	chroot_bind /etc/resolv.conf 
+
+	busybox unshare --fork --pid busybox chroot "$WRK" $@
+}
+
+chroot_exit() {
+	chroot_unbind /proc
+	chroot_unbind /dev
+	chroot_unbind /sys
+	chroot_unbind /tmp
+	chroot_unbind /etc/resolv.conf 
+}
+
+trap chroot_exit EXIT
+
+chroot_start $@
