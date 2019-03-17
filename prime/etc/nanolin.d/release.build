@@ -10,24 +10,20 @@ TAR="$DIR/work/$IMG-release.tgz"
 OUT="$DIR/$IMG-release.tgz"
 REL="Nanolin.$IMG"
 
-[ -z "$KNL" ] && export KNL="$IMG"
-
-shift
-
-[ -z "$DSK" ] && export DSK="$@"
-
-#load config file if it exists
+# load config file if it exists
 [ -e "$DIR/config" ] && source "$DIR/config"
 
-#alias chroot for easy work
+# alias chroot for easy work
 alias busybox="$WRK/usr/bin/busybox"
 alias workrun="'$NLDIR/chroot' '$WRK'"
 alias workbox="workrun /usr/bin/busybox"
 
+# display info pretty
 info() {
 	echo -e "\e[1m$@\e[21m"
 }
 
+# remove a file from the build
 rem_file() {
 	for x in $@; do
 		[ -e "/build$x" ] && echo "Removing $x"
@@ -35,6 +31,7 @@ rem_file() {
 	done
 }
 
+# add a file to the build
 add_file() {
 	for x in $@; do
 		echo "Adding $x"
@@ -42,6 +39,7 @@ add_file() {
 	done
 }
 
+# add a directory to the build
 add_dir() {
 	for x in $@; do
 		echo "Adding $x"
@@ -49,6 +47,7 @@ add_dir() {
 	done
 }
 
+# download a URL
 get_url() {
 	for x in $@; do
 		[ -e "${x##*/}" ] && continue
@@ -58,7 +57,8 @@ get_url() {
 	done
 }
 
-setup_dir() {
+# setup a root directory
+setup_root() {
 	rm -rf $1
 	mkdir -p $1
 	cd $1
@@ -111,6 +111,7 @@ setup_dir() {
 	cd -
 }
 
+# apply a patch to source
 patch_src() {
 	local _SRC="$1"
 	local _CNT="0"
@@ -129,12 +130,14 @@ patch_src() {
 	[ "$_CNT" -gt 0 ] && return 0 || return 1 
 }
 
+# create image from directory
 img_dir() {
 	echo "Creating image $2 from $1"
 
 	(cd "$1"; find . | busybox cpio -o -H newc) | busybox gzip -9 > "$2"
 }
 
+# run a shell script in the given directory
 run_in_dir() {
 	local _SRC=$1
 	local _DIR=$2
@@ -166,9 +169,31 @@ fi
 
 # generate verify keys if needed
 if [ ! -e "$DIR/verify.pub" ] || [ ! -e "$DIR/verify.sec" ]; then
-	info "Generating verify key for release"
+	info "Generating verification keys for release"
 
 	signify -Gn -p "$DIR/verify.pub" -s "$DIR/verify.sec"
+fi
+
+# build dependencies
+get_deps () {
+	local _STG="$@"
+
+	for s in $@; do
+		local _SRC="$(readlink -f "$s")"
+
+		for d in $(cat $_SRC/depends 2>/dev/null || echo "prime"); do
+			[ -z "$(echo " $_STG " | grep -o " $d ")" ] && _STG="$(get_deps $d $_STG)"
+		done
+	done
+
+	echo $_STG
+}
+
+# only build STG once and test if we need to do things that way
+if [ -z "$STG" ]; then
+       	STG="$(get_deps $@)"
+
+	[ "$(echo $@)" != "$STG" ] && exec "$0" $STG
 fi
 
 info "Preparing to build from $SRC" 
@@ -176,7 +201,7 @@ info "Preparing to build from $SRC"
 # recreate build directory fresh 
 mkdir -p "$GEN"
 echo "setup $WRK/build"
-setup_dir "$WRK/build" 
+setup_root "$WRK/build" 
 rm -rf "$WRK/image.gz" "$TAR"
 
 # make sure we have a version but only record once
@@ -184,20 +209,23 @@ if [ ! -e "$GEN/.version" ]; then
 	date +%y.%m-G%d%H%M%S > "$GEN/.version"
 fi
 
-# create release
+# create release string
 echo "Storing version and verify.pub key"
 REL="$REL-$(cat "$GEN/.version")"
 OUT="$REL.tgz"
+
+# add version and verify.pub to etc
 mkdir -p "$WRK/etc"
 echo "$REL" > "$WRK/etc/version"
 cp "$DIR/verify.pub" "$WRK/etc/verify.pub"
 
-#packstrap busybox + packages
+# packstrap busybox + packages
 info "Pacstrap $SRC/packages"
+#pacman-key --refresh-keys
 ! pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null) && echo "
-pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null)
+Error in pacstrap call. Aborting build for $IMG.
 
-Error in pacsrap call. Aborting build for $IMG.
+pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null)
 " && exit
 
 info "Preparing build environment"
@@ -205,9 +233,9 @@ info "Preparing build environment"
 echo "Setting up busybox commands in chroot"
 workbox --install -s /bin
 
-# tar copy everything except build.sh and pakages from $SRC
+# tar copy everything except build.sh, pakages and depends from $SRC
 echo "Copying files to $WRK/build"
-tar -C "$SRC" --exclude=build.sh --exclude=packages -cf - . | tar -C "$WRK/build" -xf -
+tar -C "$SRC" --exclude=build.sh --exclude=packages --exclude=depends -cf - . | tar -C "$WRK/build" -xf -
 
 # if we have a build.sh file copy it to $WRK
 [ -e "$SRC/build.sh" ] && run_in_dir "$SRC/build.sh" "$WRK" || exit
@@ -224,8 +252,17 @@ info "Adding image to release"
 echo "Copying image to $GEN/$IMG"
 mv "$WRK/image.gz" "$GEN/$IMG"
 
-# continue building next target
-[ -z "$@" ] || exec $0 $@
+# set kernel name to $IMG
+[ -z "$KNL" ] && export KNL="$IMG"
+
+# then remove an argument
+shift
+
+# then set $DSK
+[ -z "$DSK" ] && export DSK="$@"
+
+# check if we need to  continue building next target
+[ -n "$@" ] && exec "$0" $@
 
 # finalize target
 info "Finalizing $REL release tarball"

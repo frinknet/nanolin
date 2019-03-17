@@ -6,5 +6,5 @@ This is very much WIP
 # building
 
 ```shell
-./build.sh kernel prime
+./nanolin realease build prime
 ```
