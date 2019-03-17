@@ -139,8 +139,6 @@ run_in_dir() {
 	local _SRC=$1
 	local _DIR=$2
 
-	
-
 	info "Running $_SRC"
 
 	if ! (cd "$_DIR"; source "$_SRC"); then
