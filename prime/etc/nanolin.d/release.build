@@ -13,7 +13,7 @@ REL="Nanolin.$IMG"
 # load config file if it exists
 [ -e "$DIR/config" ] && source "$DIR/config"
 
-# alias chroot for easy work
+# alias chroot and busybox for easy work
 alias busybox="$WRK/usr/bin/busybox"
 alias workrun="'$NLDIR/chroot' '$WRK'"
 alias workbox="workrun /usr/bin/busybox"
@@ -251,15 +251,18 @@ tar -C "$SRC" --exclude=build.sh --exclude=packages --exclude=depends -cf - . | 
 # now start to put the build image together 
 info "Adding image to release"
 
-# if there is not a build image file genrate one if there is a build directory
-[ ! -e "$WRK/image.gz" ] && [ -e "$WRK/build" ] && img_dir "$WRK/build" "$WRK/image.gz"
+# generate an image if we need to...
+if [ ! -e "$WRK/image.gz" ] && [ -e "$WRK/build" ]; then
+	# create the image for the build
+       	img_dir "$WRK/build" "$WRK/image.gz"
 
-# error if the image didn't get created
-[ ! -e "$WRK/image.gz" ] && echo "No image found at $WRK/image.gz" && exit
+	# display message if the image didn't get created
+	[ ! -e "$WRK/image.gz" ] && echo "No image found at $WRK/image.gz" && exit
 
-# add the image to the generation folder
-echo "Copying image to $GEN/$IMG"
-mv "$WRK/image.gz" "$GEN/$IMG"
+	# otherwise add the image to the generation folder
+	echo "Copying image to $GEN/$IMG"
+	mv "$WRK/image.gz" "$GEN/$IMG"
+fi
 
 # check if we need to  continue building next target
 [ -z "$@" ] || exec "$0" $@
@@ -267,7 +270,7 @@ mv "$WRK/image.gz" "$GEN/$IMG"
 # finalize target
 info "Finalizing $REL release tarball"
 
-# set kernel name to $IMG
+# set kernel name to the final $IMG
 [ -z "$KNL" ] && export KNL="$IMG"
 
 # then remove an argument

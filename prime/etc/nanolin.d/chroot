@@ -1,10 +1,15 @@
 #!/bin/sh
 
+# set the work directory
 WRK=$1
+
+# shift the arguments
 shift
 
+# make sure we have the right user permissions - possibly sudo
 [ $(id -u) != 0 ] && alias busybox="sudo busybox"
 
+# provide help if proper args not given
 [ -z "$WRK" ] && echo "$NLHDR
 	Change root with essentials mounts.
 
@@ -13,16 +18,20 @@ shift
 	${NLBIN##*/} chroot <directory> [command]
 " && exit
 
+# set the shell if nothing is passed
 [ -z "$1" ] && set -- busybox sh
 
+# basic bind for chroot
 chroot_bind() {
 	busybox mount --rbind --rslave $1 "$WRK$1"
 }
 
+# basic unbind for chroot
 chroot_unbind() {
 	busybox umount -rfl "$WRK$1"
 }
 
+# chroot environment setup
 chroot_start() {
 	chroot_bind /proc
 	chroot_bind /dev
@@ -33,6 +42,7 @@ chroot_start() {
 	busybox unshare --fork --pid busybox chroot "$WRK" $@
 }
 
+# chroot cleanup functions
 chroot_exit() {
 	chroot_unbind /proc
 	chroot_unbind /dev
@@ -41,6 +51,8 @@ chroot_exit() {
 	chroot_unbind /etc/resolv.conf 
 }
 
+# make sure we trap exit for cleanup
 trap chroot_exit EXIT
 
+# now we can start chroot
 chroot_start $@
