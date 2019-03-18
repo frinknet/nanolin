@@ -23,9 +23,9 @@ touch "$LNXDIR/.config.old"
 CONFDIFF=$(busybox comm -3 "build/config" "$LNXDIR/.config.old")
 
 # if no differences in config simply remove it
-#[ -z "$CONFDIFF" ] && rm build/config
+[ -z "$CONFDIFF" ] && rm build/config
 
-# add patches to build
+# otherwise add patches to build
 mv build/config $LNXDIR/.config
 mv build/*.patch ./  2>/dev/null
 

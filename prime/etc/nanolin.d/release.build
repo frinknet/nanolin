@@ -53,7 +53,7 @@ get_url() {
 		[ -e "${x##*/}" ] && continue
 
 		echo "Retrieving $x"
-		busybox wget "$x"
+		wget "$x"
 	done
 }
 
@@ -174,28 +174,29 @@ if [ ! -e "$DIR/verify.pub" ] || [ ! -e "$DIR/verify.sec" ]; then
 	signify -Gn -p "$DIR/verify.pub" -s "$DIR/verify.sec"
 fi
 
-# build dependencies
+# discover dependencies
 get_deps () {
-	local _STG="$@"
+	local _DEP="$@"
 
 	for s in $@; do
 		local _SRC="$(readlink -f "$s")"
 
-		for d in $(cat $_SRC/depends 2>/dev/null || echo "prime"); do
-			[ -z "$(echo " $_STG " | grep -o " $d ")" ] && _STG="$(get_deps $d $_STG)"
+		for d in $(cat $_SRC/depends 2>/dev/null); do
+			[ -z "$(echo " $_DEP " | busybox grep -o " $d ")" ] && _DEP="$(get_deps $d $_DEP)"
 		done
 	done
 
-	echo $_STG
+	echo $_DEP
 }
 
-# only build STG once and test if we need to do things that way
-if [ -z "$STG" ]; then
-       	STG="$(get_deps $@)"
+# setup dependency chain once
+if [ -z "$DEP" ]; then
+       	DEP="$(get_deps $@)"
 
-	[ "$(echo $@)" != "$STG" ] && exec "$0" $STG
+	[ "$(echo $@)" != "$DEP" ] && exec "$0" $DEP
 fi
 
+# now we can start building
 info "Preparing to build from $SRC" 
 
 # recreate build directory fresh 
@@ -221,14 +222,21 @@ cp "$DIR/verify.pub" "$WRK/etc/verify.pub"
 
 # packstrap busybox + packages
 info "Pacstrap $SRC/packages"
-#pacman-key --refresh-keys
 ! pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null) && echo "
 Error in pacstrap call. Aborting build for $IMG.
 
-pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null)
+	pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null)
+
+It may be a good idea to call:
+
+	pacman-key --refresh-keys
+
+That should take care of any latent problems.
 " && exit
 
+# now we move to the actual build process
 info "Preparing build environment"
+
 # install busybox in overlay build directory
 echo "Setting up busybox commands in chroot"
 workbox --install -s /bin
@@ -237,20 +245,27 @@ workbox --install -s /bin
 echo "Copying files to $WRK/build"
 tar -C "$SRC" --exclude=build.sh --exclude=packages --exclude=depends -cf - . | tar -C "$WRK/build" -xf -
 
-# if we have a build.sh file copy it to $WRK
-[ -e "$SRC/build.sh" ] && run_in_dir "$SRC/build.sh" "$WRK" || exit
+# if we have a build.sh run it now
+[ -e "$SRC/build.sh" ] && run_in_dir "$SRC/build.sh" "$WRK" || echo "Error in $SRC/build.sh" && exit
 
+# now start to put the build image together 
 info "Adding image to release"
 
-# if there is not a build image file genrate ona if there is a build directory
+# if there is not a build image file genrate one if there is a build directory
 [ ! -e "$WRK/image.gz" ] && [ -e "$WRK/build" ] && img_dir "$WRK/build" "$WRK/image.gz"
 
-# copy image
+# error if the image didn't get created
 [ ! -e "$WRK/image.gz" ] && echo "No image found at $WRK/image.gz" && exit
 
 # add the image to the generation folder
 echo "Copying image to $GEN/$IMG"
 mv "$WRK/image.gz" "$GEN/$IMG"
+
+# check if we need to  continue building next target
+[ -z "$@" ] || exec "$0" $@
+
+# finalize target
+info "Finalizing $REL release tarball"
 
 # set kernel name to $IMG
 [ -z "$KNL" ] && export KNL="$IMG"
@@ -260,12 +275,6 @@ shift
 
 # then set $DSK
 [ -z "$DSK" ] && export DSK="$@"
-
-# check if we need to  continue building next target
-[ -n "$@" ] && exec "$0" $@
-
-# finalize target
-info "Finalizing $REL release tarball"
 
 # generate boot file
 echo "PATH /$REL/
