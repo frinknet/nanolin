@@ -1,0 +1,95 @@
+PACKAGE busybox
+RELEASE prime
+VERSION 1.30.1
+COMMENT Utility Knife for Userspace
+	More Blah Bla for discription
+
+DEPENDS others other other
+CLASHES other
+ALIASES busybox 
+
+CONTACT Micon Frink <frink@frinknet.com>
+WEBSITE https://busybox.net
+LICENSE GPL 2.0
+
+REPOURL https://repo.net/packages/
+PKGDATE 19.03-G22030405
+PKGSIGN blabla 
+
+GETFILE https://busybox.net/downloads/$PACKAGE-$VERSION.tar.bz2 MD5
+
+PUTFILE filename
+	file contents
+
+PATCHES filename directory
+
+BUILDER $PACKAGE-$VERSION/busybox
+	make -C $PACKAGE-$VERSION \
+		CC=musl-gcc
+
+INSTALL /usr/bin/busybox
+	make -C $PACKAGE-$VERSION \
+		install
+
+REMOVED /usr/bin/busybox
+	rm -f /usr/bin/busybox
+
+
+build.sh
+#!/bin/sh
+(case "$1"
+*)
+	echo "unknown build target"
+	return 1
+	;;
+esac) || exit 1
+
+
+/var/packages/package.pkg
+/var/packages/package.lst
+/var/packages/package.tgz
+/var/packages/.installed
+    20190322G231233 sha1sum pkgname
+/var/packages/.freshness
+    sha1sum pkgname
+/var/packages/.repositories
+
+/var/releases/[name]/release
+/var/releases/[name]/otherdata
+
+/var/licenses/package
+
+/src/package
+
+/var/repo/packages-v1.2.3-r19.03-G22030455.img
+/var/repo/packages.sig
+/var/repo/manifest.tgz
+/var/repo/signature.pub
+
+nanolin package list available
+nanolin package list installed
+nanolin package list stale
+nanolin package list fresh
+nanolin package list deps name
+
+nanolin package find *
+nanolin package deps name
+nanolin package show name
+nanolin package make name name name
+
+nanolin package edit name
+nanolin package new name
+nanolin package get name
+
+nanolin package install name name name
+nanolin package remove name name name
+nanolin package chroot dir
+
+nanolin license package
+
+nanolin repo install url 
+nanolin repo remove url
+nanolin repo update url
+
+nanolin release new name
+nanolin release edit name

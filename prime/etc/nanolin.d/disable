@@ -3,13 +3,13 @@
 [ -z "$1" ] && echo "$NLHDR
 	Disables a Nanolin command.
 
-	Usage:
+    Usage:
 
 	${NLBIN##*/} disable <command>
 
-	Available Commands:
+    Available Commands:
 
-$(find $NLDIR -type f -perm +111 | sed "s%$NLDIR/%\t%g" | sort)
+$(busybox find $NLDIR -type f -perm +111 | sed "s%$NLDIR/%\t%g" | sort)
 " && exit
 
 chmod -x "$NLDIR/$(basename "$1")"

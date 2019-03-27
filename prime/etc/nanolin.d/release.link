@@ -1,15 +1,15 @@
 #!/bin/sh
 
 VAL="$1"
-DIR="/boot/$(basename "$1" tgz)"
+DIR="/boot/$(basename "$1" .tgz)"
 
 alias readlink="busybox readlink"
 
-# if there is release passed then read pinrelease
-[ -z "$VAL" ] && readlink /boot/.pinrelease 2>/dev/null && exit
+# if there is no release to link to print the current one
+[ -z "$VAL" ] && readlink /boot/.current 2>/dev/null && exit
 
-# if value is off remove the pinrelease 
-[ "$VAL" = "off" ] && rm -f /boot/.pinrelease && exit
+# if value is off then remove the current
+[ "$VAL" = "off" ] && rm -f /boot/.current && exit
 
 # make sure the link is valid 
 readlink -f "$DIR" > /dev/null || echo "$NLHDR
@@ -25,10 +25,11 @@ readlink -f "$DIR" > /dev/null || echo "$NLHDR
 " && exit 1
 
 # link to new release and show message
-ln -sfn "${DIR##*/}" /boot/.pinrelease || echo "$NLHDR
+ln -sfn "${DIR##*/}" /boot/.current || echo "$NLHDR
 	Release ${DIR##*/} linking failed for unknown reason.
 " && exit 1
 
 # notify success
 echo "$NLHDR
 	Release ${DIR##*/} linked.
+"

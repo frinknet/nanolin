@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "$NLHDR
+	TODO: create new release definition
+
+    Usage: 
+
+	${NLBIN##*/} link <release> 
+"

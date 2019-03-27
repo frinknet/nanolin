@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# check that package file exists
+PKGDEF=${2##*/}
+PKGDIR=${PKGDIR:-${2%%$PKGDEF}}
+PKGDIR=${PKGDIR:-/var/packages}
+PKGDOC="$PKGDIR/$PKGDEF"
+PKGSRC="/src/$PKGDEF"
+PKGRUN="$2"
+
+# make sure package exists
+[ ! -e "$PKHDOC" ] && echo "$NLHDR
+	Invalid package name $PKGDEF
+
+    Usage:
+
+	${NLBIN##*/} package script <script> <package>
+" && exit 1
+
+# pkgline helper function
+pkgline() { grep "^$1" "$PKGDOC" | sed "s%^$1 %%" }
+
+# description
+export PACKAGE=$(pkgline PACKAGE)
+export VERSION=$(pkgline VERSION)
+export COMMENT=$(pkgline COMMENT)
+
+# dependencies
+export DEPENDS=$(pkgline DEPENDS)
+export CLASHES=$(pkgline CLASHES)
+export ALIASES=$(pkgline ALIASES)
+
+# support
+export CONTACT=$(pkgline CONTACT)
+export WEBSITE=$(pkgline WEBSITE)
+export LICENSE=$(pkgline LICENSE)
+
+# remote 
+export FROMURL=$(pkgline FROMURL)
+export UPDATED=$(pkgline UPDATED)
+export SIGNIFY=$(pkgline SIGNIFY)
+
+# build each
+case "$PKGRUN"
+BUILDER|INSTALL|REMOVES)
+	(echo '#!/bin/sh
+	BUILDER() {
+	cd "${0%/*}"
+	echo "'"$1"' $1"
+	case "$1"'
+	sed "s%$1 ([^\n]+)((\n\t[^\n]*|\n(\t\| )+)+)%\1)\2\n\t;;%p" "$PKGDEF"
+	echo '	;;
+	esac
+	}
+	'
+	grep "^$1" "$PKGDOC" | sed -r "s%(^$1 [^ ]*).*%\1%g"
+	) > "$PKGSRC/$1.sh"
+	sh "$PKGSRC/$1.sh"
+		;;
+*) echo "$NLHDR
+	Invalid script name $PKGRUN
+
+    Usage:
+
+	${NLBIN##*/} package script <script> <package>
+" && exit 1
+esac

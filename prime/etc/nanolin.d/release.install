@@ -6,22 +6,38 @@ BLKDEV=$(grep /boot /etc/mtab | cut -d' ' -f1)
 
 shift
 
-[ -z "$BLKDEV" ] && echo "Install failed. /boot/ is not mounted." && exit
+die() {
+echo "$NLHDR
+	$1
 
+    Usage:
+
+    	${NLBIN##*/} release install <release>
+" && exit 1
+}
+
+# need to have /boot/ mounted before we can install a release
+[ -z "$BLKDEV" ] && die "Install failed. /boot/ is not mounted."
+
+#
 eval $(blkid $BLKDEV | cut -d: -f2)
 
-[ -e "$DIR" ] && echo "Relese ${DIR##*/} already exists." && exit
+# make sure we don't install over release
+[ -e "$DIR" ] && die "Relese ${DIR##*/} already exists."
 
+# mae the release directory
 mkdir -p "$DIR" 
 
+# extract everything to the release directory
 if ! tar xzf "$TAR" -C "$DIR"; then
 	rm -rf "$DIR"
-	echo "Failed to extract release."
-	exit
+	die "Failed to extract release."
 fi
 
+# set new release to current release
 ln -sfn "${DIR##*/}" /boot/.current && echo "Release ${DIR##*/} installed."
 
+# set boot partition in bootflags
 if [ -n "$UUID" ]; then
 	$NLDIR/config.bootflag bootfs UUID:$UUID
 elif [ -n "$LABEL" ]; then

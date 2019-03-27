@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#runs thinks only one
+
 alias runlock="$NLDIR/lock"
 
 # check to see whether it was run previously

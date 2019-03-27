@@ -9,11 +9,12 @@ TIME="$3"
 shift
 shift
 
+# show usage if we don't have a lock
 [ -z "$LOCK" ] && echo "$NLHDR
 
 	Handle runlock conditions.
 
-	Usage:
+    Usage:
 	
 	${NLBIN##*/} lock new <lock> [values]
 	${NLBIN##*/} lock set <lock> [values]
@@ -26,8 +27,10 @@ shift
 	${NLBIN##*/} lock time <lock>
 " && exit
 
+# make sure we have a runlock dir
 export NLRLK="${NLRLK:-/run/lock}"
 
+# get a specific runlock file for usecase
 RUNLOCK="$NLRLK/${NLBIN##*/}-$LOCK.$USER"
 
 pidwait() {
@@ -42,9 +45,13 @@ pidwait() {
 
 # case for various modes
 case "$ACT" in
+	# add a new runlock
 	new) echo $@ > "$RUNLOCK";;
+	# set the value of the runlock
 	set) [ -e "$RUNLOCK" ] && echo $@ > "$RUNLOCK";;
+	# append values to the runlock
 	add) [ -e "$RUNLOCK" ] && echo $@ >> "$RUNLOCK";;
+	# get a runlock with optional waitime
 	get)
 		CNT=$((20 * ${TIME:-0}))
 
@@ -55,16 +62,22 @@ case "$ACT" in
 		done
 
 		[ -e "$RUNLOCK" ] && cat "$RUNLOCK";;
+	# remove a runlock
 	del) [ -e "$RUNLOCK" ] && rm "$RUNLOCK";;
+	# check if the runlock exists for scripting
 	has) [ -e "$RUNLOCK" ]; exit $?;;
+	# check if the lock does not exist
 	not) [ ! -e "$RUNLOCK" ]; exit $?;;
+	# wait until the lock finishes
 	wait)
 		TIME=$LOCK
 
 		for LOCK in $@; do
 			pidwait $(runlock get $LOCK ${TIME:-20})
 		done;;
+	# get the runlock creation time
 	time) [ -e "$RUNLOCK" ] && stat -c %y "$RUNLOCK";;
+	# otherwise you did something wrong
 	*) echo "$NLHDR
 	Not a valid runlock action.
 	" && exit;;

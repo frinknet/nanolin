@@ -1,0 +1,87 @@
+#!/bin/sh
+
+DIR=${1:-.}
+RAND=$(od -A n -t d -N 3 /dev/urandom | tr -d ' ')
+TMP=/tmp/compymark-$RAND
+
+rm -f .copymark*
+
+mkdir -p $TMP
+
+for x in $(grep -l "Copyright.*\d" $(find $DIR -name "*.h" -o -name "*.c")); do
+	mkdir -p $TMP/$(dirname $x)
+	sed -rn '
+		:a
+		N
+		$!ba
+
+		# fix CRLF
+		s/\r\n?/\n/g
+
+		# reduce file to copyright comment
+		s/.*(\/\*.*Copyright.*?\*\/).*/\1/g
+
+		# remove everything after the first copyright 
+		s/(\*\/).*/\1/g
+
+		# remove slashes 
+		s/^\//\n/g
+		s/\/$//g
+
+		# remove leading stars
+		s/\n[ 	]*\*+[ 	]*/\n/g
+
+		# remove junk
+		s/\n[^\n]*[$][^\n]*//g
+
+		# trim \n
+		s/^\n*//g
+		s/\n*$//g
+
+		# show output
+		/.*/p
+	' "$x" > "$TMP/$x.tmp"
+
+	# remove punctuation "all rights reserved" erroronious language and email address which are not part of copyright
+	# format punctuation correctly. Standardize (c)
+	grep "^Copyright" "$TMP/$x.tmp" \
+	 | sed 's/ [(][Cc][)]\|All rights reserved\|[,.]\|<[^>]*>//g'\
+	 | sed -r 's/([0-9]) /\1, /g;s/-/, /g;s/Copyright/Copyright (c)/g' >> .copymark_holders
+
+	# remove copyright line
+	grep -v "^Copyright" "$TMP/$x.tmp" > "$TMP/$x"
+	rm "$TMP/$x.tmp"
+done
+
+sha1sum $(find $TMP -type f -name "*.?*") >> .copymark_inventory
+
+(
+	basename $(readlink -f "$DIR")
+	echo
+	echo "ALL COPYRIGHT HOLDERS:"
+	cat .copymark_holders | sort -rud
+	echo
+	
+	[ -e LICENSE ] && echo "SOURCE LICENSE:" && echo && cat LICENSE && echo
+	[ -e COPYING ] && echo "COPY REGULATION:" && echo && cat COPYING && echo
+
+	for x in $(cat .copymark_inventory | cut -c 1-40 | sort -u); do
+		echo
+		echo "FOR THE FILES:"
+		grep "$x" .copymark_inventory | cut -c 43-1000 | sed "s%$TMP/%%g" | sort
+		cat $(grep -m 1 "$x" .copymark_inventory | cut -c 43-1000)
+	done
+) > "$DIR/.copymark"
+
+rm -rf $TMP
+
+echo
+echo "PACKAGE: $(basename $(readlink -f "$DIR"))"
+echo
+echo "TOP RIGHTS HOLDERS:"
+cat .copymark_holders | sort -rud | head -5
+echo
+echo "Full copymarks and licensing in:"
+echo 
+echo "	$DIR/.copymark"
+echo

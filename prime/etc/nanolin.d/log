@@ -3,7 +3,7 @@
 export NLLOG="${NLLOG:-/var/log/${NLBIN##*/}}"
 
 [ -z "$1" ] && echo "$NLHDR
-	Usage:
+    Usage:
 
 	${NLBIN##*/} logtime <action> [note]
 

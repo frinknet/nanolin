@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# make sure we get a key
+[ -z "$1" ] && echo "$NLHDR
+	Shows the value of kernel boot flags.
+
+	Usage:
+
+	${NLBIN##*/} kernel <flag>
+" && exit
+
+# get the value of the particular flag
+VAL="$(sed -n "s%^.*\(\b$1\(=\S\+\)\?\b\).*$%\1%p" /proc/cmdline)"
+
+# output the value
+echo ${VAL##*=}

@@ -1,7 +1,18 @@
 #!/bin/sh
 
+# just show the system owner if there is one
 [ -z "$1" ] && readlink /boot/.systemowner 2>/dev/null && exit
 
+# otherwise set the system ownwer
 readlink -f "/boot/.users/${1##*/}" >/dev/null && echo ${1##*/} > /boot/.systemowner && exit
 
-echo "Not a valid userid for system owner."
+# or show this message if nothing else can be done
+ echo "$NLHDR
+
+ 	No valid userid for system owner.
+
+    Please set the value:
+
+	${NLBIN##*/} ${NLACT/./ } <userid>
+
+ " && exit

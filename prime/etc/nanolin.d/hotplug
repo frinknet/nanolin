@@ -11,18 +11,18 @@ shift
 [ -z "$TYPE" ] && echo "$NLHDR
 	Manage the hotplug actions for a specific type of device. 
 
-	Usage:
+    Usage:
 
 	${NLBIN##*/} hotplug <action> <type> <device>
 
-	Actions:
+    Actions:
 
 	add
 	remove
 
-	Types:
+    Types:
 
-$(find $NLDIR -type f -perm +111 -path "$0.*" | sed " s%^$0\.%\t%g" | sort)
+$(busybox find $NLDIR -type f -perm +111 -path "$0.*" | sed " s%^$0\.%\t%g" | sort)
 " && exit
 
 DEVICE=$(readlink -f $DEVICE)

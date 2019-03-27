@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export NLMSG="Handle integrity checks."
+export NLMSG="Release integrity checking..."
 export NLUSE="${NLBIN##*/} check <action> [option]"
 
 source $NLDIR/config

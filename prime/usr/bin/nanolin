@@ -1,22 +1,21 @@
 #!/bin/sh
 
 export NLDIR="${NLDIR:-/etc/nanolin.d}"
-export NLBIN="$0"
-export NLVER=1.0.3
+export NLBIN="$(readlink -f "$0")"
+export NLVER="1.1.4"
 export NLACT="${1##*/}"
 export NLHDR="
-Nanolin System Control Framework v$NLVER
-Copyright 2018 Frinknet and Friends
-License: GPL v2.0
+- Nanolin System Control Framework - v$NLVER -
+Copyright 2019 Frinknet and Friends - GPL v2.0
 "
 export NLEXIT=0
 
 [ -z "$1" ] && echo "$NLHDR
-	Usage:
+    Usage:
 
 	nanolin <action> [options]
 
-	Actions:
+    Actions:
 	
 $(find "$NLDIR" -type f -perm +111 | sed "s%$NLDIR/%\t%g" | grep -v '\.' | sort)
 " && exit
@@ -46,7 +45,7 @@ case $NLACT in
 	log|lock|check|silent|chroot|build) runexec $@ && NLEXIT=$?;;
 
 	# run action and children  waiting for the children to exit 
-	init|exit|login|logout|startup|shutdown) runeach $@ && NLEXIT=$?;;
+	init|exit|signin|signout|startup|shutdown) runeach $@ && NLEXIT=$?;;
 
 	# run and set runlock pid then remove it when finished
 	*) logcall $@ && (runexec $@ && NLEXIT=$?) & runlock new $NLACT $! && logwait $@ && runlock set $NLACT;;

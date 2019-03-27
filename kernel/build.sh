@@ -20,13 +20,12 @@ get_url https://www.kernel.org/pub/linux/kernel/projects/rt/${LNXVER%.*}/older/$
 touch "$LNXDIR/.config.old"
 
 # diff config before update with what we have since update may change it
-CONFDIFF=$(busybox comm -3 "build/config" "$LNXDIR/.config.old")
+CONFDIFF=$(busybox comm -3 "$SRC/linux.conf" "$LNXDIR/.config.old")
 
-# if no differences in config simply remove it
-[ -z "$CONFDIFF" ] && rm build/config
+# config simply remove it
+[ -n "$CONFDIFF" ] && inc_config linux $LNXDIR
 
 # otherwise add patches to build
-mv build/config $LNXDIR/.config
 mv build/*.patch ./  2>/dev/null
 
 # run all patches and check if the source was patched

@@ -10,4 +10,4 @@ export NLRLK="$PWD/work/lock"
 
 mkdir -p  "$NLRLK"
 
-source prime/usr/bin/nanolin
+source $(dirname "$0")/prime/usr/bin/nanolin

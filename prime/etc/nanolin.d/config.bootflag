@@ -4,10 +4,13 @@
 [ -z "$1" ] && echo "$NLHDR
 	Manipulate boot flags.
 
-	Usage:
+    Usage:
 
 	${NLBIN##*/} ${NLACT/./ } <flag> [value]
-" && exit
+
+    Flags:
+$(sed "s%APPEND%%;s% %\n\t%g;s%=% = %g" /boot/.bootflags)
+ " && exit
 
 # create a replacement string
 case $2 in

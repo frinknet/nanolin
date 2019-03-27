@@ -2,9 +2,9 @@
 
 # check usage
 [ -z "$1" ] && echo "$NLHDR
-	Runs a script and its children
+	Runs a script and its children with the supplied options.
 
-	Usage:
+    Usage:
 	
 	${NLBIN##*/} each <action> [options]
 " && exit
@@ -26,7 +26,7 @@ runlock new $NLACT $$
 
 # check that we have something to run
 [ ! -e "$NLDIR/$NLACT" ] && echo "$NLHDR
-	Command does not exist.
+    Command does not exist:
 
 	${NLBIN##*/} ${NLACT/./ } $@
 " && exit
@@ -34,11 +34,12 @@ runlock new $NLACT $$
 # run parent syncronous
 logcall $@ && runexec $@ && NLEXIT=$((NLEXIT+$?)) && logexit $@
 
-# loop through actions 
+# loop through actions running asyncronously 
 for NLDO in "$NLDIR/$NLACT".*; do
 	# make sure we can execute
 	[ ! -x "$NLDO" ] && continue
 
+	# aggregate all calls to wait for
 	NLWAIT="$NLWAIT ${NLDO##*/}"
 
 	# filter out last
