@@ -1,12 +1,12 @@
 #!/bin/sh
 
 # check that package file exists
+PKGRUN="$1"
 PKGDEF=${2##*/}
 PKGDIR=${PKGDIR:-${2%%$PKGDEF}}
 PKGDIR=${PKGDIR:-/var/packages}
 PKGDOC="$PKGDIR/$PKGDEF"
 PKGSRC="/src/$PKGDEF"
-PKGRUN="$2"
 
 # make sure package exists
 [ ! -e "$PKHDOC" ] && echo "$NLHDR
@@ -14,7 +14,7 @@ PKGRUN="$2"
 
     Usage:
 
-	${NLBIN##*/} package script <script> <package>
+	$NLCLI package script <script> <package>
 " && exit 1
 
 # pkgline helper function
@@ -41,28 +41,47 @@ export PKGDATE=$(pkgline PKGDATE)
 export PKGSIGN=$(pkgline PKGSIGN)
 export PKGDIST=$(pkgline PKGDIST)
 
-# build each
+# build script to execute
 case "$PKGRUN"
 BUILDER|INSTALL|REMOVES)
-	(echo '#!/bin/sh
-	BUILDER() {
-	cd "${0%/*}"
-	echo "'"$1"' $1"
-	case "$1"'
-	sed "s%$1 ([^\n]+)((\n\t[^\n]*|\n(\t\| )+)+)%\1)\2\n\t;;%p" "$PKGDEF"
-	echo '	;;
-	esac
-	}
-	'
-	grep "^$1" "$PKGDOC" | sed -r "s%(^$1 [^ ]*).*%\1%g"
-	) > "$PKGSRC/$1.sh"
-	sh "$PKGSRC/$1.sh"
-		;;
+	(
+	# add script header
+	echo -e '#!/bin/sh'
+
+	# start function
+	echo "$PKBRUN() {"
+
+	# switch to $PKGSRC to run
+	echo 'cd "${0%/*}"'
+
+	# let me know you're running
+	echo 'echo "'"$PKGRUN"' $1"'
+
+	# find the build to run
+	echo 'case "$1" in'
+
+	# add all builds in PKGDOC	
+	sed "s%$PKGRUN ([^\n]+)((\n\t[^\n]*|\n(\t\| )+)+)%\1)\2\n\t;;%p" "$PKGDOC"
+
+	# close out the switch case
+	echo -e "\t;;\nesac"
+
+	# close out function
+	echo "}"
+
+	# add calls to PKGRUN
+	grep "^$PKGRUN" "$PKGDOC" | sed -r "s%(^$PKGRUN [^ ]*).*%\1%g"
+
+	# pipe everything we've just written to file
+	) > "$PKGSRC/$PKGRUN.sh"
+
+	# run the newly created script
+	exec sh "$PKGSRC/$PKGRUN.sh";;
 *) echo "$NLHDR
 	Invalid script name $PKGRUN
 
     Usage:
 
-	${NLBIN##*/} package script <script> <package>
+	$NLCLI ${NLACT/./ } <script> <package>
 " && exit 1
 esac

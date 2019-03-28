@@ -17,11 +17,11 @@ readlink -f "$DIR" > /dev/null || echo "$NLHDR
 
     Usage:
 
-	${NLBIN##*/} link <release> 
+	$NLCLI ${NLACT/./ } <release> 
 
     Releases:
 
-    	$("$NLBIN" release list | sed "s%^%\t%g")
+$("$NLBIN" indent release list)
 " && exit 1
 
 # link to new release and show message

@@ -13,7 +13,7 @@ shift
 
     Usage:
 
-	${NLBIN##*/} hotplug <action> <type> <device>
+	$NLCLI ${NLACT/./ } <action> <type> <device>
 
     Actions:
 
@@ -29,4 +29,4 @@ DEVICE=$(readlink -f $DEVICE)
 
 [ -z "$DEVICE" ] && echo "Invalid device node." && exit
 
-"$NLBIN" each "hotplug.$TYPE"
+"$NLBIN" each "$NLACT.$TYPE"

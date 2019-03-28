@@ -13,6 +13,6 @@ readlink -f "/boot/.users/${1##*/}" >/dev/null && echo ${1##*/} > /boot/.systemo
 
     Please set the value:
 
-	${NLBIN##*/} ${NLACT/./ } <userid>
+	$NLCLI ${NLACT/./ } <userid>
 
  " && exit

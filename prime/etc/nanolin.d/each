@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -n "$NLDBG" ] && echo "DEBUG: ${NLBIN##*/} ${0##*/} $@ - $0"
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
 # check usage
 [ -z "$1" ] && echo "$NLHDR
@@ -8,10 +8,8 @@
 
     Usage:
 	
-	${NLBIN##*/} each <action> [options]
+	$NLCLI each <action> [options]
 " && exit
-
-[ -n "$NLDBG" ] && echo "DEBUG: ${NLBIN##*/} each $@"
 
 NLACT="${1##*/}"
 NLWAIT=""
@@ -22,8 +20,8 @@ shift
 # set aliases to shorten code
 alias runexec="'$NLDIR'/$NLACT"
 alias runlock="'$NLDIR'/lock"
-alias logcall="'$NLDIR'/log call ${NLBIN##*/} $NLACT"
-alias logexit="'$NLDIR'/log exit ${NLBIN##*/} $NLACT"
+alias logcall="'$NLDIR'/log call $NLCLI $NLACT"
+alias logexit="'$NLDIR'/log exit $NLCLI $NLACT"
 
 # set parent runlock
 runlock new $NLACT $$
@@ -32,7 +30,7 @@ runlock new $NLACT $$
 [ ! -e "$NLDIR/$NLACT" ] && echo "$NLHDR
     Command does not exist:
 
-	${NLBIN##*/} ${NLACT/./ } $@
+	$NLCLI ${NLACT/./ } $@
 " && exit
 
 # run parent syncronous

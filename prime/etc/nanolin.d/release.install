@@ -12,7 +12,7 @@ echo "$NLHDR
 
     Usage:
 
-    	${NLBIN##*/} release install <release>
+    	$NLCLI ${NLACT/./ } <release>
 " && exit 1
 }
 

@@ -17,7 +17,7 @@ readlink -f "$DIR" > /dev/null || echo "$NLHDR
 
     Usage:
 
-	${NLBIN##*/} link <release> 
+	$NLCLI ${NLACT/./ } <release> 
 
     Releases:
 

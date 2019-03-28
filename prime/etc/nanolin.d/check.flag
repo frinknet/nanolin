@@ -6,7 +6,7 @@
 
     Usage:
 
-	${NLBIN##*/} kflag <flag>
+	$NLCLI ${NLACT/./ } <flag>
 " && exit
 
 # get the value of the particular flag

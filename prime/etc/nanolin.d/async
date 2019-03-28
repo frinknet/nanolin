@@ -1,14 +1,14 @@
 #!/bin/sh
 
-[ -n "$NLDBG" ] && echo "DEBUG: ${NLBIN##*/} ${0##*/} $@ - $0"
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
 # usage check 
 [ -z "$1" ] && echo "$NLHDR
 	Run action asynchronously.
 
-	Usage:
+    Usage:
 
-	${NLBIN##*/} async <action> [options]
+	$NLCLI ${NLACT/./ } <action> [options]
 " && exit 1
 
 # run with locks and logging

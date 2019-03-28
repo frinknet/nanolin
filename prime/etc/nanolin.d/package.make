@@ -7,13 +7,22 @@ PKGDIR=${PKGDIR:-/var/packages}
 PKGSRC="${PKGSRC:-/src/$PKGDEF}"
 PKGDOC="$PKGDIR/$PKGDEF"
 
+# show usage if needed
+[ -z "$PKHDEF" ] && echo "$NLHDR
+	Build a Nanolin Package
+
+    Usage:
+
+	$NLCLI ${NLACT/./ } <package>
+" && exit 1
+
 # make sure package exists
 [ ! -e "$PKHDOC" ] && echo "$NLHDR
 	Invalid package name $PKGDEF
 
     Usage:
 
-	${NLBIN##*/} package make <package>
+	$NLCLI ${NLACT/./ } <package>
 " && exit 1
 
 mkdir -p "$PKGSRC"
@@ -127,7 +136,7 @@ grep "^PUTFILE" "$PKGDOC" | sed "s%^PUTFILE%%g" | runeach putfile
 grep "^PATCHES" "$PKGDOC" | sed "s%^PATCHES%%g" | runeach patchset
 
 # build source
-"$NLBIN" package script BUILDER "$1"
+"$NLBIN" package script BUILDER "$PKGDOC"
 
 # install
 # license

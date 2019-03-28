@@ -10,7 +10,7 @@ EDITOR=${EDITOR:-busybox vi}
 
     Usage:
 
-	${NLBIN##*/} command new <command>
+	$NLCLI ${NLACT/./ } <command>
 " && exit 1
 
 _CMD="$NLDIR/$_CMD"
@@ -18,9 +18,9 @@ _CMD="$NLDIR/$_CMD"
 [ -e "$_CMD" ] && echo "$NLHDR
 	Command already exists: ${_CMD##*/}	
 
-    You can edit it:
+    Edit a Command:
 
-	${NLBIN##*/} command edit ${_CMD##*/}	
+	$NLCLI command edit <command>	
 " && exit 1
 
 echo "#!/bin/sh" > "$_CMD"
@@ -34,7 +34,7 @@ echo "#!/bin/sh" > "$_CMD"
 echo "$NLHDR
 	Created command: ${_CMD##*/}
 
-    Now you can enable it:
+    Enable a Command:
 
-	${NLBIN##*/} command enable ${_CMD##*/}	
+	$NLCLI command enable <command>
 "

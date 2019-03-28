@@ -5,5 +5,5 @@ echo "$NLHDR
 
     Usage: 
 
-	${NLBIN##*/} link <release> 
+	$NLCLI ${NLACT/./ } <distro> 
 "

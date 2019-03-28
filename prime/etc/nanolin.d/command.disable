@@ -5,7 +5,7 @@
 
     Usage:
 
-	${NLBIN##*/} disable <command>
+	$NLCLI ${NLACT/./ } <command>
 
     Available Commands:
 

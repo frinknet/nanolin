@@ -1,26 +1,37 @@
 #!/bin/sh
 
+# essential variables for nanolin
+export NLCLI="${0##*/}"
 export NLDIR="${NLDIR:-/etc/nanolin.d}"
-export NLBIN="$0"
+export NLBIN="$(readlink -f "$0")"
 export NLVER="1.1.14"
 export NLACT="${1##*/}"
-export NLHDR="
-The Nanolin System Utilities - v$NLVER
+export NLHDR=\
+"The Nanolin System Utilities - v$NLVER
 (c) 2019 Frinknet and Lemurs - GPL 2.0
 WEBSITE: https://nanolin.frinknet.com/
 "
 export NLEXIT=0
 
+# add debug info
+[ -n "$NLDBG" ] && echo "DEBUG: $NLBIN $@"
+
+# show usage if no commands
 [ -z "$1" ] && echo "$NLHDR
     Usage:
 
-	nanolin <command> [options]
+	$NLCLI <command> [options]
 
-    Commands:
+    Basic Commands:
 	
-$("$NLBIN" indent command list primary)
+$("$NLBIN" indent command list parents)
+
+    Utility Commands:
+
+$("$NLBIN" indent command list utilities)
 " && exit
 
+# shift since NLACT is populated
 shift
 
 # check that the action exists before we go to any trouble
@@ -38,15 +49,13 @@ The user $USER does not have permission to execute $NLDIR/$NLACT.
 alias runeach="'$NLDIR'/each $NLACT"
 alias runexec="'$NLDIR'/$NLACT"
 alias runlock="'$NLDIR'/lock"
-alias logcall="'$NLDIR'/log call ${NLBIN##*/} $NLACT"
-alias logwait="runlock wait 0 $NLACT && '$NLDIR'/log exit ${NLBIN##*/} $NLACT"
-
-[ -n "$NLDBG" ] && echo "DEBUG: ${NLBIN##*/} $@ - $0"
+alias logcall="'$NLDIR'/log call $NLCLI $NLACT"
+alias logwait="runlock wait 0 $NLACT && '$NLDIR'/log exit $NLCLI $NLACT"
 
 # run action different for special actions 
 case $NLACT in
 	#  run immediately without runlocks
-	async|indent|silent|once|log|lock|check|chroot) runexec $@ && NLEXIT=$?;;
+	debug|async|indent|silent|once|log|lock|check|chroot) runexec $@ && NLEXIT=$?;;
 
 	# run action and children  waiting for the children to exit 
 	init|exit|signin|signout|startup|shutdown) runeach $@ && NLEXIT=$?;;

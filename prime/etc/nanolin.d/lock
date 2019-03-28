@@ -16,22 +16,22 @@ shift
 
     Usage:
 	
-	${NLBIN##*/} lock new <lock> [values]
-	${NLBIN##*/} lock set <lock> [values]
-	${NLBIN##*/} lock add <lock> [values]
-	${NLBIN##*/} lock get <lock> [waittime]
-	${NLBIN##*/} lock del <lock>
-	${NLBIN##*/} lock has <lock>
-	${NLBIN##*/} lock not <lock>
-	${NLBIN##*/} lock wait <lock>
-	${NLBIN##*/} lock time <lock>
+	$NLCLI ${NLACT/./ } new <lock> [values]
+	$NLCLI ${NLACT/./ } set <lock> [values]
+	$NLCLI ${NLACT/./ } add <lock> [values]
+	$NLCLI ${NLACT/./ } get <lock> [waittime]
+	$NLCLI ${NLACT/./ } del <lock>
+	$NLCLI ${NLACT/./ } has <lock>
+	$NLCLI ${NLACT/./ } not <lock>
+	$NLCLI ${NLACT/./ } wait <lock>
+	$NLCLI ${NLACT/./ } time <lock>
 " && exit
 
 # make sure we have a runlock dir
 export NLRLK="${NLRLK:-/run/lock}"
 
 # get a specific runlock file for usecase
-RUNLOCK="$NLRLK/${NLBIN##*/}-$LOCK.$USER"
+RUNLOCK="$NLRLK/$NLCLI-$LOCK.$USER"
 
 pidwait() {
 	[ -z "$1" ] && return

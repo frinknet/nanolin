@@ -9,11 +9,11 @@ shift
 [ -z "$REL" ] && echo "$NLHDR
 	Please specify a release to remove.
 	
-	Usage:
+    Usage:
 	
-	${NLBIN##*/} release remove <release>
+	$NLCLI ${NLACT/./ } <release>
 	
-	Releases:
+    Releases:
 	
 $(find /boot/ -maxdepth 1 -type d | grep 'G[0-9]\+$' | sed 's%/boot/%\t%g')
 " && exit
@@ -25,16 +25,24 @@ if [ "$REL" = "old" ]; then
 fi
 
 # need a valid release
-! busybox readlink -f "$DIR" >/dev/null && echo "Release ${DIR##*/} not found." && exit
+! busybox readlink -f "$DIR" >/dev/null && echo "$NLHDR
+	Release ${DIR##*/} not found.
+" && exit 1
 
 # need a release that not running
-[ "$REL" = "$(cat /etc/version 2>/dev/null)" ] && echo "Cannot remove current running release." && exit
+[ "$REL" = "$(cat /etc/version 2>/dev/null)" ] && echo "$NLHDR
+	Cannot remove current running release.
+" && exit 1
 
 # can't remove last release
-[ $(ls -tld "${DIR%%-*}"* | wc -l) -lt 2 ] && echo "Cannot remove the last release" && exit
+[ $(ls -tld "${DIR%%-*}"* | wc -l) -lt 2 ] && echo "
+	Cannot remove the last release
+" && exit 1
 
 # can remove now
-rm -rf "$DIR" && echo "Release ${DIR##*/} removed."
+rm -rf "$DIR" && echo "$NLHDR
+	Release ${DIR##*/} removed.
+"
 
 # may need to relink release
 ! busybox readlink -f "/boot/.current" > /dev/null && "$NLDIR/release.link" $(ls -td "${DIR%%-*}"*)

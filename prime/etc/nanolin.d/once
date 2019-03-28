@@ -4,9 +4,18 @@
 
 alias runlock="$NLDIR/lock"
 
+# usage check 
+[ -z "$1" ] && echo "$NLHDR
+	Run an action only once
+
+    Usage:
+
+	$NLCLI ${NLACT/./ } <action> [options]
+" && exit 1
+
 # check to see whether it was run previously
 runlock has $1 && echo "$NLHDR
-	${NLBIN##*/} $1
+	$NLCLI $1
 
 Was run previously at $(runlock time $1)
 " && exit 1

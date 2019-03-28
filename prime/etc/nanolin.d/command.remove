@@ -9,7 +9,7 @@ _CMD=$(echo "$_CMD" | sed "s%[^a-z.]%%g;s%\.$%%")
 
     Usage:
 
-	${NLBIN##*/} command remove <command>
+	$NLCLI ${NLACT/./ } <command>
 
     Available Commands:
 

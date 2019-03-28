@@ -6,7 +6,7 @@
 
     Usage:
 
-	${NLBIN##*/} ${NLACT/./ } <flag> [value]
+	$NLCLI ${NLACT/./ } <flag> [value]
 
     Flags:
 $(sed "s%APPEND%%;s% %\n\t%g;s%=% = %g" /boot/.bootflags)

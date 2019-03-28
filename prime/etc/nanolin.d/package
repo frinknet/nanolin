@@ -1,7 +1,8 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 export NLMSG="Manage release generation and installing "
-export NLUSE="${NLBIN##*/} package <action> [option]"
-export NLCMD="$NLBIN"
+#export NLCMD="$NLBIN"
 
 source "$NLDIR/config"

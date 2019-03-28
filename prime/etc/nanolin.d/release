@@ -1,7 +1,6 @@
 #!/bin/sh
 
 export NLMSG="Manage release updates and installing "
-export NLUSE="${NLBIN##*/} config release <action> [option]"
 
 source "$NLDIR/config"
 

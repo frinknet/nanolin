@@ -1,6 +1,5 @@
 #!/bin/sh
 
 export NLMSG="Handle account creation and updates."
-export NLUSE="${NLBIN##*/} account <action> [option]"
 
 source $NLDIR/config

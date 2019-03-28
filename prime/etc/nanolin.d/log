@@ -1,14 +1,15 @@
 #!/bin/sh
 
-export NLLOG="${NLLOG:-/var/log/${NLBIN##*/}}"
+export NLLOG="${NLLOG:-/var/log/$NLCLI}"
 
 [ -z "$1" ] && echo "$NLHDR
     Usage:
 
-	${NLBIN##*/} logtime <action> [note]
+	$NLCLI ${NLACT/./ } <action> [note]
 
-Nanolin run log since boot:
-$(cat "$NLLOG")
+    Show Log:
+
+	$NLCLI ${NLACT/./ } show <count>
 " && exit
 
 [ ! -e /proc/uptime ] && exit
@@ -17,5 +18,11 @@ ACT=$1
 TIME=$(awk '{print $1}' /proc/uptime)
 
 shift
+
+[ "$ACT" == "show" ] && if [ "$2" -gt "0" ] > /dev/null; then
+	less "$NLLOG"
+else
+	tail -$2 "$NLLOG"
+fi && exit
 
 echo -e "$TIME\t$USER\t[$ACT]\t$@" >> "$NLLOG"

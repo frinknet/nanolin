@@ -13,9 +13,9 @@ shift
 [ -z "$WRK" ] && echo "$NLHDR
 	Change root with essentials mounts.
 
-	Usage:
+    Usage:
 
-	${NLBIN##*/} chroot <directory> [command]
+	$NLCLI ${NLACT/./ } <directory> [command]
 " && exit
 
 # set the shell if nothing is passed
