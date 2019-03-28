@@ -1,0 +1,15 @@
+#!/bin/sh
+
+[ -z "$2" ] && echo "$NLHDR
+	Change permission on a Nanolin Command.
+
+    Usage:
+
+	${NLBIN##*/} permit <command> <permissions>
+
+    Available Commands:
+
+$("$NLBIN" indent command list disabled)
+" && exit
+
+chmod ${2%%;*} "$NLDIR/${1##*/}"

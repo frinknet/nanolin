@@ -37,9 +37,10 @@ export WEBSITE=$(pkgline WEBSITE)
 export LICENSE=$(pkgline LICENSE)
 
 # remote 
-export FROMURL=$(pkgline FROMURL)
-export UPDATED=$(pkgline UPDATED)
-export SIGNIFY=$(pkgline SIGNIFY)
+export PKGREPO=$(pkgline PKGREPO)
+export PKGDATE=$(pkgline PKGDATE)
+export PKGSIGN=$(pkgline PKGSIGN)
+export PKGDIST=$(pkgline PKGDIST)
 
 # shell friendly answer to xargs -r
 runeach() {

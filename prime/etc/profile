@@ -13,9 +13,9 @@ which ldd > /dev/null || alias ldd=LD_TRACE_LOADED_OBJECTS=1
 # Screen display for X and encoding for GTK+ apps.
 G_FILENAME_ENCODING=iso8859-1
 
-nanolin async login
+nanolin async run login
 
-trap 'nanolin logout; exit' 0
+trap 'nanolin run logout; exit' 0
 
 export PATH LD_LIBRARY_PATH PS1 G_FILENAME_ENCODING ignoreeof LANG LC_ALL TZ
 umask 022

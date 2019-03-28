@@ -1,0 +1,36 @@
+PACKAGE busybox
+VERSION 1.30.1
+COMMENT Utility Knife for Userspace
+	More Blah Bla for discription
+
+ALIASES busybox 
+DEPENDS others other other
+CLASHES other
+
+CONTACT Micon Frink <frink@frinknet.com>
+WEBSITE https://busybox.net
+LICENSE GPL 2.0
+
+PKGREPO https://repo.net/packages/
+PKGDATE 19.03-G22030405
+PKGSIGN blabla 
+PKGDIST prime
+
+GETFILE https://busybox.net/downloads/$PACKAGE-$VERSION.tar.bz2 MD5
+
+PUTFILE filename
+	file contents
+
+PATCHES filename directory
+
+BUILDER $PACKAGE-$VERSION/busybox
+	make -C $PACKAGE-$VERSION \
+		CC=musl-gcc
+
+INSTALL /usr/bin/busybox
+	make -C $PACKAGE-$VERSION \
+		install
+
+REMOVED /usr/bin/busybox
+	rm -f /usr/bin/busybox
+

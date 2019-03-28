@@ -1,0 +1,31 @@
+#!/bin/sh
+
+_CMD=${1##*/}
+_CMD=$(echo "$_CMD" | sed "s%[^a-z.]%%g;s%\.$%%")
+
+# show help if now command
+[ -z "$_CMD" ] && echo "$NLHDR
+	Remove a Nanolin command.
+
+    Usage:
+
+	${NLBIN##*/} command remove <command>
+
+    Available Commands:
+
+$("$NLBIN" indent command list all)
+" && exit
+
+_CMD="$NLDIR/$_CMD"
+
+[ ! -e "$_CMD" ] && echo "$NLHDR
+	Command does not exists: ${_CMD##*/}	
+" && exit 1
+
+read -n1 -p "Are you sure you want to permanently remove: ${_CMD##*/} [y/N] " _REM < /dev/tty
+
+if echo "$_REM" | grep -qi Y; then
+	rm -f "$_CMD" && echo -e "\n\tRemoved: ${_CMD##*/}\n"
+else
+	echo -e "\n\n\tKeeping: ${_CMD##*/}\n"
+fi

@@ -5,6 +5,8 @@ export NLUSE="${NLUSE:-${NLBIN##*/} ${0##*/} <actions> [options]}"
 export NLCMD="${NLCMD:-$NLDIR/each}"
 export NLARG="${NLARG:-$0.$1}"
 
+[ -n "$NLDBG" ] && echo "DEBUG: ${NLBIN##*/} ${0##*/} $@ - $NLDIR/config"
+
 [ -z "$1" ] && echo "$NLHDR
 	$NLMSG
 
@@ -14,7 +16,7 @@ export NLARG="${NLARG:-$0.$1}"
 
     Actions:
 
-$(busybox find "$NLDIR" -type f -perm +111 -name "${0##*/}.*" | sed " s%^$0\.%\t%g" | sort)
+$("$NLBIN" indent command list ${0##*/})
 " && exit
 
 shift

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+[ -n "$NLDBG" ] && echo "DEBUG: ${NLBIN##*/} ${0##*/} $@ - $0"
+
+"$NLBIN" $@ | sed "s%^%\t%g"

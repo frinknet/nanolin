@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# make sure we have a list argument
+[ -z "$1" ] && echo "$NLHDR
+	List Nanolin Commands
+
+    Usage:
+
+	${NLBIN##*/} command list <type>
+
+    Available Types:
+
+	all
+	enabled
+	disabled
+	parents
+	primary
+
+    List Sub-Commands:
+
+$("$NLBIN" indent command list parents)
+" && exit 1
+
+# list any one of the
+case "$1" in
+	all) busybox find "$NLDIR" -type f | sed "s%$NLDIR/%%g" | sort;;
+	enabled) busybox find "$NLDIR" -type f -perm +111 | sed "s%$NLDIR/%%g" | sort;;
+	disabled) busybox find "$NLDIR" -type f ! -perm +111 | sed "s%$NLDIR/%%g" | sort;;
+	parents) busybox find "$NLDIR" -type f -name "*.*" | sed "s%$NLDIR/%%g;s%\.[^.]*$%%g" | sort -u;;
+	primary) busybox find "$NLDIR" -type f ! -name "*.*" | sed "s%$NLDIR/%%g" | sort;;
+	*) busybox find "$NLDIR" -type f -name "$1.*" | sed "s%$NLDIR/%%g;s%^$1\.%%g" | sort;;
+esac

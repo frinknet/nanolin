@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export NLMSG="Manage Nanolin Commands"
+export NLUSE="${NLBIN##*/} command <action> [option]"
+export NLCMD="$NLBIN"
+
+source "$NLDIR/config"

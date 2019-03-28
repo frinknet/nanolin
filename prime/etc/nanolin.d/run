@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export NLMSG="Run Level Management"
+export NLUSE="${NLBIN##*/} run <action> [option]"
+export NLCMD="$NLBIN"
+
+source "$NLDIR/config"

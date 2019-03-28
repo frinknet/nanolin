@@ -4,9 +4,9 @@
 [ -z "$1" ] && echo "$NLHDR
 	Shows the value of kernel boot flags.
 
-	Usage:
+    Usage:
 
-	${NLBIN##*/} kernel <flag>
+	${NLBIN##*/} kflag <flag>
 " && exit
 
 # get the value of the particular flag

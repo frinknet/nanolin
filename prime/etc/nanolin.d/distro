@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export NLMSG="Manage ditro building and editing"
+export NLUSE="${NLBIN##*/} distro <action> [option]"
+
+source "$NLDIR/config"

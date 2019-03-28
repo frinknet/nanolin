@@ -9,7 +9,7 @@
 
     Available Commands:
 
-$(busybox find $NLDIR -type f ! -perm +111 | sed "s%$NLDIR/%\t%g" | sort)
+$("$NLBIN" indent command list disabled)
 " && exit
 
-chmod +x "$NLDIR/$(basename "$1")"
+chmod +x "$NLDIR/${1##*/}"

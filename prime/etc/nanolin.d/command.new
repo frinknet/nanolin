@@ -1,0 +1,40 @@
+#!/bin/sh
+
+_CMD=${1##*/}
+_CMD=$(echo "$_CMD" | sed "s%[^a-z.]%%g;s%\.$%%")
+
+EDITOR=${EDITOR:-busybox vi}
+
+[ -z "$_CMD" ] && echo "$NLHDR
+	Create a new Nanolin Command	
+
+    Usage:
+
+	${NLBIN##*/} command new <command>
+" && exit 1
+
+_CMD="$NLDIR/$_CMD"
+
+[ -e "$_CMD" ] && echo "$NLHDR
+	Command already exists: ${_CMD##*/}	
+
+    You can edit it:
+
+	${NLBIN##*/} command edit ${_CMD##*/}	
+" && exit 1
+
+echo "#!/bin/sh" > "$_CMD"
+
+"$EDITOR" "$_CMD" < /dev/tty
+
+[ "#!/bin/sh" == "$(cat "$_CMD")" ] && rm -f "$_CMD" && echo "$NLHDR
+	Removing empty command: ${_CMD##*/}
+" && exit 1
+
+echo "$NLHDR
+	Created command: ${_CMD##*/}
+
+    Now you can enable it:
+
+	${NLBIN##*/} command enable ${_CMD##*/}	
+"

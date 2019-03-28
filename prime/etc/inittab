@@ -1,12 +1,12 @@
-::sysinit:/sbin/nanolin silent async startup
+::sysinit:/sbin/nanolin silent async run startup
 tty1::respawn:/sbin/getty -nl /sbin/autologin 38400 tty1
 #tty2::askfirst:/sbin/getty 38400 tty2
 #tty3::askfirst:/sbin/getty 38400 tty3
 #tty4::askfirst:/sbin/getty 38400 tty4
 #tty5::askfirst:/sbin/getty 38400 tty5
 #tty6::askfirst:/sbin/getty 38400 tty6
-::restart:/sbin/nanolin silent shutdown
+::restart:/sbin/nanolin silent run shutdown
 ::restart:/sbin/init
 ::ctrlaltdel:/sbin/reboot
-::shutdown:/sbin/nanolin silent shutdown
-::shutdown:/sbin/nanolin silent exit
+::shutdown:/sbin/nanolin silent run shutdown
+::shutdown:/sbin/nanolin silent run exit

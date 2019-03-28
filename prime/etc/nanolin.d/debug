@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export NLDBG=1
+
+"$NLBIN" $@

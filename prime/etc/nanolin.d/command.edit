@@ -1,0 +1,32 @@
+#!/bin/sh
+
+_CMD=${1##*/}
+_CMD=$(echo "$_CMD" | sed "s%[^a-z.]%%g;s%\.$%%")
+
+EDITOR=${EDITOR:-busybox vi}
+
+[ -z "$_CMD" ] && echo "$NLHDR
+	Edit a Nanolin Command	
+
+    Usage:
+
+	${NLBIN##*/} command edit <command>
+
+    Available Commands:
+
+$("$NLBIN" indent command list all)
+" && exit 1
+
+_CMD="$NLDIR/$_CMD"
+
+echo $_CMD
+
+[ ! -e "$_CMD" ] && echo "$NLHDR
+	Command does not exists: ${_CMD##*/}	
+
+    You can create it:
+
+	${NLBIN##*/} command new ${_CMD##*/}
+" && exit 1
+
+"$EDITOR" "$_CMD" < /dev/tty
