@@ -1,8 +1,8 @@
 #!/bin/sh
 
-export NLMSG="Manage Nanolin Commands"
-export NLCMD="$NLBIN"
-
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
+export NLMSG="Manage $NLSTR Commands"
+export NLCMD="$NLBIN"
 
 source "$NLDIR/config"

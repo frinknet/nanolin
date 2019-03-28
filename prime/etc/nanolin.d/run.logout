@@ -1,3 +1,5 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 # This run synchronous since it is the final program of the user.

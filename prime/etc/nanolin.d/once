@@ -1,7 +1,8 @@
 #!/bin/sh
 
-#runs thinks only one
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+#runs things only one
 alias runlock="$NLDIR/lock"
 
 # usage check 

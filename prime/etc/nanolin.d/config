@@ -1,9 +1,11 @@
 #!/bin/sh
 
-export NLMSG="${NLMSG:-Manage configuration options.}"
+export NLMSG="${NLMSG:-Manage Configuration Options}"
 export NLUSE="${NLUSE:-<actions> [options]}"
 export NLCMD="${NLCMD:-$NLDIR/each}"
 export NLARG="${NLARG:-${0##*/}.$1}"
+
+[ -n "$NLDBG" ] && echo "DEBUG: $NLDIR/config ${0##*/} $@"
 
 [ -z "$1" ] && echo "$NLHDR
 	$NLMSG
@@ -14,12 +16,12 @@ export NLARG="${NLARG:-${0##*/}.$1}"
 
     Actions:
 
-$("$NLBIN" indent command list ${0##*/})
-" && exit
+$(NLARG= "$NLBIN" indent command list ${0##*/})
+" && exit 1
 
 shift
 
-[ -n "$NLDBG" ] && echo "DEBUG: $NLCMD $NLARG $@"
+[ -n "$NLDBG" ] && echo "DEBUG: exec $NLCMD $NLARG $@"
 
 # run command
-"$NLCMD" "$NLARG" $@
+exec "$NLCMD" "$NLARG" $@

@@ -2,4 +2,6 @@
 
 export NLDBG=1
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 "$NLBIN" $@

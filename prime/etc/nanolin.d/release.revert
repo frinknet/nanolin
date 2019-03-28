@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 # call link to do the actual dirtywork
 "$NLDIR/release.link" $(find /boot/ -maxdepth 1 | grep 'G[0-9]\+$' | grep -v "$(busybox readlink -f "/boot/.current")")
 

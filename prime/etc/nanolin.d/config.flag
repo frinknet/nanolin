@@ -1,16 +1,17 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 # make sure we have a flag mentioned or show help 
 [ -z "$1" ] && echo "$NLHDR
-	Manipulate boot flags.
+	Manipulate System Bootflags
 
     Usage:
 
 	$NLCLI ${NLACT/./ } <flag> [value]
 
     Flags:
-$(sed "s%APPEND%%;s% %\n\t%g;s%=% = %g" /boot/.bootflags)
- " && exit
+	$(sed "s%APPEND%%;s% %\n\t%g;s%=% = %g" /boot/.bootflags)" && exit
 
 # create a replacement string
 case $2 in

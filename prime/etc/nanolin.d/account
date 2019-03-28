@@ -1,5 +1,7 @@
 #!/bin/sh
 
-export NLMSG="Handle account creation and updates."
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
+export NLMSG="Manage Accout Information"
 
 source $NLDIR/config

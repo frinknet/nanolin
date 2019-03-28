@@ -1,12 +1,18 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 # make sure we get a key
 [ -z "$1" ] && echo "$NLHDR
-	Shows the value of kernel boot flags.
+	Retrieve Live Bootflags
 
     Usage:
 
 	$NLCLI ${NLACT/./ } <flag>
+
+    Flags:
+
+	$(sed "s%APPEND%%;s% %\n\t%g;s%=% = %g" /proc/cmdline)
 " && exit
 
 # get the value of the particular flag

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 # check that package file exists
 PKGDEF=${1##*/}
 PKGDIR=${PKGDIR:-${1%%$PKGDEF}}
@@ -9,7 +11,7 @@ PKGDOC="$PKGDIR/$PKGDEF"
 
 # show usage if needed
 [ -z "$PKHDEF" ] && echo "$NLHDR
-	Build a Nanolin Package
+	Build a $NLSTR Package
 
     Usage:
 

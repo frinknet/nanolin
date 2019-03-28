@@ -1,12 +1,14 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 _CMD=${1##*/}
 _CMD=$(echo "$_CMD" | sed "s%[^a-z.]%%g;s%\.$%%")
 
 EDITOR=${EDITOR:-busybox vi}
 
 [ -z "$_CMD" ] && echo "$NLHDR
-	Create a new Nanolin Command	
+	Create a new $NLSTR Command	
 
     Usage:
 

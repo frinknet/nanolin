@@ -1,1 +1,4 @@
 #!/dev/sh
+
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+

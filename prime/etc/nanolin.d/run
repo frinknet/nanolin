@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 export NLMSG="Run Level Management"
 export NLCMD="$NLBIN"
 

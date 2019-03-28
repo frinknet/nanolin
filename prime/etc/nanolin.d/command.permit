@@ -1,7 +1,9 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 [ -z "$2" ] && echo "$NLHDR
-	Change permission on a Nanolin Command.
+	Change permission on a $NLSTR Command.
 
     Usage:
 

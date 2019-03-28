@@ -1,6 +1,8 @@
 #!/bin/sh
 
-export NLMSG="Release integrity checking..."
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
+export NLMSG="Retrieve System Information"
 export NLUSE="$NLBIM check <action> [option]"
 
 source $NLDIR/config

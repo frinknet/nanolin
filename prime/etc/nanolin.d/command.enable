@@ -1,7 +1,9 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 [ -z "$1" ] && echo "$NLHDR
-	Enable a Nanolin command.
+	Enable a $NLSTR command.
 
     Usage:
 

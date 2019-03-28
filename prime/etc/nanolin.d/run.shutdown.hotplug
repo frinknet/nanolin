@@ -1,3 +1,5 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 echo > /proc/sys/kernel/hotplug

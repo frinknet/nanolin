@@ -1,11 +1,13 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 _CMD=${1##*/}
 _CMD=$(echo "$_CMD" | sed "s%[^a-z.]%%g;s%\.$%%")
 
 # show help if now command
 [ -z "$_CMD" ] && echo "$NLHDR
-	Remove a Nanolin command.
+	Remove a $NLSTR command.
 
     Usage:
 

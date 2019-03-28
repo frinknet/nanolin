@@ -1,4 +1,6 @@
 #!/bin/sh
 
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
 find /boot/ -maxdepth 1 -type d | grep 'G[0-9]\+$' | sed 's%/boot/%%g'
 

@@ -4,7 +4,7 @@
 
 # make sure we have a list argument
 [ -z "$1" ] && echo "$NLHDR
-	List Nanolin Commands
+	List $NLSTR Commands
 
     Usage:
 
@@ -26,13 +26,20 @@ $("$NLBIN" indent command list parents)
 alias find="busybox find"
 alias sed="busybox sed"
 
-# list any one of the
+# list any one of the selections
 case "$1" in
+	# show all packages
 	all) find "$NLDIR" -type f | sed "s%$NLDIR/%%g" | sort;;
+	# show enabled packages
 	enabled) find "$NLDIR" -type f -perm +111 | sed "s%$NLDIR/%%g" | sort;;
+	# show disabled packages
 	disabled) find "$NLDIR" -type f ! -perm +111 | sed "s%$NLDIR/%%g" | sort;;
+	# show parents with children
 	parents) find "$NLDIR" -type f -name "*.*" | sed "s%$NLDIR/%%g;s%\\..*$%%g" | sort -u;;
+	# show only top level
 	primary) find "$NLDIR" -type f ! -name "*.*" | sed "s%$NLDIR/%%g" | sort;;
+	# show only non-parent packages
 	utilities) "$0" primary | grep -v "$("$0" parents | tr "\n" " " | sed "s% $%%;s% %\\\\|%g")";; 
+	# search for children
 	*) find "$NLDIR" -type f -name "$1.*" | sed "s%$NLDIR/%%g;s%^$1\.%%g" | sort;;
 esac
