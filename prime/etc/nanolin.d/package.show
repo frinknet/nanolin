@@ -2,3 +2,6 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+
+# show <pkgname>
+# show <pkgname> <dataline>

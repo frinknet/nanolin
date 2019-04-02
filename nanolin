@@ -1,12 +1,12 @@
 #!/bin/busybox sh
 
-for x in busybox --list; do
-	alias $x="busybox $x"
-done
-
 export NLDIR="$PWD/prime/etc/nanolin.d"
 export NLLOG="$PWD/work/nanolin.log"
 export NLRLK="$PWD/work/lock"
+
+export PKGDIR="$PWD/packages"
+export PKGSRC="$PWD/work"
+export PKGOUT="$PWD/work/out"
 
 mkdir -p  "$NLRLK"
 

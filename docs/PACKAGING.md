@@ -9,7 +9,7 @@ releases to fully managed upgrades.
 
 ## packages
 
-Packages are defined in severa ways. First there is the **.rcp** file which is
+Packages are defined in severa ways. First there is the **recipe** file which is
 a recipe for the package. Then there is the **.lst** file which contains a list
 of all installed installed files. Then there is the **.img** file which contains
 a compiled binary package, And finally there is a  **.sig** file for signing the
@@ -54,3 +54,5 @@ their specific application.
 Buth package and releases can be used to create file system overlays allowing for
 dynamic use cases and secure multipurpose systems. This allows for parts of the
 system to be turned on and off dynamically. 
+
+SEE ALSO: PACKAGERECIPE.md

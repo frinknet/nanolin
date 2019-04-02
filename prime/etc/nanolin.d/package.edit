@@ -2,3 +2,27 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+PKGDEF=${1##/*}
+PKGDIR=${PKGDIR:-/var/packages}
+PKGDOC="$PKGDIR/$PKGDEF"
+
+EDITOR=${EDITOR:-busybox vi}
+
+[ -z "$PKGDEF" ] && echo "$NLHDR
+	Edit a $NLSTR Package	
+
+    Usage:
+
+	$NLCLI ${NLACT/./ } <package>
+" && exit 1
+
+[ ! -e "$PKGDOC" ] && echo "$NLHDR
+	Package does not exists: $PKGDEF	
+
+    Create a Package:
+
+	$NLCLI package new <command>	
+" && exit 1
+
+
+"$EDITOR" "$PKGDOC" < /dev/tty

@@ -5,7 +5,7 @@ export NLUSE="${NLUSE:-<actions> [options]}"
 export NLCMD="${NLCMD:-$NLDIR/each}"
 export NLARG="${NLARG:-${0##*/}.$1}"
 
-[ -n "$NLDBG" ] && echo "DEBUG: $NLDIR/config ${0##*/} $@"
+[ -n "$NLDBG" ] && echo "DEBUG: $0 (config) $@"
 
 [ -z "$1" ] && echo "$NLHDR
 	$NLMSG

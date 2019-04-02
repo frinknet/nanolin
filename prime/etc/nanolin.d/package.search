@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PKGDIR=${PKGDIR:-/var/packages}
+
+cd "$PKGDIR"
+
+grep -ic "\b${@/ /\b\|\b}\b" * | \
+sed -r "s/([^:]*):(.*)/\2 \1/" | \
+xargs -n2 printf "%05d %s\n" | \
+sort -r | \
+grep -v "^00000" | \
+cut -c7-1000 | \
+xargs -n1 sed -r ":a;N;\$!ba;s%PACKAGE ([^\n]*)\n.*VERSION ([^\n]*)\n.*COMMENT ([^\n]*)\n.*%\1 [v\2] - \3%" | \
+grep --color -i "${@/ /\|}\|$"

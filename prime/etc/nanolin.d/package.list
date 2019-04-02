@@ -2,3 +2,12 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+
+# list system
+# list stale
+# list <pkgline> <pkgname>
+
+# search <phrase>
+
+
+
