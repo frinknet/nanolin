@@ -11,4 +11,4 @@ sort -r | \
 grep -v "^00000" | \
 cut -c7-1000 | \
 xargs -n1 sed -r ":a;N;\$!ba;s%PACKAGE ([^\n]*)\n.*VERSION ([^\n]*)\n.*COMMENT ([^\n]*)\n.*%\1 [v\2] - \3%" | \
-grep --color -i "${@/ /\|}\|$"
+grep --color -i "\b${@/ /\b\|\b}\b\|$"

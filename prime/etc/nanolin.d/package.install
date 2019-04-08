@@ -2,3 +2,18 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+# build dependency tree
+# ask about installing dependencies
+# ask about installing from binary
+
+# build trap on failure
+
+# acquire loop for package:
+# if from source make the package
+# otherwise download and verify source
+# if verification fails make the source
+
+# check that we have all sources
+# install all sources
+
+

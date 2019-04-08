@@ -1,5 +1,4 @@
-#
-# Automatically generated file; DO NOT EDIT.
+# NANOLIN included config
 # Linux/x86 4.14.15 Kernel Configuration
 #
 CONFIG_64BIT=y

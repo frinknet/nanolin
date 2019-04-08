@@ -4,4 +4,36 @@
 
 
 # show <pkgname>
-# show <pkgname> <dataline>
+# PACKAGE-VERSION+REVISION: COMMENT-LINE
+# 	DESCRIPTION
+#
+
+# show <pkgname> oneline
+# pkgshow | head -1 
+
+# show <pkgname> allinfo
+# !pkgshow
+# !pkgshow provide
+# !pkgshow require
+# !pkgshow suggest
+# !pkgshow clashes
+# !pkgshow tooling
+# !pkgshow origins
+
+# show <pkgname> provide
+# show <pkgname> require
+# show <pkgname> suggest
+# show <pkgname> tooling
+# show <pkgname> clashes
+# PKGRUN: ...
+#
+
+# show <pkgname> origins
+# - License: LICENSE
+# - Contact: CONTACT
+# - Website: WEBSITE
+# - BugTalk: BUGTALK
+#
+# Package: DISTURL
+# PACKAGE-VERSION-REVISED-DISTREL-DISTGEN.pkg
+#

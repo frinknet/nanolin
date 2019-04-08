@@ -2,12 +2,15 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-
-# list system
 # list stale
-# list <pkgline> <pkgname>
+# list installed
+# list provides <pkgname...>
+# list requires <pkgname...>
+# list suggests <pkgname...>
+# list clashes <pkgname...>
+# list <pkgname...>
 
-# search <phrase>
-
+# each listing invokes:
+#pkgshow oneline
 
 

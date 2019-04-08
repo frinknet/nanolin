@@ -1,30 +1,26 @@
 PACKAGE busybox
 VERSION 1.30.1
+REVISED +31
 COMMENT BusyBox: The Swiss Army Knife of Embedded Linux
-	BusyBox combines tiny versions of many common UNIX utilities into a
-	single small executable. It provides replacements for most utilities
-	you usually find in GNU fileutils, shellutils, etc. The utilities in
-	BusyBox generally have fewer options that their full-featured GNU
-	cousins; however, the options included provide the expeted
-	functionality and behave very much like their GNU counterparts.
-	BusyBox provides a fairly complete environment for any small or
-	embedded environment.
+	BusyBox combines tiny versions of many common UNIX utilities
+	into a single small executable. It provides replacements for
+	most utilities you usually find in GNU fileutils, shellutils,
+	etc. The utilities in BusyBox generally have fewer options that
+	their full-featured GNU cousins; however, the options included
+	provide the expeted functionality and behave very much like
+	their GNU counterparts. BusyBox provides a fairly complete
+	userland toolset for any small or embedded environment.
 
 LICENSE GPL 2.0
 CONTACT Micon Frink <frink@frinknet.com>
 WEBSITE https://busybox.net/
 BUGTALK http://bugs.busybox.net/
 
-REVISED r31
-RELEASE R19.04
-GENESIS G01031223
-
-PROVIDE 
+REPLACE busybox*
+PROVIDE acpid addgroup adduser adjtimex ar arch arp arping ash awk base64 basename bbconfig bc beep blkdiscard blkid blockdev bootchartd brctl bunzip2 busybox bzcat bzip2 cal cat chattr chgrp chmod chown chpasswd chpst chroot chrt chvt cksum clear cmp comm cp cpio crond crontab cryptpw cttyhack cut date dc dd deallocvt delgroup deluser depmod df dhcprelay diff dirname dmesg dnsd dos2unix du dumpkmap dumpleases echo ed egrep eject env envdir envuidgid ether-wake expand expr factor fakeidentd fallocate false fatattr fbset fbsplash fdflush fdformat fdisk fgconsole fgrep find findfs flock fold free freeramdisk fsck fsck.minix fsfreeze fstrim fsync ftpd ftpget ftpput fuser getopt getty grep groups gunzip gzip halt hd hdparm head hexdump hexedit hostid hostname httpd hwclock i2cdetect i2cdump i2cget i2cset id ifconfig ifdown ifenslave ifplugd ifup inetd init inotifyd insmod install ionice iostat ip ipcalc ipcrm ipcs kbd_mode kill killall killall5 klogd less link linux32 linux64 linuxrc ln loadfont loadkmap logger login logname logread losetup lpd lpq lpr ls lsattr lsmod lsof lspci lsscsi lsusb lzcat lzma makedevs makemime man md5sum mdev mesg microcom mkdir mkdosfs mke2fs mkfifo mkfs.ext2 mkfs.vfat mknod mkpasswd mkswap mktemp modinfo modprobe more mount mountpoint mpstat mt mv nameif nanddump nandwrite nbd-client nc netstat nice nl nmeter nohup nproc nsenter nslookup ntpd od openvt partprobe passwd paste patch pgrep pidof ping ping6 pipe_progress pivot_root pkill pmap popmaildir poweroff powertop printenv printf ps pscan pstree pwd pwdx raidautorun rdate rdev readahead readlink readprofile realpath reboot reformime renice reset resize resume rev rfkill rm rmdir rmmod route rtcwake run-init run-parts runsv runsvdir script scriptreplay sed sendmail seq setarch setconsole setfattr setfont setkeycodes setlogcons setpriv setserial setsid setuidgid sh sha1sum sha256sum sha3sum sha512sum showkey shred shuf slattach sleep smemcap softlimit sort split ssl_client start-stop-daemon stat strings stty su sulogin sum sv svc svlogd svok swapoff swapon switch_root sync sysctl syslogd tac tail tar taskset tc tcpsvd tee telnet telnetd test tftp tftpd time timeout top touch tr traceroute traceroute6 true truncate tty ttysize tunctl tune2fs ubiattach ubidetach ubimkvol ubirename ubirmvol ubirsvol ubiupdatevol udhcpc udhcpc6 udhcpd udpsvd uevent umount uname uncompress unexpand uniq unix2dos unlink unlzma unshare unxz unzip uptime usleep uudecode uuencode vconfig vi vlock volname watch watchdog wc wget which whoami whois xargs xxd xz xzcat yes zcat zcip 
 REQUIRE 
-SUGGEST 
-
-DEPENDS 
-CLASHES 
+SUGGEST signify
+TOOLING make gcc musl
 
 GETFILE https://busybox.net/downloads/busybox-1.30.1.tar.bz2
 
@@ -1214,15 +1210,333 @@ PUTFILE busybox-1.30.1/.config
 	CONFIG_FEATURE_IPC_SYSLOG_BUFFER_SIZE=16
 	CONFIG_FEATURE_KMSG_SYSLOG=y
 
+PUTFILE testsuite.patch
+	--- testsuite.orig/cpio.tests
+	+++ testsuite/cpio.tests
+	@@ -129,27 +129,30 @@
+	 
+	 optional FEATURE_CPIO_O
+	 testing "cpio uses by default uid/gid" \
+	-"echo $0 | cpio -o -H newc | cpio -tv 2>&1 | tail -n +2 | awk ' { print \$2 } '; echo \$?" \
+	+"echo $0 | cpio -o -H newc | cpio -tv 2>&1 | awk ' { print \$2 } '; echo \$?" \
+	 "\
+	 $user/$group
+	+blocks
+	 0
+	 " "" ""
+	 SKIP=
+	 
+	 optional FEATURE_CPIO_O
+	 testing "cpio -R with create" \
+	-"echo $0 | cpio -o -H newc -R 1234:5678 | cpio -tv 2>&1 | tail -n +2 | awk ' { print \$2 } '; echo \$?" \
+	+"echo $0 | cpio -o -H newc -R 1234:5678 | cpio -tv 2>&1 | awk ' { print \$2 } '; echo \$?" \
+	 "\
+	 1234/5678
+	+blocks
+	 0
+	 " "" ""
+	 SKIP=
+	 
+	 optional FEATURE_CPIO_O
+	 testing "cpio -R with extract" \
+	-"echo $0 | cpio -o -H newc | cpio -tv -R 8765:4321 2>&1 | tail -n +2 | awk ' { print \$2 } '; echo \$?" \
+	+"echo $0 | cpio -o -H newc | cpio -tv -R 8765:4321 2>&1 | awk ' { print \$2 } '; echo \$?" \
+	 "\
+	 8765/4321
+	+blocks
+	 0
+	 " "" ""
+	 SKIP=
+	--- testsuite.orig/date/date-works-1
+	+++ /dev/null
+	@@ -1,134 +0,0 @@
+	-unset LANG
+	-unset LANGUAGE
+	-unset LC_TIME
+	-unset LC_ALL
+	-
+	-dt=`busybox date -d 1:2 +%T`
+	-test x"$dt" = x"01:02:00"
+	-
+	-dt=`busybox date -d 1:2:3 +%T`
+	-test x"$dt" = x"01:02:03"
+	-
+	-host_date=/bin/date
+	-
+	-# date (GNU coreutils) 6.10 reports:
+	-#	date: invalid date '1.2-3:4'
+	-# busybox 1.11.0.svn date reports:
+	-#	date: invalid date '1/2 3:4'
+	-
+	-# TODO: (1) compare with strings, not "host date"
+	-# (2) implement d/m[/y] hh:mm[:ss] fmt in date applet
+	-#hdt=`$host_date -d '1/2 3:4'`
+	-#dt=`busybox date -d 1.2-3:4`
+	-#test x"$hdt" = x"$dt"
+	-
+	-#hdt=`$host_date -d '1/2 3:4:5'`
+	-#dt=`busybox date -d 1.2-3:4:5`
+	-#test x"$hdt" = x"$dt"
+	-
+	-#hdt=`$host_date -d '1/2/1999 3:4'`
+	-#dt=`busybox date -d 1999.1.2-3:4`
+	-#test x"$hdt" = x"$dt"
+	-
+	-#hdt=`$host_date -d '1/2/1999 3:4:5'`
+	-#dt=`busybox date -d 1999.1.2-3:4:5`
+	-#test x"$hdt" = x"$dt"
+	-
+	-hdt=`$host_date -d '1999-1-2 3:4:5'`
+	-dt=`busybox date -d '1999-1-2 3:4:5'`
+	-test x"$hdt" = x"$dt"
+	-
+	-# Avoiding using week day in this evaluation, as it's mostly different every year
+	-# date (GNU coreutils) 6.10 reports:
+	-#	date: invalid date '01231133'
+	-#dt=`busybox date -d 01231133 +%c`
+	-#dt=`echo "$dt" | cut -b5-19`
+	-#test x"$dt" = x"Jan 23 11:33:00"
+	-
+	-# date (GNU coreutils) 6.10 reports:
+	-#	date: invalid date '012311332000'
+	-dt=`busybox date -d 200001231133 +%c`
+	-test x"$dt" = x"Sun Jan 23 11:33:00 2000"
+	-
+	-# date (GNU coreutils) 6.10 reports:
+	-#	date: invalid date '012311332000'
+	-dt=`busybox date -d 200001231133.30 +%c`
+	-test x"$dt" = x"Sun Jan 23 11:33:30 2000"
+	-
+	-lcbbd="LC_ALL=C busybox date"
+	-wd=$(eval $lcbbd +%a)		# weekday name
+	-mn=$(eval $lcbbd +%b)		# month name
+	-dm=$(eval $lcbbd +%e)		# day of month, space padded
+	-h=$(eval $lcbbd +%H)		# hour, zero padded
+	-m=$(eval $lcbbd +%M)		# minute, zero padded
+	-s=$(eval $lcbbd +%S)		# second, zero padded
+	-z=$(eval $lcbbd -u +%Z)		# time zone abbreviation
+	-y=$(eval $lcbbd +%Y)		# year
+	-
+	-res=OK
+	-case $wd in
+	-	Sun)
+	-		;;
+	-	Mon)
+	-		;;
+	-	Tue)
+	-		;;
+	-	Wed)
+	-		;;
+	-	Thu)
+	-		;;
+	-	Fri)
+	-		;;
+	-	Sat)
+	-		;;
+	-	*)
+	-		res=BAD
+	-		;;
+	-esac
+	-
+	-case $mn in
+	-	Jan)
+	-		;;
+	-	Feb)
+	-		;;
+	-	Mar)
+	-		;;
+	-	Apr)
+	-		;;
+	-	May)
+	-		;;
+	-	Jun)
+	-		;;
+	-	Jul)
+	-		;;
+	-	Aug)
+	-		;;
+	-	Sep)
+	-		;;
+	-	Oct)
+	-		;;
+	-	Nov)
+	-		;;
+	-	Dec)
+	-		;;
+	-	*)
+	-		res=BAD
+	-		;;
+	-esac
+	-
+	-dm=${dm# *}
+	-[ $dm -ge 1 ] && [ $dm -le 31 ] || res=BAD
+	-h=${h#0}
+	-[ $h -ge 0 ] && [ $h -le 23 ] || res=BAD
+	-m=${m#0}
+	-[ $m -ge 0 ] && [ $m -le 59 ] || res=BAD
+	-s=${s#0}
+	-[ $s -ge 0 ] && [ $s -le 59 ] || res=BAD
+	-[ $z = UTC ] || res=BAD
+	-[ $y -ge 1970 ] || res=BAD
+	-
+	-test x"$res" = xOK
+	-
+	-# This should error out (by showing usage text). Testing for that
+	-dt=`busybox date -d 012311332000.30 %+c 2>&1 | head -n 1`
+	-test x"${dt##BusyBox * multi-call binary*}" = x""
+	--- testsuite.orig/du/du-m-works
+	+++ /dev/null
+	@@ -1,4 +0,0 @@
+	-# FEATURE: CONFIG_FEATURE_HUMAN_READABLE
+	-
+	-dd if=/dev/zero of=file bs=1M count=1 2>/dev/null
+	-test x"`busybox du -m file`" = x"1	file"
+	--- testsuite.orig/echo/echo-prints-dash
+	+++ testsuite/echo/echo-prints-dash
+	@@ -1,2 +1,2 @@
+	 # FEATURE: CONFIG_DESKTOP
+	-test "`busybox echo - | od -t x1 | head -n 1`" = "0000000 2d 0a"
+	+test "`busybox echo - | hexdump | xargs`" = "0000000 0a2d 0000002"
+	--- testsuite.orig/echo/echo-prints-non-opts
+	+++ testsuite/echo/echo-prints-non-opts
+	@@ -1,2 +1,2 @@
+	 # FEATURE: CONFIG_DESKTOP
+	-test "`busybox echo -neEZ | od -t x1 | head -n 1`" = "0000000 2d 6e 65 45 5a 0a"
+	+test "`busybox echo -neEZ | hexdump | xargs`" = "0000000 6e2d 4565 0a5a 0000006"
+	--- testsuite.orig/echo/echo-prints-slash-zero
+	+++ testsuite/echo/echo-prints-slash-zero
+	@@ -1,3 +1,3 @@
+	 # FEATURE: CONFIG_FEATURE_FANCY_ECHO CONFIG_DESKTOP
+	 
+	-test "`busybox echo -e -n 'msg\n\0' | od -t x1 | head -n 1`" = "0000000 6d 73 67 0a 00"
+	+test "`busybox echo -e -n 'msg\n\0' | hexdump | xargs`" = "0000000 736d 0a67 0000 0000005"
+	--- testsuite.orig/echo/echo-prints-slash_00041
+	+++ testsuite/echo/echo-prints-slash_00041
+	@@ -1,3 +1,3 @@
+	 # FEATURE: CONFIG_FEATURE_FANCY_ECHO CONFIG_DESKTOP
+	 
+	-test "`busybox echo -ne '\00041z' | od -t x1 | head -n 1`" = "0000000 04 31 7a"
+	+test "`busybox echo -ne '\00041z' | hexdump | xargs`" = "0000000 3104 007a 0000003"
+	--- testsuite.orig/echo/echo-prints-slash_0041
+	+++ testsuite/echo/echo-prints-slash_0041
+	@@ -1,3 +1,3 @@
+	 # FEATURE: CONFIG_FEATURE_FANCY_ECHO CONFIG_DESKTOP
+	 
+	-test "`busybox echo -ne '\0041z' | od -t x1 | head -n 1`" = "0000000 21 7a"
+	+test "`busybox echo -ne '\0041z' | hexdump | xargs`" = "0000000 7a21 0000002"
+	--- testsuite.orig/echo/echo-prints-slash_041
+	+++ testsuite/echo/echo-prints-slash_041
+	@@ -1,3 +1,3 @@
+	 # FEATURE: CONFIG_FEATURE_FANCY_ECHO CONFIG_DESKTOP
+	 
+	-test "`busybox echo -ne '\041z' | od -t x1 | head -n 1`" = "0000000 21 7a"
+	+test "`busybox echo -ne '\041z' | hexdump | xargs`" = "0000000 7a21 0000002"
+	--- testsuite.orig/echo/echo-prints-slash_41
+	+++ testsuite/echo/echo-prints-slash_41
+	@@ -1,3 +1,3 @@
+	 # FEATURE: CONFIG_FEATURE_FANCY_ECHO CONFIG_DESKTOP
+	 
+	-test "`busybox echo -ne '\41z' | od -t x1 | head -n 1`" = "0000000 21 7a"
+	+test "`busybox echo -ne '\41z' | hexdump | xargs`" = "0000000 7a21 0000002"
+	\ No newline at end of file
+	
+	--- testsuite.orig/hostname/hostname-d-works
+	+++ /dev/null
+	@@ -1,3 +0,0 @@
+	-f=$(busybox hostname -f).
+	-d=$(busybox hostname -d)
+	-test x"${f#*.}" = x"$d${d:+.}"
+	--- testsuite.orig/patch.tests
+	+++ testsuite/patch.tests
+	@@ -75,12 +75,12 @@
+	 testing "patch detects already applied hunk" \
+	 	'patch 2>&1; echo $?; cat input' \
+	 "\
+	+patching file input
+	 Possibly reversed hunk 1 at 4
+	 Hunk 1 FAILED 1/1.
+	  abc
+	 +def
+	  123
+	-patching file input
+	 1
+	 abc
+	 def
+	@@ -103,12 +103,12 @@
+	 testing "patch detects already applied hunk at the EOF" \
+	 	'patch 2>&1; echo $?; cat input' \
+	 "\
+	+patching file input
+	 Possibly reversed hunk 1 at 4
+	 Hunk 1 FAILED 1/1.
+	  abc
+	  123
+	 +456
+	-patching file input
+	 1
+	 abc
+	 123
+	--- testsuite.orig/pidof.tests
+	+++ testsuite/pidof.tests
+	@@ -14,9 +14,11 @@
+	 	"pidof veryunlikelyoccuringbinaryname ; echo \$?" "1\n" "" ""
+	 testing "pidof (exit with success)" "pidof pidof > /dev/null; echo \$?" \
+	 	"0\n" "" ""
+	+test x"$SKIP_KNOWN_BUGS" = x"" && {
+	 # We can get away with this because it says #!/bin/sh up top.
+	 
+	 testing "pidof this" "pidof pidof.tests | grep -o -w $$" "$$\n" "" ""
+	+}
+	 
+	 test x"`cat /proc/1/comm`" = x"init" && {
+	 optional FEATURE_PIDOF_SINGLE
+	--- /dev/null
+	+++ testsuite/test.patch
+	@@ -0,0 +1,7 @@
+	+--- input.old	Jan 01 01:01:01 2000
+	++++ input	Jan 01 01:01:01 2000
+	+@@ -1,2 +1,3 @@
+	+ abc
+	++def
+	+ 123
+	+
+	--- testsuite.orig/unzip.tests
+	+++ testsuite/unzip.tests
+	@@ -18,6 +18,7 @@
+	 
+	 # Create test file to work with.
+	 
+	+test x"$SKIP_KNOWN_BUGS" = x"" && {
+	 mkdir foo
+	 touch foo/bar
+	 zip foo.zip foo foo/bar > /dev/null
+	@@ -29,6 +30,7 @@
+	 
+	 rmdir foo
+	 rm foo.zip
+	+}
+	 
+	 # File containing some damaged encrypted stream
+	 optional FEATURE_UNZIP_CDF CONFIG_UNICODE_SUPPORT
 
-PATCHES 
+PATCHES busybox-1.30.1/testsuite testsuite.patch
 
 BUILDER busybox-1.30.1/busybox
 	cd  $PACKAGE-$VERSION
 	 
 	# reproducible build
 	export KCONFIG_NOTIMESTAMP=1
+	export LANG=C
+	export LC_ALL=C
 	make CC=musl-gcc
+
+TESTING /use/bin/busybox
+	busybox --install /root
+	export PATH="/root:$PATH"
+	cd  $PACKAGE-$VERSION
+	export KCONFIG_NOTIMESTAMP=1
+	export SKIP_KNOWN_BUGS=1
+	make CC=musl-gcc test
 
 INSTALL /usr/bin/busybox
 	cd  $PACKAGE-$VERSION
@@ -1237,5 +1551,6 @@ SCRIPTS startup
 SCRIPTS shutdown
 SCRIPTS login
 
-PKGREPO
-PKGSIGN
+DISTURL https://repo.frinknet.com/
+DISTREL R19.04
+DISTGEN G01031223

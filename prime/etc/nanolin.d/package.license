@@ -1,0 +1,119 @@
+#!/bin/sh
+
+# etup main variables
+DIR=${1:-}
+RND=$(od -A n -t d -N 3 /dev/urandom | tr -d ' ')
+TMP=/tmp/license-$RND-$USER
+
+# check make sure the directory exists
+[ -d "$DIR" ] && echo "$NLHDR
+	Extract license and copyright from source directory.
+
+    Usage:
+
+	$NLCLI ${NLACT/./ } <dir>
+" && exit 1
+
+# remove old license files to avoid polution or duplication
+rm -f .license*
+
+# create a temp directory where we do our work
+mkdir -p $TMP
+
+# get copyright info from .c and .h files
+for x in $(grep -l "Copyright.*\d" $(find $DIR -name "*.h" -o -name "*.c")); do
+	# make sure that we have a ase directory for the tempfile
+	mkdir -p $TMP/$(dirname $x)
+
+	# work sed magic
+	sed -rn '
+		# read the whole file
+		:a
+		N
+		$!ba
+
+		# fix CRLF
+		s/\r\n?/\n/g
+
+		# reduce file to copyright comment
+		s/.*(\/\*.*Copyright.*?\*\/).*/\1/g
+
+		# remove everything after the first copyright 
+		s/(\*\/).*/\1/g
+
+		# remove slashes 
+		s/^\//\n/g
+		s/\/$//g
+
+		# remove leading stars
+		s/\n[ 	]*\*+[ 	]*/\n/g
+
+		# remove junk
+		s/\n[^\n]*[$][^\n]*//g
+
+		# trim \n
+		s/^\n*//g
+		s/\n*$//g
+
+		# show output
+		/.*/p
+	' "$x" > "$TMP/$x.tmp"
+
+	# remove punctuation "all rights reserved" erroronious language and email address which are not part of copyright
+	# format punctuation correctly. Standardize (c)
+	grep "^Copyright" "$TMP/$x.tmp" \
+	 | sed 's/ [(][Cc][)]\|All rights reserved\|[,.]\|<[^>]*>//g'\
+	 | sed -r 's/([0-9]) /\1, /g;s/-/, /g;s/Copyright/Copyright (c)/g' >> .license_holders
+
+	# remove copyright line after we have collated the copyrights to one holder file
+	grep -v "^Copyright" "$TMP/$x.tmp" > "$TMP/$x"
+	rm "$TMP/$x.tmp"
+done
+
+# do a sha1sum of every license to relate same words
+sha1sum $(find $TMP -type f -name "*.?*") >> .license_inventory
+
+# build final .licenses file
+(
+	# add basename of folder which should be package name
+	basename $(readlink -f "$DIR")
+	echo
+
+	# list all rights holders in chronological order
+	echo "ALL COPYRIGHT HOLDERS:"
+	cat .license_holders | sort -rud
+	echo
+	
+	# add licenses from root directories
+	[ -e LICENSE ] && echo "SOURCE LICENSE:" && echo && cat LICENSE && echo
+	[ -e COPYING ] && echo "COPY REGULATION:" && echo && cat COPYING && echo
+
+	# add individule license headers related to individual files
+	for x in $(cat .license_inventory | cut -c 1-40 | sort -u); do
+		# add a header explaining what we are doing
+		echo
+		echo "LICENSE FOUND:"
+
+		# list all files with the same licesne text
+		grep "$x" .license_inventory | cut -c 43-1000 | sed "s%$TMP/%%g" | sort
+
+		# include one copy of that license
+		cat $(grep -m 1 "$x" .license_inventory | cut -c 43-1000)
+	done
+# output everything to the .licenses file
+) > "$DIR/.licenses"
+
+# remove the temp directory that is no longer needed
+rm -rf $TMP
+
+# tell the user what we have done
+echo "$NLHDR
+
+    PACKAGE: $(basename $(readlink -f "$DIR"))
+
+    RIGHTS HOLDERS:
+
+$(cat .license_holders | sort -rud | head -5|sed "s/^/\t/g")
+
+    Full license and copyright in: $DIR/.licenses
+"
