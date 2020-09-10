@@ -7,7 +7,6 @@
 # list provides <pkgname...>
 # list requires <pkgname...>
 # list suggests <pkgname...>
-# list clashes <pkgname...>
 # list <pkgname...>
 
 # each listing invokes:

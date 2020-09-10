@@ -2,6 +2,20 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+PKGNAME="$1"
+
+[ -z "$1" ] && echo "$NLHDR
+	Show info from a package.
+" && exit 1
+
+# if PKGNAME is file
+# fill PKGINFO with contents
+# else get PKGINFO from packages.g
+
+
+pkgshow() {
+	local _ACT=$1
+}
 
 # show <pkgname>
 # PACKAGE-VERSION+REVISION: COMMENT-LINE
@@ -13,18 +27,18 @@
 
 # show <pkgname> allinfo
 # !pkgshow
+# !pkgshow replace
 # !pkgshow provide
 # !pkgshow require
 # !pkgshow suggest
-# !pkgshow clashes
 # !pkgshow tooling
 # !pkgshow origins
 
+# show <pkgname> replace
 # show <pkgname> provide
 # show <pkgname> require
 # show <pkgname> suggest
 # show <pkgname> tooling
-# show <pkgname> clashes
 # PKGRUN: ...
 #
 

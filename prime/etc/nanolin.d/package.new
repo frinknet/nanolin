@@ -5,7 +5,6 @@
 PKGDEF=${1##/*}
 PKGDIR=${PKGDIR:-/var/packages}
 PKGDOC="$PKGDIR/$PKGDEF"
-PKGREL="$(date +R%y.%m-G%d%H%M%S)"
 
 EDITOR=${EDITOR:-busybox vi}
 
@@ -27,24 +26,20 @@ EDITOR=${EDITOR:-busybox vi}
 
 PKGSRC="PACKAGE $PKGDEF
 VERSION 1.0.1
+REVISED +1
 COMMENT $PKGDEF Package
 	Provides a custom build of $PKGDEF
 
-REVISED r0
-RELEASE ${PKGREL%-*}
-GENESIS ${PKGREL#*-}
-
+LICENSE 
 CONTACT 
 WEBSITE 
 BUGTALK 
-LICENSE 
 
+REPLACE $PKGDEF*
 PROVIDE $PKGDEF
 REQUIRE
-HELPFUL
-
-DEPENDS 
-CLASHES 
+SUGGEST
+TOOLING
 
 GETFILE https://github.com/$NLCLI/$PKGDEF/archive/master.tar.gz
 
@@ -53,7 +48,7 @@ PUTFILE README.md
 
 	Provides a custom build of $PKGDEF
 
-PATCHED 
+#PATCHES dirname patch.patch
 
 BUILDER $PKGDEF-1.0.1/$PKGDEF
 	make -C $PKGDEF-1.0.1
@@ -61,8 +56,11 @@ BUILDER $PKGDEF-1.0.1/$PKGDEF
 INSTALL /usr/bin/$PKGDEF
 	make -C $PKGDEF-1.0.1 install
 
-REMOVED /usr/bin/$PKGDEF
+REMOVES /usr/bin/$PKGDEF
 	rm -rf /usr/bin/$PKGDEF
+
+#SCRIPTS stage
+	commands
 "
 
 echo "$PKGSRC" > "$PKGDOC"

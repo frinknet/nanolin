@@ -2,3 +2,4 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+# uninstall the package

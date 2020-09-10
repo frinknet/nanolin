@@ -1,0 +1,8 @@
+#!/bin/sh
+
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
+export NLMSG="Manage $NLSTR Repos"
+export NLCMD="$NLBIN"
+
+source "$NLDIR/config"

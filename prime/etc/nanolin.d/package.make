@@ -20,26 +20,38 @@ PKGUSE="
 	$NLCLI ${NLACT/./ } <package>
 	$NLCLI ${NLACT/./ } <package> <action>
 
-    Actions:
+    Stages:
 
 	prepare
-	inspect
+	compile
 	release
+
+    Utilities:
+
+	inspect
 	cleanup
 	refresh
 
-    Build Stages:
+     Prepare:
 
 	sources
 	patches
+
+     Compile:
+
 	builder
 	install
+	testing
+	license
 	scripts
+
+    Removal:
+
 	removes
 "
 
-shift
-shift
+[ -n "$1" ] && shift
+[ -n "$1" ] && shift
 
 # show usage if package file does not exists
 [ -z "$PKGDEF" ] && echo "$NLHDR
@@ -64,6 +76,35 @@ pkgline() {
 info() {
 	echo -e "\e[1m$@\e[21m"
 	sleep 1
+}
+
+spinner() {
+	local SPINNER="\\-/|"
+
+	while :; do
+		for i in 0 1 2 3; do
+			echo -ne "\010${SPINNER:$i:1}"
+			usleep 10000
+		done
+	done
+}
+
+unspin() {
+	kill -9 $1 &> /dev/null
+	echo -ne "\010"
+	echo -ne "\010"
+}
+
+spin() {
+	spinner &
+
+	local SPIN_PID="$!"
+
+	trap "unspin $SPIN_ID" $(seq 0 15)
+
+	$@
+
+	unspin $SPIN_ID
 }
 
 # shell friendly answer to xargs -r
@@ -93,6 +134,10 @@ getfile() {
 	# get the file and put it in the right place
 	(cd "$PKGDST";wget "$GETURL")
 
+	[ ! -e "$GETSRC" ] && echo "$NLHDR
+	Download failed: $GETURL
+	" && rm -rf "$GETSRC" && exit 1
+
 	# check the remote file integrity against supplied MD5 if it exists
 	[ -n "$GETMD5" ] && [ ! "$GETMD5" == "$(cd "$PKGDST";busybox md5sum "$GETSRC")" ] && echo "$NLHDR
 	Download failed integrity check: $GETSRC
@@ -108,9 +153,10 @@ getfile() {
 		*.tar.xz|*.txz) busybox tar -C "$PKGDST" -xJf "$GETSRC";;
 		*.tar) busybox tar -C "$PKGDST" -xf "$GETSRC";;
 		*.zip) busybox unzip -d "$PKGDST" "$GETSRC";;
-		*.gz) (cd "$PKGDST";busybox gunzip "$GETSRC");;
-		*.xz) (cd "$PKGDST";busybox xz -d  "$GETSRC");;
+		*.gz) (cd "$PKGDST";busybox gunzip -k "$GETSRC");;
+		*.xz) (cd "$PKGDST";busybox xz -k -d "$GETSRC");;
 		*.bz|*.bz2|*.bzip2) (cd "$PKGDST";busybox bzip2 -k -d "$GETSRC");;
+		*) true;;
 	# if the extraction fails show a failure message and exit
 	esac; then
 		echo "$NLHDR
@@ -152,35 +198,41 @@ patches() {
 	[ -n "$NLDBG" ] && echo "DEBUG: $0:patched() $@"
 
 	# setup local variables
-	local PCHDIR="$PKGDST/$1"
-	local PCHNUM="0"
+	local FIXDIR="$PKGDST/$1"
+	local FIXNUM="0"
+	local FIXSPN
 
 	shift
 
 	# loop through patches
 	for x in $@; do
 		# make sure the patch is not applied yet
-		[ -e "${x%.patch}.applied" ] && info "Patch applied... $PKGDST/$x" && $((++PCHNUM)) && continue
+		[ -e "$PKGDST/${x%.patch}.applied" ] && info "Patch applied... $PKGDST/$x" && FIXNUM=$((FIXNUM+1)) && continue
 
 		# tell them that we are applying the patch
 		info "Applying patch... $PKGDST/$x"
 
+		spinner & FIXSPN=$!
+		trap "unspin $FIXSPN" $(seq 0 15)
+
 		# patch the source directory and put output log in .applied file
-		if ! (cd "$PCHDIR"; busybox patch -Np1 -i "$PKGSRC/$x") > ${x%.patch}.applied; then
-			echo "$NLHDR
-	Failed to apply patch to $PCHDIR:
+		(cd "$FIXDIR"; patch -p1 -NE -i "$PKGDST/$x") &> "$PKGDST/${x%.patch}.applied"
+
+		# fail if not successfull
+		[ "$?" != "0" ] && echo "$NLHDR
+	Failed to apply patch to $FIXDIR:
 
 	patch -Np1 -i $x
-	" &&
-	       	exit 1
-		fi
+		" && exit 1
+
+		unspin $FIXSPN
 
 		# increment count
-		$((++PCHNUM))
+		FIXNUM=$((FIXNUM+1))
 	done
 
 	# return success if we have done what we need to 
-	[ "$PCHNUM" -gt 0 ] && return 0 || return 1 
+	[ "$FIXNUM" -gt 0 ] && return 0 || return 1 
 }
 
 genscript() {
@@ -203,18 +255,21 @@ genscript() {
 
 	# add possible args
 	echo "# $PKGSTR definition"
-	echo -e "PKGHDR='AUTOMATIC PACKAGE $PKGRUN SCRIPT for $PKGDEF
-Last updated: $(date)
-Gnerated unsing $NLSTR v$NLVER
+	echo -e "PKGHDR='AUTOMATIC PACKAGE $PKGRUN SCRIPT for $PKGDEF\nLast updated: $(date)\nGnerated unsing $NLSTR v$NLVER
 
-	$NLCLI ${NLACT/./ } $PKGDEF $PKGSTR
-'"
+	$NLCLI ${NLACT/./ } $PKGDEF $PKGSTR\n'"
 	echo "PKGOPT='$(grep "^$PKGRUN" "$PKGDOC" | sed -r "s%^$PKGRUN ([^ ]*).*%\1%g")'"
 	echo
 
 	# add exports
 	echo "# package variables available in script"
-	sed -rn "s%^(BUILDER|TESTING|INSTALL|REMOVES|PATCHES|SCRIPTS|GETFILE|PUTFILE|PATCHES) [^\n]*%%g;s%^([A-Z]*) ([^\n]*)%export \1='\2'%p" "$PKGDOC"  
+	sed -rn "
+		# strip the recipe for only important variables
+		s%^(BUILDER|TESTING|INSTALL|REMOVES|PATCHES|SCRIPTS|GETFILE|PUTFILE|PATCHES) [^\n]*%%g
+
+		# conver variables to exports
+		s%^([A-Z]*) ([^\n]*)%export \1='\2'%p
+	" "$PKGDOC"  
 	echo
 
 
@@ -275,9 +330,8 @@ Gnerated unsing $NLSTR v$NLVER
 		[ -z \"\$x\" ] && continue
 		\"\$0\" \"\$x\"
 	done
-	;;
-	
-	"
+	;;"
+
 	# add fuzzy matching case to allow partial builds
 	echo -e "# $PKGSTR for fuzzy matches\n*)
 	echo \$PKGOPT | grep \"\$(printf '%q' \"\$1\")\" | \
@@ -285,9 +339,7 @@ Gnerated unsing $NLSTR v$NLVER
 		[ -z \"\$x\" ] && continue
 		\"\$0\" \"\$x\"
 	done
-	;;
-	
-	"
+	;;"
 
 	# close out the switch case a test for failure
 	echo -e "esac) || echo \"\$PKGHDR
@@ -298,8 +350,7 @@ Gnerated unsing $NLSTR v$NLVER
 	) > "$PKGDST"; then
 		echo "$NLHDR
 	Failed to generate $PKGDST
-	"
-		exit 1
+		" && exit 1
 	fi
 
 	# make the new script executable
@@ -314,9 +365,16 @@ overlay() {
 	local PKGDEL="$PKGDST/$NLCLI-$USER-delete"
 	local PKGWRK="$PKGDST/$NLCLI-$USER-$PKGSTR"
 	local PKGMNT="$PKGDST/$NLCLI-$USER-overlay"
-	local PKGBED="$(ls -d / "$PKGDST/$NLCLI-$USER-"* 2>/dev/null| grep -v "\($PKGSTR\|delete\|overlay\)$" | tr "\n" ":" | sed "s%:$%%")"
+	local PKGBED="$(
+		(echo /;find "$PKGDST" -type d -name "$NLCLI-$USER-*" 2>/dev/null) | \
+		grep -v "\($PKGSTR\|delete\|overlay\)$" | tr "\n" ":" | \
+		sed "s%:$%%"
+	)"
 
 	shift
+
+	# echo mount -t overlay overlay  -o "lowerdir=$PKGBED,workdir=$PKGDEL,upperdir=$PKGWRK" "$PKGMNT"
+	# exit
 
 	# make sure that only one overlay is running
 	[ -e "$PKGMNT" ] && echo "$NLHDR
@@ -331,12 +389,10 @@ overlay() {
 	info "Creating $PKGDEF $PKGSTR overlay... $PKGWRK"
 
 	# mount the overlayfs
-	echo mount -t overlay overlay  -o "lowerdir=$PKGBED,workdir=$PKGDEL,upperdir=$PKGWRK" "$PKGMNT"
 	if ! mount -t overlay overlay  -o "lowerdir=$PKGBED,workdir=$PKGDEL,upperdir=$PKGWRK" "$PKGMNT"; then
 		echo "$NLHDR
 	Failed to mount overlay: $PKGMNT
-	"
-		exit 1
+		" && exit 1
 	fi
 
 	# notify that we have an overlay ready
@@ -348,13 +404,14 @@ overlay() {
 	# return can ony be processed after unmount
 	PKGRTN=$?
 
+	echo rtn $PKGRTN
+
 	# make sure that we unmount everything
 	# TODO; make a trap for this
 	if ! umount "$PKGMNT"; then
 		echo "$NLHDR
 	Failed to unmount overlay: $PKGMNT
-	"
-		exit 1
+		" && exit 1
 	fi
 
 	# notify that we are finished with overlay
@@ -364,7 +421,7 @@ overlay() {
 	rm -rf "$PKGMNT" "$PKGDEL"
 
 	#check if we had errors
-	[ "$PKGRTN" == "0" ] && return
+	[ "$PKGRTN" == "0" ] && return 
 
 	# surpress errors if inspecting
 	[ "$@" == "$SHELL" ] && return
@@ -384,6 +441,10 @@ runscript() {
 	local PKGSTR="$(echo $1 | tr '[:upper:]' '[:lower:]')"
 	local PKGGEN="$PKGDST/$NLCLI-$PKGSTR.sh"
 	local PKGARG="$2"
+	local PKGWRK="$PKGDST/$NLCLI-$USER-$PKGSTR"
+	local PKGERR="$PKGWRK-err.log"
+	local PKGLOG="$PKGWRK-gen.log"
+	local PKGSPN
 
 	# make sure the generator exists
 	[ ! -e "$PKGGEN" ] && echo "$NLHDR
@@ -402,12 +463,33 @@ runscript() {
 	" && exit 1
 
 	# make sure the overlay run as expected
-	if ! overlay "$PKGSTR" "$PKGGEN" "$PKGARG"; then
-		echo "$PKGHDR
+	info "Running $PKGGEN $PKGARG..."
+
+	# start spinner
+	spinner & PKGSPN=$!
+	trap "unspin $PKGSPN" $(seq 0 15)
+
+	# run overlay silently
+	overlay "$PKGSTR" "$PKGGEN" "$PKGARG" 1>"$PKGLOG" 2>"$PKGERR"
+	
+	# get return from overlay and kill spinner
+	PKGRTN=$?
+
+	unspin $PKGSPN
+
+	# show error if there was error output
+	[ ! -s "$PKGERR" ] && echo "$PKGHDR
+	Errors detected while running: $PKGGEN
+
+	See: $PKGERR
+	" && exit 1
+
+	# show error if the return code was bad
+	[ "$PKGRTN" != "0" ] && echo "$PKGHDR
 	Failed to execute generator: $PKGGEN
-	"
-		exit 1
-	fi
+
+	Error unknown.
+	" && exit 1
 }
 
 pkgmake() {
@@ -430,7 +512,8 @@ getlicense() {
 	local PKGLIC="$PKGWRK/$PACKAGE-$VERSION"
 
 	# run the license extractor on $PKGDST
-	"$NLCLI" package.license "$PKGDST"
+	info "Generating $PKGSTR license compilation..."
+	overlay install "$NLBIN" package.license "$PKGDST" > /dev/null
 
 	# make licenses directory
 	mkdir -p "$PKGWRK"
@@ -446,14 +529,15 @@ pkgbundle() {
 	local PKGREL="$(date +R%y.%m)"
 	local PKGGEN="$(date +G%d%H%M%S)"
 	local PKGWRK="$PKGDST/$NLCLI-$USER-install"
-	local PKGIMG="$PACKAGE-$VERSION$REVISED-$PKGREL"
+	local PKGIMG="$PACKAGE-$VERSION$REVISED-$PKGREL-$PKGGEN"
 
-	info "Creating $NLSTR Bundle $PKGIMG.nbz..."
+	info "Creating $NLSTR Bundle... $PKGIMG.nbz"
 
 	# remove all bz2 file so we can star fresh
 	rm -rf package.tgz *.bz > /dev/null
 	
 	# finalize recipe for inclusion
+	echo "Creating $PKGDST/recipe.bz"
 	(
 		# remove references to the dist
 		grep -v "^DIST" "$PKGDOC" 
@@ -464,24 +548,37 @@ pkgbundle() {
 		echo DISTREL $PKGREL
 		echo DISTGEN $PKGGEN
 	# create recipe.bz
-	) | busybox bzip2 -c > "$PKGDST/recipe.bz"
+	) | busybox bzip2 -c > "$PKGDST/recipe.bz" || (echo "$NLHDR
+	Failed to create recipe.bz
+	" && exit 1)
 
 	# create overlay.bz
-	busybox tar -C "$PKGWRK" --exclude=root -cjf "$PKGDST/overlay.bz"
+	echo "Creating $PKGDST/overlay.bz"
+	busybox tar -C "$PKGWRK" --exclude=root -cjf "$PKGDST/overlay.bz" . || (echo "$NLHDR
+	Failed to create overlay.bz
+	" && exit 1)
 
 	# prepare manifest for inclusion
+	echo "Creating $PKGDST/manifest.bz"
 	(
 		cd "$PKGWRK"
-		busybox md5sum $(tar -tjf "$PKGDST/overlay.bz")
+		busybox md5sum $(tar -tjf "$PKGDST/overlay.bz" | grep -v "\/$")
 	# create manifest.bz
-	) | busybox bzip2 -c > "$PKGDST/manifest.bz"
+	) | busybox bzip2 -c > "$PKGDST/manifest.bz" || (echo "$NLHDR
+	Failed to create manifest.bz
+	" && exit 1)
 
 	# build the tgz file to get ready for signing
-	tar -czf package.tgz recipe.bz manifest.bz overlay.bz
+	echo "Creating $PKGDST/package.tgz"
+	(
+		cd "$PKGDST"
+		tar -czf package.tgz recipe.bz manifest.bz overlay.bz
+	)
 
 	# sign the package
-	signify -Sz -s "$PKGOUT/.sign-secret" -m "$PKGDST/package.tgz" -x - | \
-	sed -r "s%(untrusted comment:)[^\n]*%\1 $PKGURL%" > "$PKGOUT/$PKGIMG.nbz"
+	info "Signing $NLSTR Bundle... $PKGIMG.nbz"
+	signify -Sz -s "$PKGOUT/verify.sec" -m "$PKGDST/package.tgz" -x - | \
+	sed -r "s%(untrusted comment:)[^\n]*%\1 $PKGURL%;s%key=$PKGOUT/verify.sec%%" > "$PKGOUT/$PKGIMG.nbz"
 }
 
 # description package variables
@@ -516,9 +613,25 @@ export PKGSIGN=$(pkgline PKGSIGN)
 # TODO; use nanolin framework for this setup
 
 # make sure we have keys in the right place to sing stuff
-[ ! -e "$PKGOUT/.sign-secret" ] && info "Creating repo signature... $PKGOUT" && signify -G -s "$PKGOUT/.sign-secret" -p "$PKGOUT/signature.pub" -c "$PKGURL"
+[ ! -e "$PKGOUT/verify.sec" ] && (
+	info "Creating repo signature... $PKGOUT"
+	cd "$PKGOUT"
+	signify -Gn -s "verify.sec" -p "verify.pub" -c "$PKGURL"
+)
+
 touch "$PKGDIR/.repo-signatures"
-sed "s%^$PKGURL.*%%g;s%$%\n$PKGURL $(tail -1 "$PKGOUT/signature.pub")%" "$PKGDIR/.repo-signatures"
+sed -ibak "
+		# read the whole file
+		:a
+		N
+		\$!ba
+
+		# remove old key
+		s%^$PKGURL.*%%g
+
+		# add new key
+		s%$%\n$PKGURL $(tail -1 "$PKGOUT/verify.pub")%
+" "$PKGDIR/.repo-signatures"
 
 # switch depending on which stage of the package make process
 case "$PKGRUN" in
@@ -531,38 +644,30 @@ SOURCES)
 # patch sources
 PATCHES)
 	# patch each source that is a problem
-	grep "^PATCHES" "$PKGDOC" | sed "s%^PATCHED%%g" | runeach patches || exit 1
+	grep "^PATCHES" "$PKGDOC" | sed "s%^PATCHES%%g" | runeach patches || exit 1
+	;;
+# do one of these activities
+BUILDER|INSTALL|TESTING|REMOVES)
+	genscript "$PKGRUN"
+
+	[ -n "$1" ] && runscript "$PKGRUN" "$1"
 	;;
 # generate license 
 LICENSE)
 	getlicense
 	;;
-# do one of these activities
-BUILDER|TESTING|INSTALL|REMOVES)
-	genscript "$PKGRUN"
-
-	[ -n "$1" ] && runscript "$PKGRUN" "$1"
-	;;
 PREPARE)
-	pkgmake sources 
+	pkgmake sources && \
 	pkgmake patches
-	pkgmake builder all
-	pkgmake install all
+	;;
+COMPILE)
+	pkgmake builder all && \
+	pkgmake install all && \
+	pkgmake license
 	;;
 RELEASE)
-	pkgmake prepare
-	pkgmake testing all
-	pkgmake license
-	pkgblob
-	pkgsign
-
-	echo "$NLHDR
-	RELEASE TODO;
-
-	# sign the local repo image
-	# add to local repo packages.tgz
-	# add to local repo manifest.tgz
-	"
+	pkgmake testing all && \
+	pkgbundle
 	;;
 INSPECT)
 	PKGRUN="$(echo $1 | tr '[:lower:]' '[:upper:]')"
@@ -574,7 +679,8 @@ INSPECT)
 		overlay $PKGRUN ${@:-$SHELL}
 		;;
 	'')
-		pkgmake prepare
+		pkgmake prepare && \
+		pkgmake compile && \
 		pkgmake inspect install
 	esac
 	;;
@@ -593,10 +699,10 @@ CLEANUP)
 	# check that we did want to delete the dir
 	if echo "$PKGREM" | grep -qi Y; then
 		# make sure everything is unmounted beore we try to delete
-		umount "$PKGDST/$NLCLI-"*"-overlay" &>/dev/null
+		umount "$PKGDST/$NLCLI-"*"-overlay" &> /dev/null
 
 		# remove everything from the work dir
-		rm -rf "$PKGDST"
+		rm -rf "$PKGDST" > /dev/null
 
 		# tell the user what we did
 		echo -e "\n\n\tRemoved: $PKGDST\n"
@@ -606,14 +712,21 @@ CLEANUP)
 	fi
 	;;
 REFRESH)
-	# start fresh by cleaning up first
-	yes | pkgmake cleanup
+	# make sure everything is unmounted beore we try to delete
+	umount "$PKGDST/$NLCLI-"*"-overlay" &> /dev/null
+
+	# remove everything from the work dir
+	rm -rf "$PKGDST"
 
 	# now make the release from scratch
+	pkgmake prepare && \
+	pkgmake compile && \
 	pkgmake release
 	;;
 '')
 	# without a special make proceedure do everything
+	pkgmake prepare && \
+	pkgmake compile && \
 	pkgmake release
 	;;
 *)

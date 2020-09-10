@@ -1,12 +1,14 @@
 #!/bin/sh
 
-# etup main variables
-DIR=${1:-}
-RND=$(od -A n -t d -N 3 /dev/urandom | tr -d ' ')
-TMP=/tmp/license-$RND-$USER
+[ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
+
+# setup main variables
+LICDIR=$(readlink -f "${1:-.}")
+LICRND=$(od -A n -t d -N 3 /dev/urandom | tr -d ' ')
+LICTMP=/tmp/license-$LICRND-$USER
 
 # check make sure the directory exists
-[ -d "$DIR" ] && echo "$NLHDR
+[ ! -d "$LICDIR" ] && echo "$NLHDR
 	Extract license and copyright from source directory.
 
     Usage:
@@ -18,12 +20,14 @@ TMP=/tmp/license-$RND-$USER
 rm -f .license*
 
 # create a temp directory where we do our work
-mkdir -p $TMP
+mkdir -p $LICTMP
 
 # get copyright info from .c and .h files
-for x in $(grep -l "Copyright.*\d" $(find $DIR -name "*.h" -o -name "*.c")); do
-	# make sure that we have a ase directory for the tempfile
-	mkdir -p $TMP/$(dirname $x)
+find $LICDIR -name "*.h" -o -name "*.c" | xargs grep -li "Copyright.*\d" | while read -r x; do
+	[ "$x" == "" ] && continue
+
+	# make sure that we have a base directory for the tempfile
+	mkdir -p $LICTMP/$(dirname $x)
 
 	# work sed magic
 	sed -rn '
@@ -57,26 +61,26 @@ for x in $(grep -l "Copyright.*\d" $(find $DIR -name "*.h" -o -name "*.c")); do
 
 		# show output
 		/.*/p
-	' "$x" > "$TMP/$x.tmp"
+	' "$x" > "$LICTMP/$x.tmp"
 
 	# remove punctuation "all rights reserved" erroronious language and email address which are not part of copyright
 	# format punctuation correctly. Standardize (c)
-	grep "^Copyright" "$TMP/$x.tmp" \
+	grep "^Copyright" "$LICTMP/$x.tmp" \
 	 | sed 's/ [(][Cc][)]\|All rights reserved\|[,.]\|<[^>]*>//g'\
 	 | sed -r 's/([0-9]) /\1, /g;s/-/, /g;s/Copyright/Copyright (c)/g' >> .license_holders
 
 	# remove copyright line after we have collated the copyrights to one holder file
-	grep -v "^Copyright" "$TMP/$x.tmp" > "$TMP/$x"
-	rm "$TMP/$x.tmp"
+	grep -v "^Copyright" "$LICTMP/$x.tmp" > "$LICTMP/$x"
+	rm "$LICTMP/$x.tmp"
 done
 
 # do a sha1sum of every license to relate same words
-sha1sum $(find $TMP -type f -name "*.?*") >> .license_inventory
+sha1sum $(find $LICTMP -type f -name "*.?*") >> .license_inventory
 
 # build final .licenses file
 (
 	# add basename of folder which should be package name
-	basename $(readlink -f "$DIR")
+	basename $(readlink -f "$LICDIR")
 	echo
 
 	# list all rights holders in chronological order
@@ -95,25 +99,25 @@ sha1sum $(find $TMP -type f -name "*.?*") >> .license_inventory
 		echo "LICENSE FOUND:"
 
 		# list all files with the same licesne text
-		grep "$x" .license_inventory | cut -c 43-1000 | sed "s%$TMP/%%g" | sort
+		grep "$x" .license_inventory | cut -c 43-1000 | sed "s%$LICTMP/%%g" | sort
 
 		# include one copy of that license
 		cat $(grep -m 1 "$x" .license_inventory | cut -c 43-1000)
 	done
 # output everything to the .licenses file
-) > "$DIR/.licenses"
+) > "$LICDIR/.licenses"
 
 # remove the temp directory that is no longer needed
-rm -rf $TMP
+rm -rf $LICTMP
 
 # tell the user what we have done
 echo "$NLHDR
 
-    PACKAGE: $(basename $(readlink -f "$DIR"))
+    PACKAGE: $(basename "$LICDIR")
 
     RIGHTS HOLDERS:
 
 $(cat .license_holders | sort -rud | head -5|sed "s/^/\t/g")
 
-    Full license and copyright in: $DIR/.licenses
+    Full license and copyright in: $LICDIR/.licenses
 "

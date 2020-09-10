@@ -1,46 +1,40 @@
 PACKAGE signify
 VERSION 24
+REVISED +1
 COMMENT Signify: OpenBSD tool to sign and verify signatures on files.
 	OpenBSD tool to sign and verify signatures on files. This is a
 	portable version which uses libbsd (included in static build)
 
-CONTACT 
-WEBSITE https://github.com/aperezdc/signify
-BUGTALK https://github.com/aperezdc/signify 
 LICENSE ISC + BSD + MIT 
+CONTACT Micon Frink <frink@frinknet.com>
+WEBSITE https://github.com/aperezdc/signify
+BUGTALK https://github.com/aperezdc/signify/issues
 
-REVISED r31
-RELEASE R19.04
-GENESIS G01031223
-
+REPLACE signify*
 PROVIDE signify
 REQUIRE
-SUGGEST
-
-DEPENDS 
-CLASHES 
+SUGGEST busybox
+TOOLING make gcc musl
 
 GETFILE https://github.com/aperezdc/signify/archive/v24.tar.gz
 
-PUTFILE README.md
-	# signify Package
-
-	Provides a custom build of signify
-
-PATCHED 
+PATCHES 
 
 BUILDER signify-24/signify
-	make -C signify-24
+	make -C signify-24 \
+		PREFIX=/usr \
+		MUSL=1 \
+		BUNDLED-LIBBSD=1 \
+		BUNDLED_LIBBSD_VERIFY_GPG=0 \
+		BZERO='bundled' \
+		EXTRA_CFLAGS='-Os -s -static' \
+		EXTRA_LDFLAGS='-static -nostdlib'
+
 
 INSTALL /usr/bin/signify
-	make -C signify-24 install
+	make -C signify-24 \
+		PREFIX=/usr \
+		install
 
 REMOVED /usr/bin/signify
 	rm -rf /usr/bin/signify
-
-SCRIPTS startup
-SCRIPTS shutdown
-SCRIPTS login
-
-PKGREPO
-PKGSIGN

@@ -2,6 +2,11 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
+# install PKGNAME
+
+# test if PKGNAME is a nbz Nanolin Bundle Zip
+# if so use it instead of normal package version
+
 # build dependency tree
 # ask about installing dependencies
 # ask about installing from binary
