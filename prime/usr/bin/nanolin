@@ -5,14 +5,13 @@ export NLCLI="${0##*/}"
 export NLSTR=${NLSTR:-$(echo ${NLCLI:0:1} | busybox tr '[:lower:]' '[:upper:]')${NLCLI:1}}
 export NLDIR="${NLDIR:-/etc/$NLCLI.d}"
 export NLBIN="$(readlink -f "$0")"
-export NLVER=${NLVER:-1.1.14}
+export NLVER=${NLVER:-1.1.15}
 export NLACT="${1##*/}"
 export NLHDR=${NLHDR:-"The $NLSTR System Utilities - v$NLVER
-(c) 2019 Frinknet and Lemurs - GPL 2.0
-WEBSITE: https://nanolin.frinknet.com/
+(C) 2018-2020 Frinknet & Friends: GPL2
+Website: https://nanolin.frinknet.com/
 "}
 export NLEXIT=0
-
 
 # add debug info
 [ -n "$NLDBG" ] && echo "DEBUG: $NLBIN $@"
@@ -30,7 +29,7 @@ $("$NLBIN" indent command list parents)
     Utility Commands:
 
 $("$NLBIN" indent command list utilities)
-" && exit
+" && exit 1
 
 # shift since NLACT is populated
 shift
@@ -38,17 +37,16 @@ shift
 # check that the action exists before we go to any trouble
 [ ! -e "$NLDIR/$NLACT" ] && echo "$NLHDR
 	The action ${NLACT/./ } does not exist.
-" && exit
+" && exit 1
 
 # check that the action is executable before we go to any trouble
 [ ! -x "$NLDIR/$NLACT" ] && echo "$NLHDR
 	User $USER does not have permission to run:
 	
 	$NLCLI ${NLACT/./ }
-" && exit
+" && exit 1
 
 # set aliases to shorten code
-
 alias runeach="'$NLDIR'/each $NLACT"
 alias runexec="'$NLDIR'/$NLACT"
 alias runlock="'$NLDIR'/lock"

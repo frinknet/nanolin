@@ -31,9 +31,14 @@ workrun() {
 alias workbox="workrun busybox"
 alias make="workrun make"
 
+die() {
+	echo -e "\e[31m\e[1m$@\e[0m"
+	exit 1
+}
+
 # display info pretty
 info() {
-	echo -e "\e[1m$@\e[21m"
+	echo -e "\e[1m$@\e[0m"
 	sleep 1
 }
 
@@ -239,12 +244,14 @@ inc_url() {
 # START BUILDING #
 ##################
 
-info "Preparing Build Process"
-
 # make sure we have a base director
-[ ! -d "$SRC" ] && echo "
-Missing directories to build.
+[ ! -d "$SRC" ] && echo "$NLHDR
+	Missing directories to build.
+
+	$NLCLI ${NLACT/./ } <directories>
 " && exit 1
+
+info "Preparing Build Process"
 
 # generate verify keys if needed
 if [ ! -e "$DIR/verify.pub" ] || [ ! -e "$DIR/verify.sec" ]; then
@@ -270,10 +277,13 @@ get_deps () {
 
 # setup dependency chain once
 if [ -z "$DEP" ]; then
+       	get_deps $@ && exit
        	DEP="$(get_deps $@)"
 
 	[ "$(echo $@)" != "$DEP" ] && exec "$0" $DEP
 fi
+
+die "DEBUG: $@"
 
 # now we can start building
 info "Preparing to build from $SRC" 
@@ -301,8 +311,8 @@ cp "$DIR/verify.pub" "$WRK/etc/verify.pub"
 
 # packstrap busybox + packages
 info "Pacstrap $SRC/packages"
-! pacstrap -d "$WRK" $(grep -v '#' "$SRC/packages" 2>/dev/null) && echo "
-Error in pacstrap call. Aborting build for $IMG.
+! pacstrap -d "$WRK" $(grep -v '#' "$SRC/packages" 2>/dev/null) && die "
+Error in pacstrap call. Aborting build for $IMG. \e0m
 
 	pacstrap -d "$WRK" busybox $(grep -v '#' "$SRC/packages" 2>/dev/null)
 
@@ -311,7 +321,7 @@ It may be a good idea to call:
 	pacman-key --refresh-keys
 
 That should take care of any latent problems.
-" && exit
+"
 
 # either setup tools or alias busybox correctly
 if [ "$1" != "tools" ]; then
@@ -355,7 +365,6 @@ if [ ! -e "$WRK/image.gz" ] && [ -e "$BLD" ]; then
 	echo "Copying image to $GEN/$IMG"
 	mv "$WRK/image.gz" "$GEN/$IMG"
 fi
-
 
 # check if we need to  continue building next target
 shift
