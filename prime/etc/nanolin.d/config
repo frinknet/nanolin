@@ -1,9 +1,11 @@
 #!/bin/sh
 
-export NLMSG="${NLMSG:-Manage Configuration Options}"
-export NLUSE="${NLUSE:-<actions> [options]}"
+export NLMSG="${NLMSG:-This is used to manage configuration options...}"
+export NLARG="action"
+export NLLST="${NLLST:-$(echo ${NLARG:0:1} | busybox tr '[:lower:]' '[:upper:]')${NLARG:1}s}"
+export NLUSE="${NLUSE:-<$NLARG> [options]}"
 export NLCMD="${NLCMD:-$NLDIR/each}"
-export NLARG="${NLARG:-${0##*/}.$1}"
+export NLRUN="${NLRUN:-${0##*/}.$1}"
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 (config) $@"
 
@@ -14,9 +16,9 @@ export NLARG="${NLARG:-${0##*/}.$1}"
 
 	$NLCLI ${NLACT/./ } $NLUSE
 
-    Actions:
+    $NLLST:
 
-$(NLARG= "$NLBIN" indent command list ${0##*/})
+$("$NLBIN" indent command.list ${0##*/})
 " && exit 1
 
 shift
@@ -24,4 +26,4 @@ shift
 [ -n "$NLDBG" ] && echo "DEBUG: exec $NLCMD $NLARG $@"
 
 # run command
-exec "$NLCMD" "$NLARG" $@
+exec "$NLCMD" "$NLRUN" $@
