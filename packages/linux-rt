@@ -8,7 +8,7 @@ COMMENT Linux Real Time Krnel
 LICENSE GPL-2.0
 CONTACT Micon Frink <frink@frinknet.com> 
 WEBSITE https://nanolin.frinknet.com
-BUGTALK https://github.com/frinknet/nanolin/issues
+SUPPORT https://github.com/frinknet/nanolin/issues
 
 REPLACE linux*
 PROVIDE linux
@@ -25,7 +25,7 @@ PUTFILE linux-4.19.31/.config
 
 PATCHES linux-4.19.31 patch-4.19.31-rt18.patch
 
-BUILDER linux-4.19.31/arch/x86/boot/bzImage
+COMPILE linux-4.19.31/arch/x86/boot/bzImage
 	# update config with every option properly
 	make -C linux-4.19.31 olddefconfig
 

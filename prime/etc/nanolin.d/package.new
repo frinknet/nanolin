@@ -35,8 +35,8 @@ CONTACT
 WEBSITE 
 BUGTALK 
 
-REPLACE $PKGDEF*
 PROVIDE $PKGDEF
+REPLACE $PKGDEF*
 REQUIRE
 SUGGEST
 TOOLING
@@ -49,17 +49,22 @@ PUTFILE README.md
 	Provides a custom build of $PKGDEF
 
 #PATCHES dirname patch.patch
+	#this is what the patch file would go
 
-BUILDER $PKGDEF-1.0.1/$PKGDEF
+COMPILE $PKGDEF-1.0.1/$PKGDEF
 	make -C $PKGDEF-1.0.1
 
 INSTALL /usr/bin/$PKGDEF
 	make -C $PKGDEF-1.0.1 install
 
-REMOVES /usr/bin/$PKGDEF
+INSPECT /usr/bin/$PKGDEF
+	/usr/bin/$PKGDEF --version
+
+EXPUNGE /usr/bin/$PKGDEF
 	rm -rf /usr/bin/$PKGDEF
 
 #SCRIPTS stage
+	#this is a $NLSTR Script
 	commands
 "
 

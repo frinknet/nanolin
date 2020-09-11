@@ -23,7 +23,7 @@ PKGUSE="
     Stages:
 
 	prepare
-	compile
+	compose
 	release
 
     Utilities:
@@ -39,15 +39,15 @@ PKGUSE="
 
      Compile:
 
-	builder
+	compile
 	install
-	testing
+	inspect
 	license
 	scripts
 
     Removal:
 
-	removes
+	expunge
 "
 
 [ -n "$1" ] && shift
@@ -265,7 +265,7 @@ genscript() {
 	echo "# package variables available in script"
 	sed -rn "
 		# strip the recipe for only important variables
-		s%^(BUILDER|TESTING|INSTALL|REMOVES|PATCHES|SCRIPTS|GETFILE|PUTFILE|PATCHES) [^\n]*%%g
+		s%^(COMPILE|INSPECT|INSTALL|EXPUNGE|PATCHES|SCRIPTS|GETFILE|PUTFILE|PATCHES) [^\n]*%%g
 
 		# conver variables to exports
 		s%^([A-Z]*) ([^\n]*)%export \1='\2'%p
@@ -456,9 +456,9 @@ runscript() {
 
     Generators:
 
-	builder
+	compile
 	install
-	removes
+	expunge
 	scripts
 	" && exit 1
 
@@ -590,7 +590,7 @@ export COMMENT=$(pkgline COMMENT)
 # support package variables
 export CONTACT=$(pkgline CONTACT)
 export WEBSITE=$(pkgline WEBSITE)
-export BUGTALK=$(pkgline BUGTALK)
+export SUPPORT=$(pkgline SUPPORT)
 export LICENSE=$(pkgline LICENSE)
 
 # related package variables
@@ -647,7 +647,7 @@ PATCHES)
 	grep "^PATCHES" "$PKGDOC" | sed "s%^PATCHES%%g" | runeach patches || exit 1
 	;;
 # do one of these activities
-BUILDER|INSTALL|TESTING|REMOVES)
+COMPILE|INSTALL|INSPECT|EXPUNGE)
 	genscript "$PKGRUN"
 
 	[ -n "$1" ] && runscript "$PKGRUN" "$1"
@@ -660,27 +660,27 @@ PREPARE)
 	pkgmake sources && \
 	pkgmake patches
 	;;
-COMPILE)
-	pkgmake builder all && \
+COMPOSE)
+	pkgmake compile all && \
 	pkgmake install all && \
 	pkgmake license
 	;;
 RELEASE)
-	pkgmake testing all && \
+	pkgmake inspect all && \
 	pkgbundle
 	;;
 INSPECT)
 	PKGRUN="$(echo $1 | tr '[:lower:]' '[:upper:]')"
 
 	case "$PKGRUN" in
-	BUILDER|TESTING|INSTALL|REMOVES|SCRIPTS)
+	COMPILE|INSPECT|INSTALL|EXPUNGE|SCRIPTS)
 		shift
 
 		overlay $PKGRUN ${@:-$SHELL}
 		;;
 	'')
 		pkgmake prepare && \
-		pkgmake compile && \
+		pkgmake compose && \
 		pkgmake inspect install
 	esac
 	;;
@@ -720,13 +720,13 @@ REFRESH)
 
 	# now make the release from scratch
 	pkgmake prepare && \
-	pkgmake compile && \
+	pkgmake compose && \
 	pkgmake release
 	;;
 '')
 	# without a special make proceedure do everything
 	pkgmake prepare && \
-	pkgmake compile && \
+	pkgmake compose && \
 	pkgmake release
 	;;
 *)

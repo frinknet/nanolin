@@ -2,20 +2,75 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-PKGNAME="$1"
+alias find="busybox find"
+alias grep="busybox grep"
+alias sed="busybox sed"
+
+_FLD=""
 
 [ -z "$1" ] && echo "$NLHDR
 	Show info from a package.
+
+    Usage:
+
+	$NLCLI ${NLACT/./ } [mode...] <pkgnames...>
+
+    Modes:
+
+	comment
+	support
+	compile
+	inspect
+	install
+	expunge
+	scripts
+	patches
+	context
+
 " && exit 1
+
+while true; do
+	case "$1" in
+		quick) _FLD="$_FLD COMMENT LICENSE WEBSITE"; shift;;
+		support) _FLD="$_FLD DISTREL DISTGEN DISTURL CONTACT WEBSITE BUGTALK"; shift;;
+		long) _FLD="$_FLD COMMENT LICENSE CONTACT WEBSITE BUGTALK PROVIDE REPLACE REQUIRE SUGGEST TOOLING BUGTALK DISTURL DISTREL DISTGEN"; shift;;
+		compile|inspect|install|expunge|scripts|patches) _FLD="$_FLD $(echo "$1" | tr [:lower:] [:upper:])"; shift;;
+		*) break;;
+	esac
+done
+
+_PKG="$("$NLDIR/package.list" $@)"
+
+[ -z "$_PKG" ] && echo "No mackages found matching: $@" && exit 1
+
+pkgline() {
+	grep "^$1" "$PKGDIR/$2" | sed "s%^$1 %%"
+}
+
+pkgfield(){
+	local _INFO="$(sed -rn "
+		# read the whole file
+		:a
+		N
+		\$!ba
+
+		# get the text of the file
+		s%.*\n$1 ([^\n]*(\n\t[^\n]*|\n\s*)*).*%\1%p
+	" "$PKGDIR/$2" | sed "s%^\t*%%g")"
+	[ -n "$_INFO" ] && echo -e "\e[35m$1:\e[0m $_INFO" | sed "/COMMENT:/d;s%^%  %g"
+}
+
+for pkg in $_PKG; do
+	echo "${pkg##*/}-$(pkgline VERSION "$pkg")$(pkgline REVISED "$pkg"): $(pkgline COMMENT "$pkg")"
+	[ -n "$_FLD" ] && echo && for fld in $_FLD; do
+		pkgfield $fld "$pkg"
+	done && echo
+done | more
 
 # if PKGNAME is file
 # fill PKGINFO with contents
 # else get PKGINFO from packages.g
 
-
-pkgshow() {
-	local _ACT=$1
-}
 
 # show <pkgname>
 # PACKAGE-VERSION+REVISION: COMMENT-LINE

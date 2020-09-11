@@ -2,17 +2,30 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-export NLMSG="This is used to list $NLSTR Packages..."
-export NLLST="Types"
+alias find="busybox find"
+alias grep="busybox grep"
+alias sed="busybox sed"
 
-source "$NLDIR/run"
-# list stale
-# list installed
-# list provides <pkgname...>
-# list requires <pkgname...>
-# list suggests <pkgname...>
-# list <pkgname...>
+_CMD="$1"
+_PKG="$(echo "$@" | sed "s% \+% %g")"
 
-# each listing invokes:
-#pkgshow oneline
+# make sure we have a list argument
+[ -z "$_CMD" ] && echo "$NLHDR
+	Use this to list $NLSTR Packages...
 
+    Usage:
+
+	$NLCLI ${NLACT/./ } updates
+	$NLCLI ${NLACT/./ } installed
+	$NLCLI ${NLACT/./ } distro <distro>
+	$NLCLI ${NLACT/./ } <pkgnames...>
+
+" && exit 1
+
+# list any one of the selections
+case "$_CMD" in
+	update|installed|distro) echo "Not implemented yet...";;
+	*) find "$PKGDIR" -type f -not -name ".*" | sed "s%$PKGDIR/%%g" | grep "\(${_PKG/ /\\|}\)";;
+esac
+
+exit

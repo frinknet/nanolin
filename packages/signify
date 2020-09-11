@@ -8,7 +8,7 @@ COMMENT Signify: OpenBSD tool to sign and verify signatures on files.
 LICENSE ISC + BSD + MIT 
 CONTACT Micon Frink <frink@frinknet.com>
 WEBSITE https://github.com/aperezdc/signify
-BUGTALK https://github.com/aperezdc/signify/issues
+SUPPORT https://github.com/aperezdc/signify/issues
 
 REPLACE signify*
 PROVIDE signify
