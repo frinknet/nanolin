@@ -33,8 +33,8 @@ to the people who care about fixing them.
 Then there are a few housecleaning basics that can really help when you
 need to build dependency trees and recommended extensions.
 
-	REPLACE
 	PROVIDE
+	REPLACE
 	REQUIRE
 	SUGGEST
 	TOOLING
