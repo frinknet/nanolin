@@ -9,12 +9,10 @@ CONTACT Micon Frink <frink@frinknet.com>
 WEBSITE https://busybox.net/
 BUGTALK http://bugs.busybox.net/
 
-RELEASE R19.04
-GENESIS G01031223
+DISTREL R19.04
+DISTGEN G01031223
 
 PROVIDE 
 REQUIRE 
 SUGGEST 
 
-DEPENDS 
-CLASHES 
