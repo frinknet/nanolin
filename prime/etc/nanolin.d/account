@@ -2,6 +2,6 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-export NLMSG="Manage Accout Information"
+export NLMSG="This is used to manage your Accout Information..."
 
-source $NLDIR/config
+source $NLDIR/run

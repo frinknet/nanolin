@@ -3,13 +3,14 @@
 # essential variables for nanolin
 export NLCLI="${0##*/}"
 export NLSTR="${NLSTR:-$(echo ${NLCLI:0:1} | busybox tr '[:lower:]' '[:upper:]')${NLCLI:1}}"
-export NLURL="${NLNFO:-SEE WEBSITE: https://nanolin.frinknet.com/}"
+export NLURL="${NLURL:-Manual available at: https://nanolin.frinknet.com/}"
 export NLDIR="${NLDIR:-/etc/$NLCLI.d}"
 export NLBIN="$(readlink -f "$0")"
 export NLVER=${NLVER:-1.1.15}
 export NLACT="${1##*/}"
-export NLHDR=${NLHDR:-"$NLSTR Modular System Utilities - v$NLVER
-(C) 2018-2020 FRINKnet and Friends // GPL2
+export NLHDR=${NLHDR:-"
+$NLSTR Modular System Utility Framework - v$NLVER
+(C) 2018-2020 FRINKnet and Friends // License GPL2
 $NLURL
 "}
 export NLEXIT=0

@@ -2,6 +2,7 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-export NLMSG="Manage ditro building and editing"
+export NLMSG="Manage ditro building and editing..."
+export NLCMD="$NLDIR/each"
 
-source "$NLDIR/config"
+source "$NLDIR/run"

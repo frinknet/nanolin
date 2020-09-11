@@ -2,7 +2,6 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-export NLMSG="Manage $NLSTR Repos"
-export NLCMD="$NLBIN"
+export NLMSG="This is used to manage $NLSTR Repositories..."
 
-source "$NLDIR/config"
+source "$NLDIR/run"

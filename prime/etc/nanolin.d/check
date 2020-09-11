@@ -3,8 +3,8 @@
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
 export NLMSG="Retrieve System Information"
-export NLUSE="$NLBIM check <action> [option]"
+export NLCMD="$NLDIR/each"
 
-source $NLDIR/config
+source $NLDIR/run
 
 exit $?

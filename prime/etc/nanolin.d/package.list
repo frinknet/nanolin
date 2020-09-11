@@ -2,11 +2,10 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-export NLMSG="This is used to list $NLSTR Packages"
+export NLMSG="This is used to list $NLSTR Packages..."
 export NLLST="Types"
-export NLCMD="$NLBIN"
 
-source "$NLDIR/config"
+source "$NLDIR/run"
 # list stale
 # list installed
 # list provides <pkgname...>

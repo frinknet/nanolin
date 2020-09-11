@@ -2,8 +2,9 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-export NLMSG="Manage release updates and installing "
+export NLMSG="Manage release updates and installations..."
+export NLCMD="$NLDIR/each"
 
-source "$NLDIR/config"
+source "$NLDIR/run"
 
 "$NLBIN" release link
