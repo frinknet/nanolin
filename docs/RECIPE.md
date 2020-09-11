@@ -27,7 +27,7 @@ to the people who care about fixing them.
 	LICENSE
 	CONTACT
 	WEBSITE
-	BUGTALK
+	SUPPORT
 
 # dependency graph
 Then there are a few housecleaning basics that can really help when you
@@ -47,7 +47,8 @@ allows automatic patching of sourcode.
 
 	GETFILE
 	PUTFILE
-	PATCHES 
+	PATCHES
+	SCRIPTS
 
 # build process
 
@@ -81,5 +82,4 @@ The distro hase a different style header
 	RELEASE
 	FLAVOUR
 	IMPORTS 
-
 
