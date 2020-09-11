@@ -1,8 +1,8 @@
-DISTROS Nanolin
+RELEASE Nanolin
 FLAVOUR prime
 IMPORTS 
 
-COMMENT The Swiss Army Knife of Embedded Linux
+COMMENT Base proces
 
 LICENSE GPL 2.0
 CONTACT Micon Frink <frink@frinknet.com>

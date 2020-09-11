@@ -2,8 +2,7 @@
 
 [ -n "$NLDBG" ] && echo "DEBUG: $0 $@"
 
-_CMD=${1##*/}
-_CMD=$(echo "$_CMD" | sed "s%[^a-z.]%%g;s%\.$%%")
+_CMD=$(echo "$@" | sed "s%[^a-z. ]%%g;s% %.%g;s%^\.*%%;s%\.*$%%")
 
 EDITOR=${EDITOR:-busybox vi}
 
